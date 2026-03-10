@@ -20,3 +20,4 @@ greenlet==3.3.2
 simple-websocket==1.1.0
 python-engineio==4.13.1
 python-socketio==5.16.1
+moviepy==1.0.3
