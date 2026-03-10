@@ -1,0 +1,15 @@
+<h2>{{ assignment.title }}</h2>
+<p>{{ assignment.description }}</p>
+
+{% if assignment.question_file %}
+<a href="/uploads/{{ assignment.question_file }}" target="_blank">
+    View Question File
+</a>
+<br><br>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data">
+    <label>Upload Your Answer (PDF/DOC)</label><br>
+    <input type="file" name="file" required><br><br>
+    <button type="submit">Submit Assignment</button>
+</form>

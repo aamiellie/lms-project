@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Assignment Submissions</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: #050505;
+    color: #e5e5e5;
+    padding: 80px 120px;
+}
+
+/* ===== TITLE ===== */
+h2 {
+    font-size: 34px;
+    font-weight: 700;
+    color: #ff2da6;
+    margin-bottom: 50px;
+    letter-spacing: 1px;
+}
+
+/* ===== TABLE WRAPPER ===== */
+.table-container {
+    border: 1px solid #ff2da6;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(255, 45, 166, 0.15);
+}
+
+/* ===== TABLE ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #0d0d0d;
+}
+
+/* ===== HEADER ===== */
+th {
+    padding: 18px;
+    text-align: left;
+    background: #111111;
+    color: #ff2da6;
+    font-weight: 600;
+    border-bottom: 1px solid #ff2da6;
+}
+
+/* ===== CELLS ===== */
+td {
+    padding: 18px;
+    border-bottom: 1px solid #1f1f1f;
+}
+
+tr:hover {
+    background: #151515;
+}
+
+/* ===== VIEW LINK ===== */
+a {
+    color: #ff2da6;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+a:hover {
+    text-shadow: 0 0 6px #ff2da6;
+}
+
+/* ===== BACK BUTTON ===== */
+.back-link {
+    display: inline-block;
+    margin-top: 50px;
+    padding: 12px 22px;
+    border: 1px solid #ff2da6;
+    border-radius: 10px;
+    color: #ff2da6;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.back-link:hover {
+    background: #ff2da6;
+    color: black;
+    box-shadow: 0 0 12px rgba(255, 45, 166, 0.4);
+}
+</style>
+</head>
+<body>
+
+<h2>📄 Assignment Submissions</h2>
+
+{% if submissions %}
+    <div class="table-container">
+<table>
+        <tr>
+            <th>Student Name</th>
+            <th>Submitted At</th>
+            <th>View File</th>
+        </tr>
+
+        {% for s in submissions %}
+        <tr>
+            <td>{{ s.student_name }}</td>
+            <td>
+                {{ s.submitted_at.strftime("%d %b %Y - %I:%M %p") }}
+            </td>
+            <td>
+                <a href="/uploads/{{ s.answer_file }}" target="_blank">
+                    📂 View
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+{% else %}
+    <p>No submissions yet.</p>
+{% endif %}
+
+<br>
+<a href="javascript:history.back()" class="back-link">⬅ Back</a>
+
+</body>
+</html>

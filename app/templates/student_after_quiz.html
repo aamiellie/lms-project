@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>After Class Quiz</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: #0f0f0f;
+    color: #e8e8e8;
+    padding: 60px 100px;
+}
+
+/* ===== TITLE ===== */
+h2 {
+    font-size: 30px;
+    font-weight: 700;
+    color: #D8CFBC;
+    margin-bottom: 10px;
+}
+
+p strong {
+    color: #bfb6a3;
+}
+
+/* ===== FORM CARD ===== */
+form {
+    margin-top: 40px;
+}
+
+/* ===== QUESTION BLOCK ===== */
+.question-card {
+    background: #151515;
+    border: 1px solid #D8CFBC;
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.question-card p {
+    margin-bottom: 15px;
+}
+
+/* ===== OPTIONS ===== */
+label {
+    display: block;
+    margin-bottom: 10px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: 0.2s ease;
+}
+
+label:hover {
+    background: #1c1c1c;
+}
+
+input[type="radio"] {
+    margin-right: 10px;
+}
+
+/* ===== BUTTON ===== */
+button {
+    margin-top: 20px;
+    padding: 12px 26px;
+    background: #D8CFBC;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+button:hover {
+    background: #c9bea9;
+}
+
+/* ===== BACK LINK ===== */
+a {
+    color: #D8CFBC;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+</style>
+</head>
+<body>
+
+<h2>📝 After-Class Quiz</h2>
+<p><strong>{{ video.title }}</strong></p>
+
+<form method="POST" action="{{ url_for('submit_after_quiz', classroom_id=classroom._id, video_id=video._id) }}">
+
+    {% for q in questions %}
+        <div class="question-card">
+            <p><strong>{{ loop.index }}. {{ q.question }}</strong></p>
+
+            {% set letters = ['A','B','C','D'] %}
+            {% for option in q.options %}
+                <label>
+                    <input type="radio"
+                           name="question_{{ q._id }}"
+                           value="{{ letters[loop.index0] }}">
+                    {{ letters[loop.index0] }}. {{ option }}
+                </label><br>
+            {% endfor %}
+        </div>
+        <hr>
+    {% endfor %}
+
+    <button type="submit">Submit Quiz</button>
+
+</form>
+
+<br>
+<a href="/student/classroom/{{ classroom._id }}">⬅ Back</a>
+
+</body>
+</html>

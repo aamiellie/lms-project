@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register | LMS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+/* =========================
+   DARK AI + LEMON ACCENT
+========================= */
+
+:root {
+    --bg-dark: #21201E;
+    --bg-card: #2A2927;
+    --lemon: #BEF000;
+    --text-light: #F9F8F6;
+    --text-muted: #bfbfbf;
+    --border-dark: #333330;
+}
+
+/* =========================
+   GLOBAL
+========================= */
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* =========================
+   AUTH CONTAINER
+========================= */
+
+.auth-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* =========================
+   AUTH CARD
+========================= */
+
+.auth-card {
+    background-color: var(--bg-card);
+    padding: 50px 45px;
+    width: 380px;
+    border-radius: 8px;
+    border: 1px solid var(--border-dark);
+    box-shadow: 0 0 40px rgba(0,0,0,0.4);
+}
+
+.auth-card h2 {
+    margin-top: 0;
+    margin-bottom: 30px;
+    color: var(--lemon);
+    font-weight: 600;
+}
+
+/* =========================
+   INPUT GROUPS
+========================= */
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+input,
+select {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 6px;
+    border-radius: 6px;
+    border: 1px solid var(--border-dark);
+    background-color: #1c1b1a;
+    color: var(--text-light);
+    font-size: 14px;
+    transition: 0.3s ease;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--lemon);
+    box-shadow: 0 0 10px rgba(190, 240, 0, 0.3);
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.auth-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--lemon);
+    color: var(--bg-dark);
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s ease;
+}
+
+.auth-btn:hover {
+    box-shadow: 0 0 18px rgba(190, 240, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+/* =========================
+   SWITCH TEXT
+========================= */
+
+.auth-switch {
+    margin-top: 25px;
+    font-size: 14px;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.auth-switch a {
+    color: var(--lemon);
+    text-decoration: none;
+}
+
+.auth-switch a:hover {
+    text-shadow: 0 0 8px rgba(190, 240, 0, 0.6);
+}
+</style>
+</head>
+<body>
+
+<!-- Background Video -->
+
+
+<div class="auth-container">
+
+    <div class="auth-card">
+        <h2>Create Account</h2>
+
+        <form method="POST">
+
+            <div class="input-group">
+                <label>Name</label>
+                <input type="text" name="name" required>
+            </div>
+
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" name="email" required>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" name="password" required>
+            </div>
+
+            <div class="input-group">
+                <label>Role</label>
+                <select name="role" required>
+                    <option value="">Select Role</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="student">Student</option>
+                </select>
+            </div>
+
+            <button type="submit" class="auth-btn">Register</button>
+
+        </form>
+
+        <p class="auth-switch">
+            Already have an account?
+            <a href="/login">Login</a>
+        </p>
+    </div>
+
+</div>
+
+</body>
+</html>

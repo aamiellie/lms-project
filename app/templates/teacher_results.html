@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Results</title>
+
+    <style>
+    :root {
+        --bg-dark: #21201E;
+        --bg-card: #2A2927;
+        --accent: #39FF14;
+        --text-light: #F9F8F6;
+        --text-muted: #bfbfbf;
+        --border-dark: #333330;
+    }
+
+    body {
+        margin: 0;
+        padding: 60px 90px;
+        background: var(--bg-dark);
+        color: var(--text-light);
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    h2 {
+        color: var(--accent);
+        margin-bottom: 35px;
+    }
+
+    .table-wrapper {
+        background: var(--bg-card);
+        border: 1px solid var(--border-dark);
+        border-radius: 10px;
+        padding: 30px;
+        overflow-x: auto;
+        transition: 0.3s ease;
+    }
+
+    .table-wrapper:hover {
+        border-color: var(--accent);
+        box-shadow: 0 0 20px rgba(57,255,20,0.25);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        color: var(--accent);
+        font-weight: 600;
+        padding: 15px;
+        border-bottom: 1px solid var(--border-dark);
+        text-align: center;
+    }
+
+    td {
+        padding: 14px;
+        border-bottom: 1px solid #2f2e2c;
+        text-align: center;
+        color: var(--text-light);
+    }
+
+    tr:hover td {
+        background: #1c1b1a;
+    }
+
+    .score-highlight {
+        color: var(--accent);
+        font-weight: 600;
+    }
+
+    .no-results {
+        color: var(--text-muted);
+        font-style: italic;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 40px;
+        color: var(--accent);
+        text-decoration: none;
+    }
+
+    .back-link:hover {
+        text-shadow: 0 0 8px rgba(57,255,20,0.7);
+    }
+    </style>
+</head>
+
+<body>
+
+<h2>📊 Student Performance</h2>
+
+{% if results and results|length > 0 %}
+
+<div class="table-wrapper">
+<table>
+    <tr>
+        <th>Student Name</th>
+        <th>Video</th>
+        <th>Correct</th>
+        <th>Total</th>
+        <th>Score (%)</th>
+    </tr>
+
+    {% for r in results %}
+    <tr>
+        <td>{{ r.student_name }}</td>
+        <td>{{ r.video_title }}</td>
+        <td>{{ r.correct }}</td>
+        <td>{{ r.total }}</td>
+        <td class="score-highlight">{{ r.score }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+
+{% else %}
+
+<p class="no-results">No results yet.</p>
+
+{% endif %}
+
+<a href="javascript:history.back()" class="back-link">
+    ⬅ Back
+</a>
+
+</body>
+</html>

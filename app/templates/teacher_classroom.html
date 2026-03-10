@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ classroom.class_name }}</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        
+/* =========================
+   CLASSROOM - DARK AI PURPLE
+========================= */
+
+:root {
+    --bg-dark: #21201E;
+    --bg-card: #2A2927;
+    --accent: #C200FB;
+    --text-light: #F9F8F6;
+    --text-muted: #bfbfbf;
+    --border-dark: #333330;
+}
+
+/* =========================
+   GLOBAL
+========================= */
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-light);
+    padding: 60px 90px;
+}
+
+/* =========================
+   TOP SECTION
+========================= */
+
+h2 {
+    grid-column: 1 / span 2;
+    margin-bottom: 20px;
+    color: var(--accent);
+}
+
+ul:first-of-type {
+    grid-column: 1 / span 2;
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+ul:first-of-type li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+ul:first-of-type a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+ul:first-of-type a:hover {
+    color: var(--accent);
+}
+
+a[href="/teacher/dashboard"] {
+    display: inline-block;
+    margin-bottom: 40px;
+    color: var(--accent);
+    text-decoration: none;
+}
+
+/* =========================
+   TWO COLUMN GRID
+========================= */
+
+body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+/* Left column */
+.videos-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Right column */
+.assignment-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* =========================
+   SECTION TITLES
+========================= */
+
+h3 {
+    margin: 0;
+    color: var(--accent);
+}
+
+/* =========================
+   VIDEO LIST
+========================= */
+
+.videos-wrapper ul {
+    list-style: none;
+    padding: 0;
+}
+
+.videos-wrapper li {
+    background: var(--bg-card);
+    border: 1px solid var(--border-dark);
+    padding: 20px;
+    border-radius: 6px;
+    transition: 0.3s ease;
+}
+
+.videos-wrapper li:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 12px rgba(194, 0, 251, 0.3);
+}
+
+.videos-wrapper strong {
+    color: var(--text-light);
+}
+
+.videos-wrapper small {
+    color: var(--text-muted);
+}
+
+/* Buttons inside video cards */
+
+.videos-wrapper button,
+.videos-wrapper a {
+    margin-right: 10px;
+    font-size: 13px;
+}
+
+.videos-wrapper button {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.videos-wrapper button:hover {
+    background: var(--accent);
+    color: var(--bg-dark);
+}
+
+/* =========================
+   ASSIGNMENT CARDS
+========================= */
+
+.assignment-wrapper > div > div {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-dark) !important;
+    padding: 20px !important;
+    border-radius: 6px !important;
+    transition: 0.3s ease;
+}
+
+.assignment-wrapper > div > div:hover {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 12px rgba(194, 0, 251, 0.3);
+}
+
+.assignment-wrapper a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.assignment-wrapper a:hover {
+    text-shadow: 0 0 6px rgba(194, 0, 251, 0.6);
+}
+
+/* =========================
+   COMMUNITY BUTTON
+========================= */
+
+div[onclick="toggleCommunity()"] {
+    background: var(--accent) !important;
+    box-shadow: 0 0 18px rgba(194, 0, 251, 0.5) !important;
+}
+
+    /* =========================
+   FINAL TWO COLUMN LAYOUT
+========================= */
+
+body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+/* Top section full width */
+h2,
+ul:first-of-type,
+a[href="/teacher/dashboard"] {
+    grid-column: 1 / span 2;
+}
+
+/* Left column */
+.videos-wrapper {
+    grid-column: 1;
+}
+
+/* Right column */
+.assignment-wrapper {
+    grid-column: 2;
+}
+
+/* Keep spacing clean */
+.videos-wrapper,
+.assignment-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}  
+
+/* =========================
+   CLASSROOM COMMUNITY - PURPLE AI
+========================= */
+
+/* Floating Button */
+div[onclick="toggleCommunity()"] {
+    background: #C200FB !important;
+    box-shadow: 0 0 18px rgba(194, 0, 251, 0.6) !important;
+    border-radius: 50%;
+}
+
+/* Popup Container */
+#communityPopup {
+    background: #2A2927 !important;
+    border: 1px solid #333330 !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+}
+
+/* Header */
+#communityPopup > div:first-child {
+    background: #1E1D1B !important;
+    color: #C200FB !important;
+    border-bottom: 1px solid #333330;
+}
+
+/* Messages Area */
+#communityPopup div[style*="overflow-y:auto"] {
+    background: #21201E !important;
+}
+
+/* Message Bubbles */
+#communityPopup div[style*="align-self:flex-end"] {
+    background: #2F1A36 !important;
+    color: #F9F8F6 !important;
+    border: 1px solid #C200FB;
+    box-shadow: 0 0 10px rgba(194, 0, 251, 0.2);
+}
+
+/* Timestamp / small text */
+#communityPopup small {
+    color: #bfbfbf !important;
+}
+
+/* Input Area */
+#communityPopup div[style*="border-top"] {
+    background: #1E1D1B !important;
+    border-top: 1px solid #333330 !important;
+}
+
+/* Input Field */
+#communityPopup input {
+    background: #2A2927 !important;
+    border: 1px solid #333330 !important;
+    color: #F9F8F6 !important;
+    border-radius: 20px !important;
+}
+
+#communityPopup input:focus {
+    border-color: #C200FB !important;
+    box-shadow: 0 0 8px rgba(194, 0, 251, 0.4);
+    outline: none;
+}
+
+/* Send Button */
+#communityPopup button {
+    background: #C200FB !important;
+    color: #21201E !important;
+    border-radius: 20px !important;
+    box-shadow: 0 0 10px rgba(194, 0, 251, 0.4);
+}
+    </style>  
+</head>
+<body>
+    <h2>{{ classroom.class_name }}</h2>
+  
+    <ul>
+    <li>
+        <a href="/teacher/classroom/{{ classroom._id }}/create-video">
+            Create Video
+        </a>
+    </li>
+    <li>
+        <a href="/teacher/classroom/{{ classroom._id }}/upload-material">
+            Upload Study Material
+        </a>
+    </li>
+    <li>
+    <a href="/teacher/classroom/{{ classroom._id }}/results">
+    📊 View Student Results
+</a>
+<li>
+    <a href="/teacher/classroom/{{ classroom._id }}/create-assignment">
+        📝 Create Assignment
+    </a>
+</li>
+    </li>
+    <li>See Participants</li>
+
+</ul>
+   <form method="POST" action="/teacher/classroom/{{ classroom._id }}/start-live">
+<button type="submit">Start Live Class</button>
+</form> 
+    <a href="/teacher/dashboard">⬅ Back to Dashboard</a>
+    <div class="videos-wrapper">
+        
+    <h3>Lecture Videos</h3>
+
+{% if videos %}
+    <ul>
+    {% for video in videos %}
+<li>
+    <strong>{{ video.title }}</strong><br>
+    <small>{{ video.description }}</small><br>
+    {% if video.is_mapped %}
+    <span style="color:green;">🧠 Questions Mapped</span>
+{% else %}
+    <span style="color:red;">⚠ Questions Not Mapped</span>
+{% endif %}
+<br><br>
+
+    <a href="/videos/{{ video.video_filename }}" target="_blank">
+        ▶ View Video
+    </a>
+    <br><br>
+
+    {% if video.is_published %}
+        <form method="POST" action="/teacher/video/{{ video._id }}/toggle-publish">
+            <button type="submit">Unpublish</button>
+        </form>
+    {% else %}
+        <form method="POST" action="/teacher/video/{{ video._id }}/toggle-publish">
+            <button type="submit">Publish</button>
+        </form>
+    {% endif %}
+
+    <form method="POST" action="/teacher/video/{{ video._id }}/delete">
+        <button type="submit" style="color:red;">Delete</button>
+    </form>
+
+    <form method="POST"
+          action="/teacher/video/{{ video._id }}/generate-questions"
+          style="display:inline;">
+        <button type="submit">🤖 Generate AI Questions</button>
+    </form>
+
+    <a href="/teacher/video/{{ video._id }}/map-questions">
+        🧠 Map Questions
+    </a>
+
+    <hr>
+</li>
+    {% endfor %}
+    </ul><br>
+{% else %}
+    <p>No videos yet.</p>
+{% endif %}
+</div>
+<div class="assignment-wrapper">
+<h3>📝 Assignments</h3>
+
+{% if assignments %}
+<div class="assignment-wrapper">
+    {% for a in assignments %}
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+            <strong>{{ a.title }}</strong>
+            {{ a.description }}<br>
+
+            <a href="/teacher/assignment/{{ a._id }}/submissions">
+                View Submissions
+            </a>
+        </div>
+    {% endfor %}
+</div>
+{% else %}
+    <p>No assignments yet.</p>
+{% endif %}
+</div>
+<!-- Floating Community Button -->
+<div onclick="toggleCommunity()" 
+     style="
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        background: #128C7E;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 26px;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        z-index: 10001;">
+    💬
+</div>
+<!-- Teacher Community Popup -->
+<div id="communityPopup"
+     style="
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        width: 380px;
+        height: 480px;
+        background: #f0f2f5;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        display: none;
+        flex-direction: column;
+        z-index: 10000;">
+
+    <!-- Header -->
+    <div style="
+        background:#075E54;
+        color:white;
+        padding:12px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        border-top-left-radius:12px;
+        border-top-right-radius:12px;">
+        <strong>📢 Classroom Community</strong>
+        <span onclick="toggleCommunity()" style="cursor:pointer;">✖</span>
+    </div>
+
+    <!-- Messages Area -->
+    <div style="
+        flex:1;
+        padding:15px;
+        overflow-y:auto;
+        display:flex;
+        flex-direction:column;
+        gap:10px;">
+
+        {% if posts %}
+            {% for post in posts %}
+                <div style="
+                    align-self:flex-end;
+                    background:#dcf8c6;
+                    padding:10px;
+                    border-radius:10px;
+                    max-width:80%;
+                    box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+
+                    <p style="margin:0 0 5px 0;">
+                        {{ post.content }}
+                    </p>
+
+                    <!-- 👇 Reaction + Seen Info -->
+                    <small style="font-size:11px; color:gray; display:block; margin-top:5px;">
+
+                        {{ post.created_at.strftime("%d %b %Y - %I:%M %p") }}
+                        <br>
+
+                        👍 Reacted:
+                        {{ post.reactions | length if post.reactions else 0 }}
+
+                        &nbsp;&nbsp;
+
+                        👀 Seen:
+                        {{ post.seen_by | length if post.seen_by else 0 }}
+                        /
+                        {{ classroom.students | length }}
+
+                    </small>
+
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No announcements yet.</p>
+        {% endif %}
+
+    </div>
+
+    <!-- Post Input -->
+    <div style="
+        padding:10px;
+        background:white;
+        border-top:1px solid #ddd;">
+
+        <form method="POST"
+              action="/teacher/classroom/{{ classroom._id }}/community/post"
+              style="display:flex; gap:5px;">
+
+            <input type="text"
+                   name="content"
+                   placeholder="Write announcement..."
+                   style="flex:1; padding:8px; border-radius:20px; border:1px solid #ccc;"
+                   required>
+
+            <button type="submit"
+                    style="
+                        background:#128C7E;
+                        color:white;
+                        border:none;
+                        padding:8px 12px;
+                        border-radius:20px;
+                        cursor:pointer;">
+                Send
+            </button>
+        </form>
+    </div>
+
+</div>
+<script>
+function toggleCommunity() {
+    const popup = document.getElementById("communityPopup");
+
+    if (popup.style.display === "none" || popup.style.display === "") {
+        popup.style.display = "flex";
+    } else {
+        popup.style.display = "none";
+    }
+}
+</script>
+{% if open_community %}
+<script>
+    window.onload = function() {
+        const popup = document.getElementById("communityPopup");
+        popup.style.display = "flex";
+    };
+</script>
+{% endif %}
+
+
+</body>
+</html>

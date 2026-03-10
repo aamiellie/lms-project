@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Live Class</title>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+margin:20px;
+}
+
+.container{
+display:grid;
+grid-template-columns: 3fr 1fr;
+grid-template-rows: auto auto;
+gap:10px;
+height:85vh;
+}
+
+.video-section{
+border:2px solid black;
+padding:10px;
+}
+
+.screen-section{
+border:2px solid black;
+padding:10px;
+display:none;
+}
+
+.students{
+border:2px solid black;
+padding:10px;
+}
+
+.chat{
+border:2px solid black;
+padding:10px;
+overflow-y:auto;
+}
+
+video{
+width:100%;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Live Class</h2>
+
+<div class="container">
+
+<!-- TEACHER CAMERA -->
+
+<div class="video-section">
+
+<h3>Teacher Camera</h3>
+
+<video id="teacherVideo" autoplay muted></video>
+
+<br><br>
+
+{% if role == "teacher" %}
+<button onclick="startScreenShare()">Share Screen</button>
+<button onclick="openBoard()">Open Blackboard</button>
+<button onclick="endClass()">End Class</button>
+{% endif %}
+
+</div>
+
+
+<!-- CHAT -->
+
+<div class="chat">
+
+<h3>Live Chat</h3>
+
+<div id="chat-box" style="height:300px;overflow-y:scroll;border:1px solid gray;padding:5px"></div>
+
+<br>
+
+<input id="message" placeholder="Type message">
+<button onclick="sendMessage()">Send</button>
+
+</div>
+
+
+<!-- STUDENT LIST (Teacher only) -->
+
+{% if role == "teacher" %}
+<div class="students">
+
+<h3>Students Joined</h3>
+
+<ul id="studentList"></ul>
+
+</div>
+{% endif %}
+
+
+<!-- SCREEN SHARE AREA -->
+
+<div class="screen-section" id="screenArea">
+
+<h3>Screen Sharing</h3>
+
+<video id="screenVideo" autoplay></video>
+
+</div>
+
+</div>
+
+<script>
+
+const role = "{{ role }}"
+const room = "{{ room_id }}"
+const username = "{{ user_name }}"
+
+const socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+
+// JOIN ROOM
+
+socket.emit("join_room",{
+room:room,
+username:username
+})
+
+
+// RECEIVE CHAT MESSAGE
+
+socket.on("receive_message",function(data){
+
+const chatBox=document.getElementById("chat-box")
+
+chatBox.innerHTML += `<p><b>${data.username}</b>: ${data.message}</p>`
+
+chatBox.scrollTop = chatBox.scrollHeight
+
+})
+
+
+// SEND CHAT MESSAGE
+
+function sendMessage(){
+
+const msg=document.getElementById("message").value
+
+if(msg.trim() === "") return
+
+socket.emit("send_message",{
+room:room,
+username:username,
+message:msg
+})
+
+document.getElementById("message").value=""
+
+}
+
+
+// TEACHER CAMERA
+
+if(role === "teacher"){
+
+navigator.mediaDevices.getUserMedia({
+video:true,
+audio:true
+})
+.then(stream=>{
+
+document.getElementById("teacherVideo").srcObject=stream
+
+})
+
+}
+
+
+// SCREEN SHARE
+
+async function startScreenShare(){
+
+const stream=await navigator.mediaDevices.getDisplayMedia({
+video:true
+})
+
+document.getElementById("screenArea").style.display="block"
+
+document.getElementById("screenVideo").srcObject=stream
+
+}
+
+
+// BLACKBOARD (placeholder)
+
+function openBoard(){
+
+alert("Blackboard will open here in the next step")
+
+}
+
+
+// END CLASS
+
+function endClass(){
+
+socket.emit("end_class",{
+room:room
+})
+
+}
+socket.on("class_ended", function(data){
+
+alert(data.message)
+
+window.location.href="/dashboard"
+
+})
+</script>
+
+</body>
+</html>

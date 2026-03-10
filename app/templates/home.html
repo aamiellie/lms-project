@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LMS | Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+/* =========================
+   AI DARK SYSTEM
+========================= */
+
+:root {
+    --bg-dark: #21201E;
+    --bg-card: #2A2927;
+    --neon-green: #63D72A;
+    --text-light: #F9F8F6;
+    --text-muted: #bfbfbf;
+    --border-dark: #333330;
+}
+
+/* =========================
+   GLOBAL
+========================= */
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+}
+
+a {
+    text-decoration: none;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 70px;
+    background-color: var(--bg-dark);
+    border-bottom: 1px solid var(--border-dark);
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--neon-green);
+    letter-spacing: 1px;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-link {
+    color: var(--text-muted);
+    font-weight: 500;
+    transition: 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--neon-green);
+}
+
+.nav-btn {
+    padding: 8px 20px;
+    background: var(--neon-green);
+    color: var(--bg-dark);
+    border-radius: 6px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.nav-btn:hover {
+    box-shadow: 0 0 12px rgba(99, 215, 42, 0.6);
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 120px 100px;
+    gap: 80px;
+    align-items: center;
+}
+
+.hero-left h1 {
+    font-size: 44px;
+    margin-bottom: 20px;
+    color: var(--neon-green);
+}
+
+.hero-left p {
+    font-size: 17px;
+    color: var(--text-muted);
+    margin-bottom: 35px;
+    line-height: 1.6;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.btn-primary {
+    padding: 14px 32px;
+    background: var(--neon-green);
+    color: var(--bg-dark);
+    border-radius: 6px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 0 18px rgba(99, 215, 42, 0.6);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    padding: 14px 32px;
+    border: 1px solid var(--border-dark);
+    border-radius: 6px;
+    color: var(--text-light);
+    font-weight: 500;
+    transition: 0.3s ease;
+}
+
+.btn-outline:hover {
+    border-color: var(--neon-green);
+    color: var(--neon-green);
+}
+
+/* =========================
+   INFO CARD
+========================= */
+
+.info-card {
+    background-color: var(--bg-card);
+    padding: 45px;
+    border-radius: 8px;
+    border: 1px solid var(--border-dark);
+}
+
+.info-card h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--neon-green);
+}
+
+.info-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-card li {
+    margin-bottom: 16px;
+    color: var(--text-muted);
+    position: relative;
+    padding-left: 18px;
+}
+
+.info-card li::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: var(--neon-green);
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    top: 8px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .hero {
+        grid-template-columns: 1fr;
+        padding: 60px 30px;
+    }
+
+    .navbar {
+        padding: 20px 30px;
+    }
+
+}
+</style>
+</head>
+<body class="light">
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">LUMA</div>
+    <div class="nav-actions">
+        <a href="/login" class="nav-link">Login</a>
+        <a href="/register" class="nav-btn">Register</a>
+    </div>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero">
+
+    <div class="hero-left">
+        <h1>Smart Learning Starts Here</h1>
+        <p>
+            A modern Learning Management System built for structured
+            classrooms, assignment tracking, and performance analytics.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="/register" class="btn-primary">Get Started</a>
+            <a href="/login" class="btn-outline">Login</a>
+        </div>
+    </div>
+
+    <div class="hero-right">
+        <div class="info-card">
+            <h3>Why Choose Our LMS?</h3>
+            <ul>
+                <li>Interactive Classrooms</li>
+                <li>Assignment Tracking</li>
+                <li>Performance Analytics</li>
+                <li>Community Engagement</li>
+            </ul>
+        </div>
+    </div>
+
+</section>
+
+<script>
+const toggle = document.getElementById("themeToggle");
+const body = document.body;
+
+toggle.addEventListener("click", () => {
+    body.classList.toggle("dark");
+    body.classList.toggle("light");
+
+    toggle.textContent = body.classList.contains("dark") ? "☀️" : "🌙";
+});
+</script>
+
+</body>
+</html>

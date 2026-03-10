@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LUMA | Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+/* =========================
+   DARK AI + YELLOW ACCENT
+========================= */
+
+:root {
+    --bg-dark: #21201E;
+    --bg-card: #2A2927;
+    --ai-yellow: #FEEF4C;
+    --text-light: #F9F8F6;
+    --text-muted: #bfbfbf;
+    --border-dark: #333330;
+}
+
+/* =========================
+   GLOBAL
+========================= */
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* =========================
+   AUTH CARD
+========================= */
+
+.auth-card {
+    background-color: var(--bg-card);
+    padding: 50px 45px;
+    width: 380px;
+    border-radius: 8px;
+    border: 1px solid var(--border-dark);
+    box-shadow: 0 0 40px rgba(0,0,0,0.4);
+}
+
+.auth-card h2 {
+    margin: 0;
+    color: var(--ai-yellow);
+    font-weight: 600;
+}
+
+.auth-subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin: 8px 0 30px 0;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-form label {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 15px;
+}
+
+.auth-form input {
+    padding: 10px 12px;
+    margin-top: 6px;
+    border-radius: 6px;
+    border: 1px solid var(--border-dark);
+    background-color: #1c1b1a;
+    color: var(--text-light);
+    font-size: 14px;
+    transition: 0.3s ease;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: var(--ai-yellow);
+    box-shadow: 0 0 12px rgba(254, 239, 76, 0.4);
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.btn-primary {
+    margin-top: 25px;
+    padding: 12px;
+    background-color: var(--ai-yellow);
+    color: var(--bg-dark);
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 0 18px rgba(254, 239, 76, 0.6);
+    transform: translateY(-2px);
+}
+
+/* =========================
+   FOOTER LINK
+========================= */
+
+.auth-footer {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.auth-footer a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s ease;
+}
+
+.auth-footer a:hover {
+    color: var(--ai-yellow);
+}
+</style>
+</head>
+<body class="light">
+
+<div class="auth-container">
+    <div class="auth-card">
+
+        <h2>Welcome Back</h2>
+        <p class="auth-subtitle">Login to continue learning</p>
+
+        <form method="POST" class="auth-form">
+
+            <label>Email</label>
+            <input type="email" name="email" required>
+
+            <label>Password</label>
+            <input type="password" name="password" required>
+
+            <button type="submit" class="btn-primary">Login</button>
+
+        </form>
+
+        <div class="auth-footer">
+            <a href="/">← Back to Home</a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

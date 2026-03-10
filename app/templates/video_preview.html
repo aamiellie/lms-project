@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Video Creation</title>
+
+    <style>
+    :root {
+        --bg-dark: #21201E;
+        --bg-card: #2A2927;
+        --accent: #FA3002;
+        --text-light: #F9F8F6;
+        --text-muted: #bfbfbf;
+        --border-dark: #333330;
+    }
+
+    body {
+        margin: 0;
+        padding: 60px 90px;
+        background: var(--bg-dark);
+        color: var(--text-light);
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    h2, h3 {
+        color: var(--accent);
+        margin-bottom: 20px;
+    }
+
+    .step-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-dark);
+        padding: 30px;
+        border-radius: 10px;
+        margin-bottom: 40px;
+        transition: 0.3s ease;
+    }
+
+    .step-card:hover {
+        border-color: var(--accent);
+        box-shadow: 0 0 18px rgba(250,48,2,0.25);
+    }
+
+    textarea {
+        width: 100%;
+        background: #1c1b1a;
+        border: 1px solid var(--border-dark);
+        color: var(--text-light);
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 14px;
+        resize: vertical;
+        margin-bottom: 20px;
+    }
+
+    textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 8px rgba(250,48,2,0.4);
+    }
+
+    button {
+        background: var(--accent);
+        color: var(--bg-dark);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    button:hover {
+        box-shadow: 0 0 15px rgba(250,48,2,0.6);
+        transform: translateY(-2px);
+    }
+
+    audio, video {
+        margin-top: 20px;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 600px;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 40px;
+        color: var(--accent);
+        text-decoration: none;
+    }
+
+    .back-link:hover {
+        text-shadow: 0 0 6px rgba(250,48,2,0.6);
+    }
+    </style>
+</head>
+
+<body>
+
+<h2>Extracted Content Preview</h2>
+
+<!-- STEP 1 -->
+<div class="step-card">
+    <form method="POST">
+        <input type="hidden" name="presenter" value="{{ presenter }}">
+        <input type="hidden" name="title" value="{{ title }}">
+        <input type="hidden" name="description" value="{{ description }}">
+        <input type="hidden" name="action" value="generate_narration">
+
+        <textarea name="extracted_text" rows="12">
+{{ extracted_text }}
+        </textarea>
+
+        <button type="submit">Generate AI Narration</button>
+    </form>
+</div>
+
+
+{% if narration %}
+<h3>AI Generated Narration</h3>
+
+<div class="step-card">
+    <form method="POST">
+        <input type="hidden" name="presenter" value="{{ presenter }}">
+        <input type="hidden" name="title" value="{{ title }}">
+        <input type="hidden" name="description" value="{{ description }}">
+        <input type="hidden" name="action" value="generate_audio">
+
+        <textarea name="narration" rows="12">
+{{ narration }}
+        </textarea>
+
+        <button type="submit">Generate Audio</button>
+    </form>
+</div>
+{% endif %}
+
+
+{% if audio_file %}
+<h3>Narration Audio</h3>
+
+<div class="step-card">
+    <audio controls>
+        <source src="/audio/{{ audio_file }}" type="audio/mpeg">
+    </audio>
+
+    <form method="POST" style="margin-top:20px;">
+        <input type="hidden" name="presenter" value="{{ presenter }}">
+        <input type="hidden" name="title" value="{{ title }}">
+        <input type="hidden" name="description" value="{{ description }}">
+        <input type="hidden" name="action" value="generate_video">
+        <input type="hidden" name="audio_file" value="{{ audio_file }}">
+
+        <textarea name="narration" style="display:none;">
+{{ narration }}
+        </textarea>
+
+        <textarea name="extracted_text" style="display:none;">
+{{ extracted_text }}
+        </textarea>
+
+        <button type="submit">Generate Final Video</button>
+    </form>
+</div>
+{% endif %}
+
+
+{% if video_file %}
+<h3>Final Lecture Video</h3>
+
+<div class="step-card">
+    <video controls>
+        <source src="/videos/{{ video_file }}" type="video/mp4">
+    </video>
+</div>
+{% endif %}
+
+<a href="/teacher/classroom/{{ classroom_id }}" class="back-link">
+    ⬅ Back to Classroom
+</a>
+
+</body>
+</html>

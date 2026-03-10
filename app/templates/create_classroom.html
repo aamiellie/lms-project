@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Classroom | Teacher</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="teacher-theme">
+
+<div class="dashboard-container">
+
+    <div class="dashboard-header">
+        <h2>Create Virtual Classroom</h2>
+        <a href="/teacher/dashboard" class="logout-btn">Back</a>
+    </div>
+
+    <div class="create-box">
+        <form method="POST">
+
+            <label>Classroom Name</label>
+            <input type="text" name="class_name" required>
+
+            <button type="submit" class="create-btn">
+                Create Classroom
+            </button>
+
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

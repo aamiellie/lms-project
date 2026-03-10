@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Performance</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: #0f0f12;
+    color: #e8e8e8;
+    padding: 60px 100px;
+}
+
+/* ===== PAGE TITLE ===== */
+h2 {
+    font-size: 30px;
+    margin-bottom: 40px;
+    color: #D3968C;
+
+    /* very soft glow */
+    text-shadow: 0 0 6px rgba(211, 150, 140, 0.35);
+}
+
+/* ===== STATS SECTION ===== */
+.stats {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.card {
+    background: #16181d;
+    border: 1px solid #105666;
+    padding: 25px;
+    width: 220px;
+    border-radius: 14px;
+    text-align: center;
+
+    /* subtle glow */
+    box-shadow: 0 0 10px rgba(16, 86, 102, 0.25);
+}
+
+.card h3 {
+    font-size: 32px;
+    color: #105666;
+    margin-bottom: 8px;
+}
+
+.card p {
+    color: #bfbfbf;
+}
+
+/* ===== TABLE ===== */
+h3 {
+    margin-bottom: 20px;
+    color: #D3968C;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #16181d;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+
+th {
+    background: #105666;
+    color: white;
+    padding: 14px;
+    font-weight: 600;
+}
+
+td {
+    padding: 14px;
+    text-align: center;
+    border-bottom: 1px solid #1f2228;
+}
+
+tr:hover {
+    background: #1c1f25;
+}
+
+/* ===== CHART CONTAINER ===== */
+.chart-wrapper {
+    width: 550px;
+    height: 260px;
+    margin: 40px auto;
+    background: #16181d;
+    padding: 25px;
+    border-radius: 16px;
+    border: 1px solid #105666;
+}
+
+/* ===== IMPROVEMENT TEXT ===== */
+.improve-up {
+    color: #22c55e;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.improve-down {
+    color: #ef4444;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.improve-same {
+    color: #aaa;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+/* ===== BACK LINK ===== */
+a {
+    color: #D3968C;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+</style>
+</head>
+<body>
+
+<h2>My Performance - {{ classroom.class_name }}</h2>
+
+<div class="stats">
+
+    <div class="card">
+        <h3>{{ total_tests }}</h3>
+        <p>Total Tests</p>
+    </div>
+
+    <div class="card">
+        <h3>{{ attended_count }}</h3>
+        <p>Tests Attended</p>
+    </div>
+
+</div>
+
+<h3>Test Results</h3>
+
+{% if student_results %}
+<table>
+    <tr>
+        <th>Video</th>
+        <th>Correct</th>
+        <th>Total</th>
+        <th>Score (%)</th>
+        <th>Grade</th>
+
+    </tr>
+
+    {% for r in student_results %}
+    <tr>
+        <td>{{ r.video_title }}</td>
+        <td>{{ r.correct }}</td>
+        <td>{{ r.total }}</td>
+        <td>{{ r.score }}</td>
+        <td>{{ r.grade }}</td>
+
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No tests attempted yet.</p>
+{% endif %}
+
+<h3>Performance Chart</h3>
+
+<div class="chart-wrapper">
+    <canvas id="performanceChart"></canvas>
+</div>
+
+
+{% if scores|length >= 2 %}
+    {% set improvement = scores[-1] - scores[-2] %}
+
+    {% if improvement > 0 %}
+        <p style="color:green; font-weight:bold;">
+            📈 Improved by {{ improvement }}% from last test!
+        </p>
+    {% elif improvement < 0 %}
+        <p style="color:red; font-weight:bold;">
+            📉 Dropped by {{ improvement|abs }}% from last test.
+        </p>
+    {% else %}
+        <p style="color:gray; font-weight:bold;">
+            ➖ No change from last test.
+        </p>
+    {% endif %}
+{% endif %}
+
+<script>
+
+    const labels = {{ test_labels | tojson }};
+    const scores = {{ scores | tojson }};
+
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+
+    // 🔥 Create gradient line
+    const gradient = ctx.createLinearGradient(0, 0, 0, 250);
+    gradient.addColorStop(0, "rgba(211, 150, 140, 0.8)");  // D3968C
+    gradient.addColorStop(1, "rgba(16, 86, 102, 0.1)");    // 105666
+
+    // 🔥 Calculate average
+    const datasets = [];
+
+// 🎯 Score line (always visible)
+   datasets.push({
+    label: 'Score (%)',
+    data: scores,
+    fill: true,
+    backgroundColor: gradient,
+    borderColor: "#D3968C",
+    borderWidth: 3,
+    tension: 0.3,
+    pointRadius: 5,
+    pointBackgroundColor: "#105666",
+
+    /* glow effect */
+    pointHoverRadius: 7,
+});
+
+    // 🎯 Only show average if more than 1 test
+    if (scores.length > 1) {
+
+        const average = scores.reduce((a, b) => a + b, 0) / scores.length;
+        const averageArray = scores.map(() => average);
+
+        datasets.push({
+            label: 'Average Score',
+            data: averageArray,
+            borderColor: "#105666",
+            borderDash: [6, 6],
+            borderWidth: 2,
+            fill: false,
+            pointRadius: 0
+        });
+    }
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    min: 0,
+                    max: 100
+                }
+            }
+        }
+    });
+
+
+
+
+
+
+</script>
+
+<br>
+<a href="/student/classroom/{{ classroom._id }}">⬅ Back to Classroom</a>
+
+</body>
+</html>

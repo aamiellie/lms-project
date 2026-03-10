@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Result</title>
+</head>
+<body>
+
+<h2>📊 Quiz Result</h2>
+
+<p><strong>Your Score:</strong> {{ score }} / {{ total }}</p>
+
+<hr>
+
+{% for r in results %}
+    <div style="margin-bottom:15px;">
+        <p><strong>{{ r.question }}</strong></p>
+        <p>Status: 
+            {% if r.status == "Correct" %}
+                <span style="color:green;">Correct ✅</span>
+            {% else %}
+                <span style="color:red;">Wrong ❌</span>
+            {% endif %}
+        </p>
+        <p>Correct Answer: {{ r.correct }}</p>
+        <p>{{ r.explanation }}</p>
+    </div>
+    <hr>
+{% endfor %}
+
+<a href="javascript:history.back()">⬅ Back</a>
+
+</body>
+</html>

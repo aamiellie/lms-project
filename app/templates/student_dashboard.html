@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Dashboard | LUMA</title>
+
+    <style>
+    :root {
+        --bg-dark: #21201E;
+        --bg-card: #2A2927;
+        --accent: #F3377E;
+        --text-light: #F9F8F6;
+        --text-muted: #bfbfbf;
+        --border-dark: #333330;
+    }
+
+    body {
+        margin: 0;
+        padding: 60px 90px;
+        background: var(--bg-dark);
+        color: var(--text-light);
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    h2 {
+        color: var(--accent);
+        margin-bottom: 10px;
+    }
+
+    .welcome-text {
+        color: var(--text-muted);
+        margin-bottom: 40px;
+    }
+
+    .action-section {
+        margin-bottom: 40px;
+    }
+
+    .action-btn {
+        display: inline-block;
+        background: var(--accent);
+        color: var(--bg-dark);
+        padding: 10px 18px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.3s ease;
+    }
+
+    .action-btn:hover {
+        box-shadow: 0 0 15px rgba(243,55,126,0.6);
+        transform: translateY(-2px);
+    }
+
+    h3 {
+        color: var(--accent);
+        margin-bottom: 20px;
+    }
+
+    .classroom-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+    }
+
+    .classroom-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-dark);
+        padding: 20px;
+        border-radius: 8px;
+        transition: 0.3s ease;
+    }
+
+    .classroom-card:hover {
+        border-color: var(--accent);
+        box-shadow: 0 0 18px rgba(243,55,126,0.3);
+        transform: translateY(-4px);
+    }
+
+    .classroom-link {
+        text-decoration: none;
+        color: var(--text-light);
+        font-weight: 500;
+    }
+
+    .classroom-link:hover {
+        color: var(--accent);
+    }
+
+    .empty-text {
+        color: var(--text-muted);
+        font-style: italic;
+    }
+
+    .logout-link {
+        display: inline-block;
+        margin-top: 40px;
+        color: var(--accent);
+        text-decoration: none;
+    }
+
+    .logout-link:hover {
+        text-shadow: 0 0 8px rgba(243,55,126,0.7);
+    }
+    </style>
+</head>
+
+<body>
+
+    <h2>Student Dashboard</h2>
+
+    <p class="welcome-text">Welcome, {{ name }} 👋</p>
+
+    <div class="action-section">
+        <a href="/student/join-classroom" class="action-btn">
+            + Join Classroom
+        </a>
+    </div>
+
+    <h3>Your Classrooms</h3>
+
+    {% if classrooms %}
+        <div class="classroom-grid">
+            {% for classroom in classrooms %}
+                <div class="classroom-card">
+                    <a href="/student/classroom/{{ classroom._id }}" class="classroom-link">
+                        {{ classroom.class_name }}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-text">You haven’t joined any classrooms yet.</p>
+    {% endif %}
+
+    <a href="/logout" class="logout-link">
+        Logout
+    </a>
+
+</body>
+</html>

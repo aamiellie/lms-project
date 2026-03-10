@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ video.title }}</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: #050505;
+    color: #e5e5e5;
+    padding: 60px 100px;
+}
+
+/* ===== TITLE ===== */
+h2 {
+    font-size: 30px;
+    font-weight: 700;
+    color: #800020;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #bdbdbd;
+    margin-bottom: 30px;
+}
+
+/* ===== LAYOUT ===== */
+.container {
+    display: flex;
+    gap: 30px;
+}
+
+/* ===== LEFT VIDEO PANEL ===== */
+.left {
+    width: 60%;
+    background: #111111;
+    border: 1px solid #800020;
+    border-radius: 14px;
+    padding: 20px;
+}
+
+video {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* ===== RIGHT SIDE ===== */
+.right {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ===== BOX STYLE ===== */
+.box {
+    background: #111111;
+    border: 1px solid #800020;
+    border-radius: 14px;
+    padding: 20px;
+    min-height: 180px;
+}
+
+.box h4 {
+    color: #800020;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* ===== QUESTIONS ===== */
+button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: #800020;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #a00030;
+}
+
+/* ===== FEEDBACK ===== */
+.correct {
+    color: #22c55e;
+    font-weight: 600;
+}
+
+.wrong {
+    color: #ef4444;
+    font-weight: 600;
+}
+
+.hidden {
+    display: none;
+}
+
+/* ===== LINKS ===== */
+a {
+    color: #800020;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+.quiz-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 22px;
+    background: #800020;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.quiz-btn:hover {
+    background: #a00030;
+}
+</style>
+</head>
+
+<body>
+
+<h2>{{ video.title }}</h2>
+<p>{{ video.description }}</p>
+
+<div class="container">
+
+    <!-- LEFT: VIDEO -->
+    <div class="left">
+        <video id="lectureVideo" controls>
+            <source src="/videos/{{ video.video_filename }}" type="video/mp4">
+            Your browser does not support video playback.
+        </video>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="right">
+
+        <!-- Presentation -->
+        <div class="box">
+            <h4>📊 Presentation</h4>
+            <p>Slides will appear here (later).</p>
+        </div>
+
+        <!-- Questions -->
+        <div class="box">
+            <h4>❓ Questions</h4>
+
+            <div id="questionArea" class="hidden">
+                <p id="questionText"></p>
+                <div id="optionsArea"></div>
+                <button onclick="submitAnswer()">Submit</button>
+                <p id="feedback"></p>
+            </div>
+
+            <p id="waitingText">Questions will appear during the class.</p>
+        </div>
+
+    </div>
+
+</div>
+<br>
+
+<a href="{{ url_for('after_class_quiz', classroom_id=classroom._id, video_id=video._id) }}" 
+   class="quiz-btn">
+    Take After-Class Quiz
+</a>
+
+<br><br>
+<a href="/student/classroom/{{ classroom._id }}">⬅ Back to Classroom</a>
+
+<script>
+    const video = document.getElementById("lectureVideo");
+
+    const questions = {{ questions | tojson }};
+    let askedQuestions = [];
+    let currentQuestion = null;
+
+    video.addEventListener("timeupdate", function() {
+        const currentTime = Math.floor(video.currentTime);
+
+        questions.forEach(q => {
+            if (!askedQuestions.includes(q._id) && q.ask_time !== null) {
+                if (currentTime === q.ask_time) {
+                    pauseAndAsk(q);
+                }
+            }
+        });
+    });
+
+    function pauseAndAsk(question) {
+        video.pause();
+        currentQuestion = question;
+
+        document.getElementById("waitingText").classList.add("hidden");
+        document.getElementById("questionArea").classList.remove("hidden");
+
+        document.getElementById("questionText").innerText = question.question;
+
+        const optionsArea = document.getElementById("optionsArea");
+        optionsArea.innerHTML = "";
+
+        const letters = ["A", "B", "C", "D"];
+
+        question.options.forEach((option, index) => {
+
+            const radio = document.createElement("input");
+            radio.type = "radio";
+            radio.name = "option";   // ✅ correct
+            radio.value = letters[index];
+
+            const label = document.createElement("label");
+            label.innerText = letters[index] + ". " + option;
+
+            optionsArea.appendChild(radio);
+            optionsArea.appendChild(label);
+            optionsArea.appendChild(document.createElement("br"));
+        });
+    }
+
+    function submitAnswer() {
+
+        const selected = document.querySelector('input[name="option"]:checked');  // ✅ FIXED
+        const feedback = document.getElementById("feedback");
+
+        if (!selected) {
+            feedback.innerHTML = "<span style='color:orange;'>Please select an answer.</span>";
+            return;
+        }
+
+        const selectedLetter = selected.value;
+
+        if (selectedLetter === currentQuestion.correct_answer) {
+
+            feedback.innerHTML = `
+                <div class="correct">
+                    Correct ✅
+                </div>
+                <br>
+                <button onclick="continueVideo()">OK</button>
+            `;
+
+        } else {
+
+            feedback.innerHTML = `
+                <div class="wrong">
+                    Wrong ❌
+                </div>
+                <br>
+                <strong>Correct answer:</strong> ${currentQuestion.correct_answer}
+                <br><br>
+                ${currentQuestion.explanation}
+                <br><br>
+                <button onclick="continueVideo()">OK</button>
+            `;
+        }
+
+        askedQuestions.push(currentQuestion._id);
+    }
+
+    function continueVideo() {
+        document.getElementById("questionArea").classList.add("hidden");
+        document.getElementById("waitingText").classList.remove("hidden");
+        document.getElementById("feedback").innerHTML = "";
+        video.play();
+    }
+</script>
+
+</body>
+</html>

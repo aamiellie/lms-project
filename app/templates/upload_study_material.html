@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Study Material</title>
+
+    <style>
+    :root {
+        --bg-dark: #21201E;
+        --bg-card: #2A2927;
+        --accent: #C200FB;
+        --text-light: #F9F8F6;
+        --text-muted: #bfbfbf;
+        --border-dark: #333330;
+    }
+
+    body {
+        margin: 0;
+        padding: 60px 90px;
+        background: var(--bg-dark);
+        color: var(--text-light);
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    h2 {
+        color: var(--accent);
+        margin-bottom: 25px;
+    }
+
+    /* Upload Form */
+    form input[type="file"] {
+        background: var(--bg-card);
+        border: 1px solid var(--border-dark);
+        color: var(--text-light);
+        padding: 8px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+    }
+
+    form button {
+        background: var(--accent);
+        color: var(--bg-dark);
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    form button:hover {
+        box-shadow: 0 0 10px rgba(194,0,251,0.5);
+    }
+
+    hr {
+        border: 1px solid var(--border-dark);
+        margin: 40px 0;
+    }
+
+    h3 {
+        color: var(--accent);
+        margin-bottom: 20px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .material-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-dark);
+        padding: 18px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: 0.3s ease;
+    }
+
+    .material-card:hover {
+        border-color: var(--accent);
+        box-shadow: 0 0 12px rgba(194,0,251,0.3);
+    }
+
+    .material-name {
+        font-weight: 500;
+    }
+
+    .material-actions a {
+        color: var(--accent);
+        text-decoration: none;
+        margin-right: 15px;
+    }
+
+    .material-actions a:hover {
+        text-shadow: 0 0 6px rgba(194,0,251,0.6);
+    }
+
+    .material-actions button {
+        background: transparent;
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        padding: 4px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .material-actions button:hover {
+        background: var(--accent);
+        color: var(--bg-dark);
+    }
+
+    .empty-text {
+        color: var(--text-muted);
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 40px;
+        color: var(--accent);
+        text-decoration: none;
+    }
+
+    .back-link:hover {
+        text-shadow: 0 0 6px rgba(194,0,251,0.6);
+    }
+    </style>
+</head>
+
+<body>
+
+    <h2>Upload Study Material</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <br><br>
+        <button type="submit">Upload</button>
+    </form>
+
+    <hr>
+
+    <h3>Uploaded Materials</h3>
+
+    {% if materials %}
+        {% for material in materials %}
+            <div class="material-card">
+                <div class="material-name">
+                    {{ material.filename }}
+                </div>
+
+                <div class="material-actions">
+                    <a href="/materials/view/{{ material.filename }}" target="_blank">
+                        View
+                    </a>
+
+                    <form method="POST"
+                          action="/teacher/material/{{ material._id }}/delete"
+                          style="display:inline;">
+                        <button type="submit">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="empty-text">No study materials uploaded yet.</p>
+    {% endif %}
+
+    <a href="/teacher/classroom/{{ classroom_id }}" class="back-link">
+        ⬅ Back to Classroom
+    </a>
+
+</body>
+</html>

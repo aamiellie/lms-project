@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Map Questions to Video</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .left {
+            width: 60%;
+        }
+
+        .right {
+            width: 40%;
+            border-left: 2px solid #ccc;
+            padding-left: 15px;
+        }
+
+        video {
+            width: 100%;
+            border: 2px solid black;
+        }
+
+        .question {
+            border: 1px solid #999;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .question label {
+            font-weight: bold;
+        }
+
+        .timestamp {
+            width: 80px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>🧠 Map Questions to Lecture</h2>
+<p><strong>Video:</strong> {{ video.title }}</p>
+
+<div class="container">
+
+    <!-- LEFT: VIDEO PLAYER -->
+    <div class="left">
+        <video id="lectureVideo" controls>
+            <source src="/videos/{{ video.video_filename }}" type="video/mp4">
+            Your browser does not support video playback.
+        </video>
+        
+    </div>
+
+    <!-- RIGHT: QUESTIONS -->
+    <div class="right">
+        <h3>AI Suggested Questions</h3>
+
+<form method="POST">
+
+{% for q in ai_questions %}
+<div class="question">
+    <label>{{ q.question }}</label><br><br>
+
+<input type="radio"
+       name="mode_{{ q._id }}"
+       value="during"
+       onclick="enableDuring('{{ q._id }}')">
+Ask during video<br>
+
+Time (seconds):
+<input type="number"
+       class="timestamp"
+       name="time_{{ q._id }}"
+       id="time_{{ q._id }}"
+       min="0"
+       disabled>
+
+<button type="button"
+        id="btn_{{ q._id }}"
+        onclick="useCurrentTime('{{ q._id }}')"
+        disabled>
+    Use current time
+</button>
+
+<br><br>
+
+<input type="radio"
+       name="mode_{{ q._id }}"
+       value="after"
+       checked
+       onclick="enableAfter('{{ q._id }}')">
+Ask after class
+</div>
+{% endfor %}
+
+<button type="submit">Save Question Plan</button>
+</form>
+
+    </div>
+
+</div>
+
+<br>
+<a href="javascript:history.back()">⬅ Back</a>
+
+<script>
+    const video = document.getElementById("lectureVideo");
+
+    function enableDuring(qid) {
+        document.getElementById("time_" + qid).disabled = false;
+        document.getElementById("btn_" + qid).disabled = false;
+    }
+
+    function enableAfter(qid) {
+        document.getElementById("time_" + qid).disabled = true;
+        document.getElementById("btn_" + qid).disabled = true;
+        document.getElementById("time_" + qid).value = "";
+    }
+
+    function useCurrentTime(qid) {
+        const current = Math.floor(video.currentTime);
+        document.getElementById("time_" + qid).value = current;
+    }
+</script>
+
+
+</body>
+</html>
