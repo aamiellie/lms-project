@@ -402,9 +402,11 @@ function toggleAccordion(header) {
 }
 </script>
 {% if live_class %}
-    <a href="/live/{{ live_class.room_id }}">
-        🔴 Join Live Class
-    </a>
+<a href="/live/{{ live_class.room_id }}">
+    🔴 Join Live Class
+</a>
+{% else %}
+<p>No live class currently running</p>
 {% endif %}
 </body>
 </html>

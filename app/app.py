@@ -522,6 +522,8 @@ def student_classroom(classroom_id):
         "classroom_id": classroom_id,
         "status": "live"
     })
+
+    
     return render_template(
         "student_classroom.html",
         classroom=classroom,
@@ -1378,12 +1380,10 @@ def view_submissions(assignment_id):
     )  
 @app.route("/uploads/<filename>")
 def uploaded_file(filename):
-    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)    
+    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)   
+
 @app.route("/teacher/classroom/<classroom_id>/start-live", methods=["POST"])
 def start_live_class(classroom_id):
-
-    if "user_id" not in session or session.get("user_role") != "teacher":
-        return redirect(url_for("login"))
 
     room_id = str(uuid.uuid4())
 
@@ -1399,16 +1399,13 @@ def start_live_class(classroom_id):
 @app.route("/live/<room_id>")
 def live_room(room_id):
 
-    if "user_id" not in session:
-        return redirect(url_for("login"))
-
     live_class = live_classes_collection.find_one({
         "room_id": room_id,
         "status": "live"
     })
 
     if not live_class:
-        return render_template("no_live_class.html")
+        return "No live class active right now."
 
     return render_template(
         "live_class.html",
@@ -1460,13 +1457,16 @@ def handle_end_class(data):
 
     room = data["room"]
 
-    # Update database
     live_classes_collection.update_one(
         {"room_id": room},
-        {"$set": {"status": "ended"}}
+        {
+            "$set": {
+                "status": "ended",
+                "ended_at": datetime.utcnow()
+            }
+        }
     )
 
-    # Notify everyone in the room
     emit(
         "class_ended",
         {"message": "Live class has ended"},
