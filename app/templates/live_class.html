@@ -63,7 +63,7 @@ width:100%;
 
 <h3>Teacher Camera</h3>
 
-<video id="teacherVideo" autoplay muted></video>
+<video id="teacherVideo" autoplay playsinline></video>
 
 <br><br>
 
@@ -118,7 +118,14 @@ width:100%;
 </div>
 
 <script>
+let localStream;
+let peerConnection;
 
+const config = {
+    iceServers: [
+        { urls: "stun:stun.l.google.com:19302" }
+    ]
+};
 const role = "{{ role }}"
 const room = "{{ room_id }}"
 const username = "{{ user_name }}"
@@ -133,7 +140,13 @@ room:room,
 username:username
 })
 
+socket.on("connect", () => {
 
+if(role === "student"){
+socket.emit("request_stream",{room:room})
+}
+
+})
 // RECEIVE CHAT MESSAGE
 
 socket.on("receive_message",function(data){
@@ -176,7 +189,13 @@ audio:true
 })
 .then(stream=>{
 
-document.getElementById("teacherVideo").srcObject=stream
+localStream = stream
+
+const video = document.getElementById("teacherVideo")
+
+video.srcObject = stream
+
+video.muted = true   // ← ADD THIS LINE HERE
 
 })
 
@@ -223,6 +242,90 @@ alert(data.message)
 window.location.href="/dashboard"
 
 })
+
+
+socket.on("start_stream", async () => {
+
+if(role !== "teacher" || !localStream) return;
+
+peerConnection = new RTCPeerConnection(config);
+
+localStream.getTracks().forEach(track => {
+peerConnection.addTrack(track, localStream);
+});
+
+peerConnection.onicecandidate = event => {
+if(event.candidate){
+socket.emit("ice_candidate",{
+room:room,
+candidate:event.candidate
+})
+}
+}
+
+const offer = await peerConnection.createOffer();
+await peerConnection.setLocalDescription(offer);
+
+socket.emit("video_offer",{
+room:room,
+offer:offer
+});
+
+});
+
+
+socket.on("video_offer", async data => {
+
+if(role !== "student") return;
+
+peerConnection = new RTCPeerConnection(config);
+
+peerConnection.ontrack = event => {
+
+document.getElementById("teacherVideo").srcObject = event.streams[0]
+
+}
+
+peerConnection.onicecandidate = event => {
+
+if(event.candidate){
+socket.emit("ice_candidate",{
+room:room,
+candidate:event.candidate
+})
+}
+
+}
+
+await peerConnection.setRemoteDescription(data.offer);
+
+const answer = await peerConnection.createAnswer();
+await peerConnection.setLocalDescription(answer);
+
+socket.emit("video_answer",{
+room:room,
+answer:answer
+});
+
+});
+
+socket.on("video_answer", async data => {
+
+if(role !== "teacher") return;
+
+await peerConnection.setRemoteDescription(data.answer);
+
+});
+
+socket.on("ice_candidate", async data => {
+
+if(peerConnection){
+
+await peerConnection.addIceCandidate(data.candidate)
+
+}
+
+});
 </script>
 
 </body>

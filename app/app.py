@@ -1472,8 +1472,48 @@ def handle_end_class(data):
         {"message": "Live class has ended"},
         room=room
     )
+@socketio.on("request_stream")
+def handle_stream_request(data):
+
+    room = data["room"]
+
+    emit(
+        "start_stream",
+        {},
+        room=room
+    )
+@socketio.on("video_offer")
+def handle_video_offer(data):
+
+    emit(
+        "video_offer",
+        data,
+        room=data["room"],
+        include_self=False
+    )
+
+
+@socketio.on("video_answer")
+def handle_video_answer(data):
+
+    emit(
+        "video_answer",
+        data,
+        room=data["room"],
+        include_self=False
+    )
+
+
+@socketio.on("ice_candidate")
+def handle_ice_candidate(data):
+
+    emit(
+        "ice_candidate",
+        data,
+        room=data["room"],
+        include_self=False
+    )
 import os
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    socketio.run(app, host="0.0.0.0", port=port)
+    socketio.run(app, debug=True)

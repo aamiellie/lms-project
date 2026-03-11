@@ -14,3 +14,4 @@ community_posts_collection = db["community_posts"]
 assignments_collection = db["assignments"]
 assignment_submissions_collection = db["assignment_submissions"]
 live_classes_collection = db["live_classes"]
+print("MONGO_URI:", os.environ.get("MONGO_URI"))
