@@ -1435,9 +1435,10 @@ def handle_join(data):
 
     join_room(room)
 
+    # notify everyone in the room
     emit(
-        "receive_message",
-        {"username": "System", "message": f"{username} joined the class"},
+        "user_joined",
+        {"username": username},
         room=room
     )
 

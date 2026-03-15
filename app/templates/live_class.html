@@ -135,12 +135,12 @@ const socket = io.connect(location.protocol + '//' + document.domain + ':' + loc
 
 // JOIN ROOM
 
+socket.on("connect", () => {
+
 socket.emit("join_room",{
 room:room,
 username:username
 })
-
-socket.on("connect", () => {
 
 if(role === "student"){
 socket.emit("request_stream",{room:room})
@@ -321,11 +321,38 @@ socket.on("ice_candidate", async data => {
 
 if(peerConnection){
 
+try {
 await peerConnection.addIceCandidate(data.candidate)
+} catch(e){
+console.error("ICE error:", e)
+}
 
 }
 
 });
+
+
+socket.on("user_joined", function(data){
+
+const chatBox = document.getElementById("chat-box")
+
+chatBox.innerHTML += `<p><b>System:</b> ${data.username} joined the class</p>`
+
+chatBox.scrollTop = chatBox.scrollHeight
+
+const studentList = document.getElementById("studentList")
+
+if(studentList){
+
+const li = document.createElement("li")
+
+li.textContent = data.username
+
+studentList.appendChild(li)
+
+}
+
+})
 </script>
 
 </body>
