@@ -8,47 +8,182 @@
 
 <style>
 
-body{
-font-family:Arial;
-margin:20px;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,Arial,sans-serif;
 }
+
+body{
+background:#000;
+color:#eaeaea;
+padding:25px;
+}
+
+/* PAGE TITLE */
+
+h2{
+margin-bottom:20px;
+color:#C7FF00;
+font-weight:600;
+}
+
+/* GRID LAYOUT */
 
 .container{
 display:grid;
 grid-template-columns: 3fr 1fr;
-grid-template-rows: auto auto;
-gap:10px;
+grid-template-rows: auto 1fr;
+gap:20px;
 height:85vh;
 }
 
+/* TEACHER VIDEO */
+
 .video-section{
-border:2px solid black;
-padding:10px;
+background:#0a0a0a;
+border:1px solid #C7FF00;
+border-radius:12px;
+padding:20px;
+display:flex;
+flex-direction:column;
 }
 
-.screen-section{
-border:2px solid black;
-padding:10px;
-display:none;
+.video-section h3{
+margin-bottom:15px;
+color:#C7FF00;
 }
 
-.students{
-border:2px solid black;
-padding:10px;
-}
-
-.chat{
-border:2px solid black;
-padding:10px;
-overflow-y:auto;
-}
+/* VIDEO FIX (IMPORTANT) */
 
 video{
 width:100%;
+height:420px;
+border-radius:10px;
+background:black;
+object-fit:cover;
+}
+
+/* BUTTONS */
+
+button{
+margin-right:10px;
+margin-top:15px;
+padding:8px 14px;
+border:none;
+border-radius:6px;
+background:#C7FF00;
+color:black;
+font-weight:600;
+cursor:pointer;
+transition:0.2s;
+}
+
+button:hover{
+background:#e2ff4d;
+}
+
+/* SCREEN SHARE */
+
+.screen-section{
+background:#0a0a0a;
+border:1px solid #C7FF00;
+border-radius:12px;
+padding:20px;
+display:none;
+}
+
+.screen-section h3{
+color:#C7FF00;
+margin-bottom:10px;
+}
+
+/* CHAT PANEL */
+
+.chat{
+background:#0a0a0a;
+border:1px solid #C7FF00;
+border-radius:12px;
+padding:15px;
+display:flex;
+flex-direction:column;
+}
+
+.chat h3{
+color:#C7FF00;
+margin-bottom:10px;
+}
+
+/* CHAT BOX */
+
+#chat-box{
+flex:1;
+overflow-y:auto;
+background:#050505;
+border:1px solid #1a1a1a;
+border-radius:8px;
+padding:10px;
+margin-bottom:10px;
+}
+
+#chat-box p{
+margin-bottom:8px;
+font-size:14px;
+}
+
+/* CHAT INPUT */
+
+.chat input{
+padding:8px;
+border-radius:6px;
+border:1px solid #333;
+background:#111;
+color:white;
+width:70%;
+}
+
+.chat button{
+width:25%;
+}
+
+/* STUDENTS LIST */
+
+.students{
+background:#0a0a0a;
+border:1px solid #C7FF00;
+border-radius:12px;
+padding:15px;
+}
+
+.students h3{
+color:#C7FF00;
+margin-bottom:10px;
+}
+
+.students ul{
+list-style:none;
+max-height:200px;
+overflow-y:auto;
+}
+
+.students li{
+padding:6px;
+border-bottom:1px solid #1a1a1a;
+}
+
+/* SCROLLBAR (nice detail) */
+
+::-webkit-scrollbar{
+width:6px;
+}
+
+::-webkit-scrollbar-thumb{
+background:#C7FF00;
+border-radius:10px;
 }
 
 </style>
-
 </head>
 
 <body>
