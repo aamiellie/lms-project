@@ -323,13 +323,44 @@ div[onclick="toggleCommunity()"] {
     </a>
 </li>
     </li>
-    <li>See Participants</li>
+    <li>
+<a href="#" onclick="toggleParticipants()">See Participants</a>
+</li>
 
 </ul>
    <form method="POST" action="/teacher/classroom/{{ classroom._id }}/start-live">
 <button type="submit">Start Live Class</button>
 </form> 
     <a href="/teacher/dashboard">⬅ Back to Dashboard</a>
+    <div id="participantsPopup" style="
+display:none;
+position:fixed;
+top:100px;
+left:50%;
+transform:translateX(-50%);
+background:#2A2927;
+padding:20px;
+border-radius:10px;
+width:350px;
+box-shadow:0 10px 30px rgba(0,0,0,0.5);
+z-index:10000;
+">
+
+<h3>Class Participants</h3>
+
+{% if students %}
+<ul>
+{% for student in students %}
+<li>{{ student.name }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No students enrolled yet.</p>
+{% endif %}
+
+<button onclick="toggleParticipants()">Close</button>
+
+</div>
     <div class="videos-wrapper">
         
     <h3>Lecture Videos</h3>
@@ -552,6 +583,17 @@ function toggleCommunity() {
 </script>
 {% endif %}
 
+<script>
+function toggleParticipants(){
+    const popup = document.getElementById("participantsPopup");
+
+    if(popup.style.display === "none" || popup.style.display === ""){
+        popup.style.display = "block";
+    }else{
+        popup.style.display = "none";
+    }
+}
+</script>
 
 </body>
 </html>

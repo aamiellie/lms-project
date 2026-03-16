@@ -544,6 +544,13 @@ def teacher_classroom(classroom_id):
         {"_id": ObjectId(classroom_id)}
     )
 
+    students = list(
+        users_collection.find(
+            {"_id": {"$in": [ObjectId(sid) for sid in classroom["students"]]}},
+            {"name": 1, "email": 1}
+        )
+    )
+
     if not classroom:
         return "Classroom not found!"
 
@@ -581,6 +588,7 @@ def teacher_classroom(classroom_id):
         videos=videos,
         posts=posts,
         assignments=assignments,
+        students=students,
         open_community=True   
     )
 
@@ -1517,6 +1525,6 @@ def handle_ice_candidate(data):
 import os
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 5001))
     print(f"Server starting on port {port}...")
     socketio.run(app, host="0.0.0.0", port=port, debug=True)
