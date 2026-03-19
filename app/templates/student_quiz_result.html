@@ -1,33 +1,125 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Quiz Result</title>
+<title>Quiz Result</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+/* ===== GLOBAL ===== */
+
+body{
+font-family:"Segoe UI", Arial, sans-serif;
+background:#F5F5F5;
+color:#1E1E1E;
+padding:70px 100px;
+font-size:20px;
+}
+
+/* ===== TITLE ===== */
+
+h2{
+font-size:38px;
+margin-bottom:20px;
+color:#2F2F2F;
+}
+
+/* ===== SCORE CARD ===== */
+
+.score-card{
+background:#FFFFFF;
+padding:25px;
+border-radius:12px;
+box-shadow:0 6px 18px rgba(0,0,0,0.05);
+margin-bottom:40px;
+font-size:22px;
+font-weight:600;
+}
+
+/* ===== RESULT CARD ===== */
+
+.result-card{
+background:#FFFFFF;
+padding:25px;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
+margin-bottom:25px;
+border-left:6px solid #F2C94C;
+}
+
+.result-card p{
+margin-bottom:10px;
+}
+
+/* ===== STATUS ===== */
+
+.correct{
+color:#2E7D32;
+font-weight:600;
+}
+
+.wrong{
+color:#C62828;
+font-weight:600;
+}
+
+/* ===== BACK BUTTON ===== */
+
+.back-btn{
+display:inline-block;
+margin-top:30px;
+padding:12px 22px;
+background:#F2C94C;
+color:#1E1E1E;
+border-radius:10px;
+text-decoration:none;
+font-weight:600;
+}
+
+.back-btn:hover{
+background:#e4b93f;
+}
+
+</style>
+
 </head>
+
 <body>
 
 <h2>📊 Quiz Result</h2>
 
-<p><strong>Your Score:</strong> {{ score }} / {{ total }}</p>
-
-<hr>
+<div class="score-card">
+Your Score: {{ score }} / {{ total }}
+</div>
 
 {% for r in results %}
-    <div style="margin-bottom:15px;">
-        <p><strong>{{ r.question }}</strong></p>
-        <p>Status: 
-            {% if r.status == "Correct" %}
-                <span style="color:green;">Correct ✅</span>
-            {% else %}
-                <span style="color:red;">Wrong ❌</span>
-            {% endif %}
-        </p>
-        <p>Correct Answer: {{ r.correct }}</p>
-        <p>{{ r.explanation }}</p>
-    </div>
-    <hr>
+<div class="result-card">
+
+<p><strong>{{ r.question }}</strong></p>
+
+<p>
+Status:
+{% if r.status == "Correct" %}
+<span class="correct">Correct ✅</span>
+{% else %}
+<span class="wrong">Wrong ❌</span>
+{% endif %}
+</p>
+
+<p><strong>Correct Answer:</strong> {{ r.correct }}</p>
+
+<p>{{ r.explanation }}</p>
+
+</div>
 {% endfor %}
-
-<a href="javascript:history.back()">⬅ Back</a>
-
+<br><br>
+<a href="/student/classroom/{{ classroom_id }}/video/{{ video_id }}">
+    ⬅ Back to Video
+</a>
 </body>
 </html>

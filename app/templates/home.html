@@ -4,209 +4,197 @@
     <title>LMS | Welcome</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <style>
-/* =========================
-   AI DARK SYSTEM
-========================= */
-
-:root {
-    --bg-dark: #21201E;
-    --bg-card: #2A2927;
-    --neon-green: #63D72A;
-    --text-light: #F9F8F6;
-    --text-muted: #bfbfbf;
-    --border-dark: #333330;
-}
 
 /* =========================
-   GLOBAL
+COLOR SYSTEM
 ========================= */
 
-body {
-    margin: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background-color: var(--bg-dark);
-    color: var(--text-light);
-}
-
-a {
-    text-decoration: none;
+:root{
+--primary:#F2C94C;
+--bg:#F5F5F5;
+--card:#FFFFFF;
+--text:#1E1E1E;
+--grey:#BDBDBD;
+--dark:#2F2F2F;
 }
 
 /* =========================
-   NAVBAR
+GLOBAL
 ========================= */
 
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 70px;
-    background-color: var(--bg-dark);
-    border-bottom: 1px solid var(--border-dark);
+body{
+margin:0;
+font-family:"Segoe UI", Arial, sans-serif;
+background:var(--bg);
+color:var(--text);
+font-size:18px;
 }
 
-.logo {
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--neon-green);
-    letter-spacing: 1px;
-}
-
-.nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-}
-
-.nav-link {
-    color: var(--text-muted);
-    font-weight: 500;
-    transition: 0.3s ease;
-}
-
-.nav-link:hover {
-    color: var(--neon-green);
-}
-
-.nav-btn {
-    padding: 8px 20px;
-    background: var(--neon-green);
-    color: var(--bg-dark);
-    border-radius: 6px;
-    font-weight: 600;
-    transition: 0.3s ease;
-}
-
-.nav-btn:hover {
-    box-shadow: 0 0 12px rgba(99, 215, 42, 0.6);
+a{
+text-decoration:none;
 }
 
 /* =========================
-   HERO SECTION
+NAVBAR
 ========================= */
 
-.hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 120px 100px;
-    gap: 80px;
-    align-items: center;
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:25px 90px;
+background:var(--card);
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
 }
 
-.hero-left h1 {
-    font-size: 44px;
-    margin-bottom: 20px;
-    color: var(--neon-green);
+.logo{
+font-size:30px;
+font-weight:700;
+color:var(--text);
 }
 
-.hero-left p {
-    font-size: 17px;
-    color: var(--text-muted);
-    margin-bottom: 35px;
-    line-height: 1.6;
+.nav-actions{
+display:flex;
+gap:30px;
+align-items:center;
+}
+
+.nav-link{
+font-size:18px;
+color:var(--text);
+}
+
+.nav-btn{
+padding:12px 28px;
+background:var(--primary);
+color:black;
+border-radius:8px;
+font-weight:600;
+font-size:18px;
+}
+
+.nav-btn:hover{
+background:#e0b93f;
 }
 
 /* =========================
-   BUTTONS
+HERO SECTION
 ========================= */
 
-.hero-buttons {
-    display: flex;
-    gap: 20px;
+.hero{
+display:grid;
+grid-template-columns:1fr 1fr;
+padding:120px 120px;
+gap:80px;
+align-items:center;
 }
 
-.btn-primary {
-    padding: 14px 32px;
-    background: var(--neon-green);
-    color: var(--bg-dark);
-    border-radius: 6px;
-    font-weight: 600;
-    transition: 0.3s ease;
+/* LEFT */
+
+.hero-left h1{
+font-size:56px;
+margin-bottom:25px;
 }
 
-.btn-primary:hover {
-    box-shadow: 0 0 18px rgba(99, 215, 42, 0.6);
-    transform: translateY(-2px);
+.hero-left p{
+font-size:22px;
+line-height:1.7;
+color:#555;
+margin-bottom:40px;
 }
 
-.btn-outline {
-    padding: 14px 32px;
-    border: 1px solid var(--border-dark);
-    border-radius: 6px;
-    color: var(--text-light);
-    font-weight: 500;
-    transition: 0.3s ease;
+/* BUTTONS */
+
+.hero-buttons{
+display:flex;
+gap:20px;
 }
 
-.btn-outline:hover {
-    border-color: var(--neon-green);
-    color: var(--neon-green);
+.btn-primary{
+padding:16px 36px;
+background:var(--primary);
+border-radius:8px;
+font-weight:600;
+font-size:18px;
+color:black;
+}
+
+.btn-outline{
+padding:16px 36px;
+border:2px solid var(--grey);
+border-radius:8px;
+font-weight:600;
+font-size:18px;
+color:var(--text);
+}
+
+.btn-outline:hover{
+border-color:var(--primary);
 }
 
 /* =========================
-   INFO CARD
+INFO CARD
 ========================= */
 
-.info-card {
-    background-color: var(--bg-card);
-    padding: 45px;
-    border-radius: 8px;
-    border: 1px solid var(--border-dark);
+.info-card{
+background:var(--card);
+padding:50px;
+border-radius:16px;
+box-shadow:0 8px 25px rgba(0,0,0,0.06);
 }
 
-.info-card h3 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    color: var(--neon-green);
+.info-card h3{
+font-size:26px;
+margin-bottom:25px;
 }
 
-.info-card ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.info-card ul{
+list-style:none;
+padding:0;
 }
 
-.info-card li {
-    margin-bottom: 16px;
-    color: var(--text-muted);
-    position: relative;
-    padding-left: 18px;
+.info-card li{
+font-size:18px;
+margin-bottom:18px;
+position:relative;
+padding-left:25px;
 }
 
-.info-card li::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    background: var(--neon-green);
-    border-radius: 50%;
-    position: absolute;
-    left: 0;
-    top: 8px;
+.info-card li::before{
+content:"";
+width:8px;
+height:8px;
+background:var(--primary);
+border-radius:50%;
+position:absolute;
+left:0;
+top:10px;
 }
 
 /* =========================
-   RESPONSIVE
+RESPONSIVE
 ========================= */
 
-@media (max-width: 900px) {
+@media(max-width:900px){
 
-    .hero {
-        grid-template-columns: 1fr;
-        padding: 60px 30px;
-    }
+.hero{
+grid-template-columns:1fr;
+padding:80px 40px;
+}
 
-    .navbar {
-        padding: 20px 30px;
-    }
+.navbar{
+padding:20px 40px;
+}
 
 }
+
 </style>
 </head>
 <body class="light">
 
 <!-- NAVBAR -->
 <nav class="navbar">
-    <div class="logo">LUMA</div>
+    <div class="logo">LMS</div>
     <div class="nav-actions">
         <a href="/login" class="nav-link">Login</a>
         <a href="/register" class="nav-btn">Register</a>

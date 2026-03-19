@@ -3,129 +3,155 @@
 <head>
     <title>Upload Study Material</title>
 
-    <style>
-    :root {
-        --bg-dark: #21201E;
-        --bg-card: #2A2927;
-        --accent: #C200FB;
-        --text-light: #F9F8F6;
-        --text-muted: #bfbfbf;
-        --border-dark: #333330;
-    }
+<style>
 
-    body {
-        margin: 0;
-        padding: 60px 90px;
-        background: var(--bg-dark);
-        color: var(--text-light);
-        font-family: "Segoe UI", Arial, sans-serif;
-    }
+:root{
+--primary:#F2C94C;
+--bg:#F5F5F5;
+--card:#FFFFFF;
+--text:#1E1E1E;
+--grey:#BDBDBD;
+--dark:#2F2F2F;
+}
 
-    h2 {
-        color: var(--accent);
-        margin-bottom: 25px;
-    }
+/* ===== GLOBAL ===== */
 
-    /* Upload Form */
-    form input[type="file"] {
-        background: var(--bg-card);
-        border: 1px solid var(--border-dark);
-        color: var(--text-light);
-        padding: 8px;
-        border-radius: 6px;
-        margin-bottom: 15px;
-    }
+body{
+margin:0;
+padding:70px 100px;
+background:var(--bg);
+color:var(--text);
+font-family:"Segoe UI", Arial, sans-serif;
+font-size:20px;
+}
 
-    form button {
-        background: var(--accent);
-        color: var(--bg-dark);
-        border: none;
-        padding: 8px 16px;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: 0.3s ease;
-    }
+/* ===== TITLE ===== */
 
-    form button:hover {
-        box-shadow: 0 0 10px rgba(194,0,251,0.5);
-    }
+h2{
+font-size:34px;
+margin-bottom:30px;
+color:var(--dark);
+}
 
-    hr {
-        border: 1px solid var(--border-dark);
-        margin: 40px 0;
-    }
+/* ===== UPLOAD FORM ===== */
 
-    h3 {
-        color: var(--accent);
-        margin-bottom: 20px;
-    }
+form input[type="file"]{
+background:var(--card);
+border:1px solid #ddd;
+padding:12px;
+border-radius:8px;
+margin-bottom:15px;
+font-size:16px;
+width:300px;
+}
 
-    ul {
-        list-style: none;
-        padding: 0;
-    }
+form button{
+background:var(--primary);
+color:black;
+border:none;
+padding:12px 22px;
+border-radius:8px;
+font-weight:600;
+cursor:pointer;
+transition:0.2s ease;
+}
 
-    .material-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-dark);
-        padding: 18px;
-        border-radius: 8px;
-        margin-bottom: 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: 0.3s ease;
-    }
+form button:hover{
+background:#e0b93f;
+}
 
-    .material-card:hover {
-        border-color: var(--accent);
-        box-shadow: 0 0 12px rgba(194,0,251,0.3);
-    }
+/* ===== DIVIDER ===== */
 
-    .material-name {
-        font-weight: 500;
-    }
+hr{
+border:none;
+height:1px;
+background:#e0e0e0;
+margin:40px 0;
+}
 
-    .material-actions a {
-        color: var(--accent);
-        text-decoration: none;
-        margin-right: 15px;
-    }
+/* ===== SECTION TITLE ===== */
 
-    .material-actions a:hover {
-        text-shadow: 0 0 6px rgba(194,0,251,0.6);
-    }
+h3{
+font-size:26px;
+margin-bottom:20px;
+color:var(--dark);
+}
 
-    .material-actions button {
-        background: transparent;
-        border: 1px solid var(--accent);
-        color: var(--accent);
-        padding: 4px 10px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: 0.3s ease;
-    }
+/* ===== MATERIAL CARD ===== */
 
-    .material-actions button:hover {
-        background: var(--accent);
-        color: var(--bg-dark);
-    }
+.material-card{
+background:var(--card);
+border-radius:12px;
+padding:20px;
+margin-bottom:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
+transition:0.2s ease;
+}
 
-    .empty-text {
-        color: var(--text-muted);
-    }
+.material-card:hover{
+transform:translateY(-3px);
+}
 
-    .back-link {
-        display: inline-block;
-        margin-top: 40px;
-        color: var(--accent);
-        text-decoration: none;
-    }
+/* ===== TEXT ===== */
 
-    .back-link:hover {
-        text-shadow: 0 0 6px rgba(194,0,251,0.6);
-    }
-    </style>
+.material-name{
+font-size:18px;
+font-weight:500;
+}
+
+/* ===== ACTIONS ===== */
+
+.material-actions a{
+color:var(--text);
+text-decoration:none;
+margin-right:15px;
+font-weight:500;
+}
+
+.material-actions a:hover{
+color:var(--primary);
+}
+
+.material-actions button{
+background:none;
+border:1px solid #ddd;
+padding:6px 12px;
+border-radius:6px;
+cursor:pointer;
+font-size:14px;
+transition:0.2s ease;
+}
+
+.material-actions button:hover{
+background:#ffecec;
+border-color:#ff4d4d;
+color:#ff4d4d;
+}
+
+/* ===== EMPTY ===== */
+
+.empty-text{
+color:#777;
+}
+
+/* ===== BACK LINK ===== */
+
+.back-link{
+display:inline-block;
+margin-top:40px;
+font-size:18px;
+text-decoration:none;
+color:var(--text);
+}
+
+.back-link:hover{
+color:var(--primary);
+}
+
+</style>
 </head>
 
 <body>

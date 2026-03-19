@@ -3,105 +3,146 @@
 <head>
     <title>Student Dashboard | LUMA</title>
 
-    <style>
-    :root {
-        --bg-dark: #21201E;
-        --bg-card: #2A2927;
-        --accent: #F3377E;
-        --text-light: #F9F8F6;
-        --text-muted: #bfbfbf;
-        --border-dark: #333330;
-    }
+<style>
 
-    body {
-        margin: 0;
-        padding: 60px 90px;
-        background: var(--bg-dark);
-        color: var(--text-light);
-        font-family: "Segoe UI", Arial, sans-serif;
-    }
+/* =========================
+COLOR SYSTEM
+========================= */
 
-    h2 {
-        color: var(--accent);
-        margin-bottom: 10px;
-    }
+:root{
+--primary:#F2C94C;
+--bg:#F5F5F5;
+--card:#FFFFFF;
+--text:#1E1E1E;
+--grey:#BDBDBD;
+--dark:#2F2F2F;
+}
 
-    .welcome-text {
-        color: var(--text-muted);
-        margin-bottom: 40px;
-    }
+/* =========================
+GLOBAL
+========================= */
 
-    .action-section {
-        margin-bottom: 40px;
-    }
+body{
+margin:0;
+padding:70px 100px;
+background:var(--bg);
+color:var(--text);
+font-family:"Segoe UI", Arial, sans-serif;
+font-size:18px;
+}
 
-    .action-btn {
-        display: inline-block;
-        background: var(--accent);
-        color: var(--bg-dark);
-        padding: 10px 18px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: 600;
-        transition: 0.3s ease;
-    }
+/* =========================
+HEADINGS
+========================= */
 
-    .action-btn:hover {
-        box-shadow: 0 0 15px rgba(243,55,126,0.6);
-        transform: translateY(-2px);
-    }
+h2{
+font-size:36px;
+margin-bottom:10px;
+}
 
-    h3 {
-        color: var(--accent);
-        margin-bottom: 20px;
-    }
+.welcome-text{
+font-size:20px;
+color:#666;
+margin-bottom:40px;
+}
 
-    .classroom-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 20px;
-    }
+/* =========================
+JOIN BUTTON
+========================= */
 
-    .classroom-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-dark);
-        padding: 20px;
-        border-radius: 8px;
-        transition: 0.3s ease;
-    }
+.action-section{
+margin-bottom:50px;
+}
 
-    .classroom-card:hover {
-        border-color: var(--accent);
-        box-shadow: 0 0 18px rgba(243,55,126,0.3);
-        transform: translateY(-4px);
-    }
+.action-btn{
+display:inline-block;
+background:var(--primary);
+color:black;
+padding:16px 28px;
+border-radius:10px;
+text-decoration:none;
+font-weight:600;
+font-size:18px;
+}
 
-    .classroom-link {
-        text-decoration: none;
-        color: var(--text-light);
-        font-weight: 500;
-    }
+.action-btn:hover{
+background:#e0b93f;
+}
 
-    .classroom-link:hover {
-        color: var(--accent);
-    }
+/* =========================
+SECTION TITLE
+========================= */
 
-    .empty-text {
-        color: var(--text-muted);
-        font-style: italic;
-    }
+h3{
+font-size:26px;
+margin-bottom:25px;
+}
 
-    .logout-link {
-        display: inline-block;
-        margin-top: 40px;
-        color: var(--accent);
-        text-decoration: none;
-    }
+/* =========================
+CLASSROOM GRID
+========================= */
 
-    .logout-link:hover {
-        text-shadow: 0 0 8px rgba(243,55,126,0.7);
-    }
-    </style>
+.classroom-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
+gap:25px;
+}
+
+/* =========================
+CLASSROOM CARD
+========================= */
+
+.classroom-card{
+background:var(--card);
+padding:28px;
+border-radius:14px;
+box-shadow:0 6px 18px rgba(0,0,0,0.06);
+transition:0.2s;
+}
+
+.classroom-card:hover{
+transform:translateY(-4px);
+box-shadow:0 10px 24px rgba(0,0,0,0.08);
+}
+
+.classroom-link{
+text-decoration:none;
+color:var(--text);
+font-weight:600;
+font-size:20px;
+}
+
+.classroom-link:hover{
+color:var(--primary);
+}
+
+/* =========================
+EMPTY TEXT
+========================= */
+
+.empty-text{
+color:#777;
+font-style:italic;
+}
+
+/* =========================
+LOGOUT
+========================= */
+
+.logout-link{
+display:inline-block;
+margin-top:50px;
+font-size:18px;
+color:var(--text);
+text-decoration:none;
+font-weight:500;
+}
+
+.logout-link:hover{
+color:var(--primary);
+}
+
+</style>
 </head>
 
 <body>

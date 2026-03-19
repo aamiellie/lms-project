@@ -3,88 +3,102 @@
 <head>
     <title>Student Results</title>
 
-    <style>
-    :root {
-        --bg-dark: #21201E;
-        --bg-card: #2A2927;
-        --accent: #39FF14;
-        --text-light: #F9F8F6;
-        --text-muted: #bfbfbf;
-        --border-dark: #333330;
-    }
+<style>
 
-    body {
-        margin: 0;
-        padding: 60px 90px;
-        background: var(--bg-dark);
-        color: var(--text-light);
-        font-family: "Segoe UI", Arial, sans-serif;
-    }
+:root{
+--primary:#F2C94C;
+--bg:#F5F5F5;
+--card:#FFFFFF;
+--text:#1E1E1E;
+--grey:#BDBDBD;
+--dark:#2F2F2F;
+}
 
-    h2 {
-        color: var(--accent);
-        margin-bottom: 35px;
-    }
+/* ===== GLOBAL ===== */
 
-    .table-wrapper {
-        background: var(--bg-card);
-        border: 1px solid var(--border-dark);
-        border-radius: 10px;
-        padding: 30px;
-        overflow-x: auto;
-        transition: 0.3s ease;
-    }
+body{
+margin:0;
+padding:70px 100px;
+background:var(--bg);
+color:var(--text);
+font-family:"Segoe UI", Arial, sans-serif;
+font-size:20px;
+}
 
-    .table-wrapper:hover {
-        border-color: var(--accent);
-        box-shadow: 0 0 20px rgba(57,255,20,0.25);
-    }
+/* ===== TITLE ===== */
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+h2{
+font-size:34px;
+margin-bottom:40px;
+color:var(--dark);
+}
 
-    th {
-        color: var(--accent);
-        font-weight: 600;
-        padding: 15px;
-        border-bottom: 1px solid var(--border-dark);
-        text-align: center;
-    }
+/* ===== TABLE CONTAINER ===== */
 
-    td {
-        padding: 14px;
-        border-bottom: 1px solid #2f2e2c;
-        text-align: center;
-        color: var(--text-light);
-    }
+.table-wrapper{
+background:var(--card);
+border-radius:14px;
+padding:30px;
+overflow-x:auto;
+box-shadow:0 6px 18px rgba(0,0,0,0.05);
+}
 
-    tr:hover td {
-        background: #1c1b1a;
-    }
+/* ===== TABLE ===== */
 
-    .score-highlight {
-        color: var(--accent);
-        font-weight: 600;
-    }
+table{
+width:100%;
+border-collapse:collapse;
+}
 
-    .no-results {
-        color: var(--text-muted);
-        font-style: italic;
-    }
+th{
+background:#2F2F2F;
+color:#ffffff;
+padding:16px;
+font-size:18px;
+text-align:center;
+}
 
-    .back-link {
-        display: inline-block;
-        margin-top: 40px;
-        color: var(--accent);
-        text-decoration: none;
-    }
+td{
+padding:16px;
+border-bottom:1px solid #eee;
+text-align:center;
+font-size:18px;
+}
 
-    .back-link:hover {
-        text-shadow: 0 0 8px rgba(57,255,20,0.7);
-    }
-    </style>
+tr:hover{
+background:#fafafa;
+}
+
+/* ===== SCORE ===== */
+
+.score-highlight{
+color:#2F80ED;
+font-weight:600;
+}
+
+/* ===== EMPTY ===== */
+
+.no-results{
+color:#777;
+font-style:italic;
+font-size:18px;
+}
+
+/* ===== BACK ===== */
+
+.back-link{
+display:inline-block;
+margin-top:40px;
+font-size:18px;
+text-decoration:none;
+color:var(--text);
+}
+
+.back-link:hover{
+color:var(--primary);
+}
+
+</style>
 </head>
 
 <body>

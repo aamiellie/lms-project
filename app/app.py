@@ -1,5 +1,5 @@
 from werkzeug.security import check_password_hash
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, make_response
 from werkzeug.security import generate_password_hash
 from db import users_collection
 import re   # for pattern checking
@@ -886,11 +886,20 @@ def watch_video(classroom_id, video_id):
             "ask_time": q["ask_time"]
         })
 
+    # Check if quiz already done
+    existing_result = student_results_collection.find_one({
+        "student_id": session["user_id"],
+        "video_id": video_id
+    })
+
+    quiz_done = True if existing_result else False
+
     return render_template(
         "student_watch_video.html",
         classroom=classroom,
         video=video,
-        questions=questions
+        questions=questions,
+        quiz_done=quiz_done
     )
 
 @app.route("/teacher/video/<video_id>/map-questions", methods=["GET", "POST"])
@@ -1024,6 +1033,15 @@ def after_class_quiz(classroom_id, video_id):
 
     if not video:
         return "Video not found!"
+        
+        # 🔒 If already submitted, redirect to video
+    existing = student_results_collection.find_one({
+        "student_id": session["user_id"],
+        "video_id": video_id
+    })
+
+    if existing:
+        return redirect(f"/student/classroom/{classroom_id}/video/{video_id}")
 
     raw_questions = list(
         questions_collection.find({
@@ -1053,6 +1071,15 @@ def submit_after_quiz(classroom_id, video_id):
 
     if "user_id" not in session or session.get("user_role") != "student":
         return redirect(url_for("login"))
+
+    # 🔒 Prevent duplicate submission
+    existing = student_results_collection.find_one({
+        "student_id": session["user_id"],
+        "video_id": video_id
+    })
+
+    if existing:
+        return redirect(f"/student/classroom/{classroom_id}/video/{video_id}")
 
     raw_questions = list(
         questions_collection.find({
@@ -1099,13 +1126,18 @@ def submit_after_quiz(classroom_id, video_id):
         "submitted_at": datetime.utcnow()
     })
 
-    return render_template(
+    response = make_response(render_template(
         "student_quiz_result.html",
+        classroom_id=classroom_id,
+        video_id=video_id,
         score=score,
         total=total,
         percentage=percentage,
         results=results
-    )
+    ))
+
+    response.headers["Cache-Control"] = "no-store"
+    return response
 @app.route("/teacher/classroom/<classroom_id>/results")
 def view_results(classroom_id):
 

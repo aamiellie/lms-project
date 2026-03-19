@@ -4,130 +4,160 @@
     <title>{{ video.title }}</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
-body {
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    background: #050505;
-    color: #e5e5e5;
-    padding: 60px 100px;
+/* ===== GLOBAL ===== */
+
+body{
+font-family:"Segoe UI", Arial, sans-serif;
+background:#F5F5F5;
+color:#1E1E1E;
+padding:70px 100px;
+font-size:20px;
 }
 
 /* ===== TITLE ===== */
-h2 {
-    font-size: 30px;
-    font-weight: 700;
-    color: #800020;
-    margin-bottom: 10px;
+
+h2{
+font-size:38px;
+font-weight:700;
+margin-bottom:10px;
+color:#2F2F2F;
 }
 
-p {
-    color: #bdbdbd;
-    margin-bottom: 30px;
+p{
+color:#555;
+margin-bottom:30px;
+font-size:20px;
 }
 
 /* ===== LAYOUT ===== */
-.container {
-    display: flex;
-    gap: 30px;
+
+.container{
+display:flex;
+gap:30px;
+align-items:flex-start;
 }
 
-/* ===== LEFT VIDEO PANEL ===== */
-.left {
-    width: 60%;
-    background: #111111;
-    border: 1px solid #800020;
-    border-radius: 14px;
-    padding: 20px;
+/* ===== VIDEO PANEL ===== */
+
+.left{
+width:60%;
+background:#FFFFFF;
+border-radius:14px;
+padding:20px;
+box-shadow:0 6px 18px rgba(0,0,0,0.06);
 }
 
-video {
-    width: 100%;
-    border-radius: 10px;
+video{
+width:100%;
+border-radius:10px;
 }
 
 /* ===== RIGHT SIDE ===== */
-.right {
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+
+.right{
+width:40%;
+display:flex;
+flex-direction:column;
+gap:20px;
 }
 
-/* ===== BOX STYLE ===== */
-.box {
-    background: #111111;
-    border: 1px solid #800020;
-    border-radius: 14px;
-    padding: 20px;
-    min-height: 180px;
+/* ===== BOX ===== */
+
+.box{
+background:#FFFFFF;
+border-radius:14px;
+padding:22px;
+box-shadow:0 6px 18px rgba(0,0,0,0.05);
+min-height:180px;
 }
 
-.box h4 {
-    color: #800020;
-    margin-bottom: 15px;
-    font-weight: 600;
+.box h4{
+color:#2F2F2F;
+margin-bottom:15px;
+font-weight:600;
+font-size:22px;
 }
 
 /* ===== QUESTIONS ===== */
-button {
-    margin-top: 10px;
-    padding: 8px 16px;
-    background: #800020;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+
+button{
+margin-top:12px;
+padding:10px 18px;
+background:#F2C94C;
+color:#1E1E1E;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+font-weight:600;
 }
 
-button:hover {
-    background: #a00030;
+button:hover{
+background:#e4b93f;
+}
+
+/* ===== OPTIONS ===== */
+
+#optionsArea label{
+font-size:18px;
+margin-left:6px;
 }
 
 /* ===== FEEDBACK ===== */
-.correct {
-    color: #22c55e;
-    font-weight: 600;
+
+.correct{
+color:#2E7D32;
+font-weight:600;
+font-size:20px;
 }
 
-.wrong {
-    color: #ef4444;
-    font-weight: 600;
+.wrong{
+color:#C62828;
+font-weight:600;
+font-size:20px;
 }
 
-.hidden {
-    display: none;
+.hidden{
+display:none;
 }
 
-/* ===== LINKS ===== */
-a {
-    color: #800020;
-    font-weight: 600;
-    text-decoration: none;
+/* ===== QUIZ BUTTON ===== */
+
+.quiz-btn{
+display:inline-block;
+margin-top:30px;
+padding:14px 26px;
+background:#F2C94C;
+color:#1E1E1E;
+border-radius:10px;
+text-decoration:none;
+font-weight:600;
+font-size:20px;
 }
 
-a:hover {
-    text-decoration: underline;
-}
-.quiz-btn {
-    display: inline-block;
-    margin-top: 25px;
-    padding: 12px 22px;
-    background: #800020;
-    color: white;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.2s ease;
+.quiz-btn:hover{
+background:#e4b93f;
 }
 
-.quiz-btn:hover {
-    background: #a00030;
+/* ===== BACK LINK ===== */
+
+a{
+color:#1E1E1E;
+font-size:18px;
+text-decoration:none;
 }
+
+a:hover{
+color:#F2C94C;
+}
+
 </style>
 </head>
 
@@ -174,10 +204,9 @@ a:hover {
 </div>
 <br>
 
-<a href="{{ url_for('after_class_quiz', classroom_id=classroom._id, video_id=video._id) }}" 
-   class="quiz-btn">
-    Take After-Class Quiz
-</a>
+<button onclick="handleQuizClick()">
+    Take After Class Quiz
+</button>
 
 <br><br>
 <a href="/student/classroom/{{ classroom._id }}">⬅ Back to Classroom</a>
@@ -278,6 +307,16 @@ a:hover {
         video.play();
     }
 </script>
+<script>
+const quizDone = {{ 'true' if quiz_done else 'false' }};
 
+function handleQuizClick(){
+    if(quizDone === true){
+        alert("⚠️ You have already attended this quiz!");
+    } else {
+        window.location.href = "/student/classroom/{{ classroom._id }}/video/{{ video._id }}/quiz";
+    }
+}
+</script>
 </body>
 </html>

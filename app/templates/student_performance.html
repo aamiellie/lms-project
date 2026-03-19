@@ -6,130 +6,144 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+
+:root{
+--primary:#F2C94C;
+--bg:#F5F5F5;
+--card:#FFFFFF;
+--text:#1E1E1E;
+--grey:#BDBDBD;
+--dark:#2F2F2F;
 }
 
-body {
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    background: #0f0f12;
-    color: #e8e8e8;
-    padding: 60px 100px;
+/* ===== GLOBAL ===== */
+
+body{
+font-family:"Segoe UI", Arial, sans-serif;
+background:var(--bg);
+color:var(--text);
+padding:70px 100px;
+font-size:20px;
+margin:0;
 }
 
-/* ===== PAGE TITLE ===== */
-h2 {
-    font-size: 30px;
-    margin-bottom: 40px;
-    color: #D3968C;
+/* ===== TITLE ===== */
 
-    /* very soft glow */
-    text-shadow: 0 0 6px rgba(211, 150, 140, 0.35);
+h2{
+font-size:36px;
+margin-bottom:40px;
+color:var(--dark);
 }
 
-/* ===== STATS SECTION ===== */
-.stats {
-    display: flex;
-    gap: 30px;
-    margin-bottom: 50px;
+/* ===== STATS ===== */
+
+.stats{
+display:flex;
+gap:30px;
+margin-bottom:50px;
+flex-wrap:wrap;
 }
 
-.card {
-    background: #16181d;
-    border: 1px solid #105666;
-    padding: 25px;
-    width: 220px;
-    border-radius: 14px;
-    text-align: center;
-
-    /* subtle glow */
-    box-shadow: 0 0 10px rgba(16, 86, 102, 0.25);
+.card{
+background:var(--card);
+padding:30px;
+width:240px;
+border-radius:14px;
+text-align:center;
+box-shadow:0 6px 18px rgba(0,0,0,0.05);
 }
 
-.card h3 {
-    font-size: 32px;
-    color: #105666;
-    margin-bottom: 8px;
+.card h3{
+font-size:34px;
+color:#105666;
+margin-bottom:8px;
 }
 
-.card p {
-    color: #bfbfbf;
+.card p{
+color:#666;
+font-size:18px;
 }
 
 /* ===== TABLE ===== */
-h3 {
-    margin-bottom: 20px;
-    color: #D3968C;
+
+h3{
+margin-bottom:20px;
+font-size:26px;
+color:var(--dark);
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #16181d;
-    border-radius: 14px;
-    overflow: hidden;
-    margin-bottom: 40px;
+table{
+width:100%;
+border-collapse:collapse;
+background:var(--card);
+border-radius:14px;
+overflow:hidden;
+margin-bottom:40px;
+box-shadow:0 6px 18px rgba(0,0,0,0.05);
 }
 
-th {
-    background: #105666;
-    color: white;
-    padding: 14px;
-    font-weight: 600;
+th{
+background:#105666;
+color:white;
+padding:16px;
+font-size:18px;
 }
 
-td {
-    padding: 14px;
-    text-align: center;
-    border-bottom: 1px solid #1f2228;
+td{
+padding:16px;
+text-align:center;
+border-bottom:1px solid #eee;
+font-size:18px;
 }
 
-tr:hover {
-    background: #1c1f25;
+tr:hover{
+background:#f9f9f9;
 }
 
-/* ===== CHART CONTAINER ===== */
-.chart-wrapper {
-    width: 550px;
-    height: 260px;
-    margin: 40px auto;
-    background: #16181d;
-    padding: 25px;
-    border-radius: 16px;
-    border: 1px solid #105666;
+/* ===== CHART ===== */
+
+.chart-wrapper{
+width:600px;
+height:280px;
+margin:40px auto;
+background:var(--card);
+padding:25px;
+border-radius:16px;
+box-shadow:0 6px 18px rgba(0,0,0,0.05);
 }
 
-/* ===== IMPROVEMENT TEXT ===== */
-.improve-up {
-    color: #22c55e;
-    font-weight: 600;
-    margin-top: 20px;
+/* ===== IMPROVEMENT ===== */
+
+.improve-up{
+color:#2E7D32;
+font-weight:600;
+margin-top:20px;
 }
 
-.improve-down {
-    color: #ef4444;
-    font-weight: 600;
-    margin-top: 20px;
+.improve-down{
+color:#C62828;
+font-weight:600;
+margin-top:20px;
 }
 
-.improve-same {
-    color: #aaa;
-    font-weight: 600;
-    margin-top: 20px;
+.improve-same{
+color:#777;
+font-weight:600;
+margin-top:20px;
 }
 
 /* ===== BACK LINK ===== */
-a {
-    color: #D3968C;
-    text-decoration: none;
-    font-weight: 500;
+
+a{
+color:var(--text);
+text-decoration:none;
+font-size:18px;
 }
 
-a:hover {
-    text-decoration: underline;
+a:hover{
+color:var(--primary);
 }
+
 </style>
 </head>
 <body>

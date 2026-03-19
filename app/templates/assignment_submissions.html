@@ -3,93 +3,103 @@
 <head>
     <title>Assignment Submissions</title>
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+
+:root{
+--primary:#F2C94C;
+--bg:#F5F5F5;
+--card:#FFFFFF;
+--text:#1E1E1E;
+--grey:#BDBDBD;
+--dark:#2F2F2F;
 }
 
-body {
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    background: #050505;
-    color: #e5e5e5;
-    padding: 80px 120px;
+/* ===== GLOBAL ===== */
+
+body{
+margin:0;
+padding:70px 100px;
+background:var(--bg);
+color:var(--text);
+font-family:"Segoe UI", Arial, sans-serif;
+font-size:20px;
 }
 
 /* ===== TITLE ===== */
-h2 {
-    font-size: 34px;
-    font-weight: 700;
-    color: #ff2da6;
-    margin-bottom: 50px;
-    letter-spacing: 1px;
+
+h2{
+font-size:34px;
+margin-bottom:40px;
+color:var(--dark);
 }
 
-/* ===== TABLE WRAPPER ===== */
-.table-container {
-    border: 1px solid #ff2da6;
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 0 15px rgba(255, 45, 166, 0.15);
+/* ===== TABLE CONTAINER ===== */
+
+.table-container{
+background:var(--card);
+border-radius:14px;
+overflow:hidden;
+box-shadow:0 6px 18px rgba(0,0,0,0.05);
 }
 
 /* ===== TABLE ===== */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #0d0d0d;
+
+table{
+width:100%;
+border-collapse:collapse;
 }
 
 /* ===== HEADER ===== */
-th {
-    padding: 18px;
-    text-align: left;
-    background: #111111;
-    color: #ff2da6;
-    font-weight: 600;
-    border-bottom: 1px solid #ff2da6;
+
+th{
+padding:16px;
+text-align:left;
+background:#2F2F2F;
+color:white;
+font-size:18px;
 }
 
 /* ===== CELLS ===== */
-td {
-    padding: 18px;
-    border-bottom: 1px solid #1f1f1f;
+
+td{
+padding:16px;
+border-bottom:1px solid #eee;
+font-size:18px;
 }
 
-tr:hover {
-    background: #151515;
+tr:hover{
+background:#fafafa;
 }
 
 /* ===== VIEW LINK ===== */
-a {
-    color: #ff2da6;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.2s ease;
+
+a{
+color:var(--text);
+text-decoration:none;
+font-weight:500;
 }
 
-a:hover {
-    text-shadow: 0 0 6px #ff2da6;
+a:hover{
+color:var(--primary);
 }
 
 /* ===== BACK BUTTON ===== */
-.back-link {
-    display: inline-block;
-    margin-top: 50px;
-    padding: 12px 22px;
-    border: 1px solid #ff2da6;
-    border-radius: 10px;
-    color: #ff2da6;
-    font-weight: 600;
-    text-decoration: none;
-    transition: 0.2s ease;
+
+.back-link{
+display:inline-block;
+margin-top:40px;
+padding:10px 18px;
+border-radius:8px;
+background:var(--primary);
+color:black;
+font-weight:600;
+text-decoration:none;
+transition:0.2s ease;
 }
 
-.back-link:hover {
-    background: #ff2da6;
-    color: black;
-    box-shadow: 0 0 12px rgba(255, 45, 166, 0.4);
+.back-link:hover{
+background:#e0b93f;
 }
+
 </style>
 </head>
 <body>

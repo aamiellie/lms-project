@@ -3,103 +3,114 @@
 <head>
     <title>Create Assignment</title>
 
-    <style>
-    :root {
-        --bg-dark: #21201E;
-        --bg-card: #2A2927;
-        --accent: #FF5C00;
-        --text-light: #F9F8F6;
-        --text-muted: #bfbfbf;
-        --border-dark: #333330;
-    }
+<style>
 
-    body {
-        margin: 0;
-        padding: 60px 90px;
-        background: var(--bg-dark);
-        color: var(--text-light);
-        font-family: "Segoe UI", Arial, sans-serif;
-    }
+:root{
+--primary:#F2C94C;
+--bg:#F5F5F5;
+--card:#FFFFFF;
+--text:#1E1E1E;
+--grey:#BDBDBD;
+--dark:#2F2F2F;
+}
 
-    h2 {
-        color: var(--accent);
-        margin-bottom: 35px;
-    }
+/* ===== GLOBAL ===== */
 
-    form {
-        background: var(--bg-card);
-        border: 1px solid var(--border-dark);
-        padding: 30px;
-        border-radius: 10px;
-        max-width: 600px;
-        transition: 0.3s ease;
-    }
+body{
+margin:0;
+padding:70px 100px;
+background:var(--bg);
+color:var(--text);
+font-family:"Segoe UI", Arial, sans-serif;
+font-size:20px;
+}
 
-    form:hover {
-        border-color: var(--accent);
-        box-shadow: 0 0 18px rgba(255,92,0,0.25);
-    }
+/* ===== TITLE ===== */
 
-    label {
-        display: block;
-        margin-bottom: 6px;
-        color: var(--text-muted);
-        font-size: 14px;
-    }
+h2{
+font-size:34px;
+margin-bottom:35px;
+color:var(--dark);
+}
 
-    input[type="text"],
-    textarea,
-    input[type="file"],
-    input[type="date"] {
-        width: 100%;
-        background: #1c1b1a;
-        border: 1px solid var(--border-dark);
-        color: var(--text-light);
-        padding: 10px;
-        border-radius: 6px;
-        margin-bottom: 20px;
-        font-size: 14px;
-    }
+/* ===== FORM CARD ===== */
 
-    textarea {
-        resize: vertical;
-        min-height: 100px;
-    }
+form{
+background:var(--card);
+padding:35px;
+border-radius:14px;
+max-width:650px;
+box-shadow:0 6px 18px rgba(0,0,0,0.05);
+}
 
-    input:focus,
-    textarea:focus {
-        outline: none;
-        border-color: var(--accent);
-        box-shadow: 0 0 8px rgba(255,92,0,0.4);
-    }
+/* ===== LABEL ===== */
 
-    button {
-        background: var(--accent);
-        color: var(--bg-dark);
-        border: none;
-        padding: 10px 20px;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s ease;
-    }
+label{
+display:block;
+margin-bottom:8px;
+color:#666;
+font-size:16px;
+}
 
-    button:hover {
-        box-shadow: 0 0 15px rgba(255,92,0,0.6);
-        transform: translateY(-2px);
-    }
+/* ===== INPUTS ===== */
 
-    .back-link {
-        display: inline-block;
-        margin-top: 40px;
-        color: var(--accent);
-        text-decoration: none;
-    }
+input,
+textarea{
+width:94%;
+padding:14px;
+border-radius:8px;
+border:1px solid #ddd;
+margin-bottom:22px;
+font-size:16px;
+background:#fafafa;
+}
 
-    .back-link:hover {
-        text-shadow: 0 0 6px rgba(255,92,0,0.6);
-    }
-    </style>
+textarea{
+min-height:120px;
+resize:vertical;
+}
+
+input:focus,
+textarea:focus{
+outline:none;
+border-color:var(--primary);
+background:white;
+}
+
+/* ===== BUTTON ===== */
+
+button{
+background:var(--primary);
+color:black;
+border:none;
+padding:14px 24px;
+border-radius:10px;
+font-weight:600;
+font-size:16px;
+cursor:pointer;
+transition:0.2s ease;
+}
+
+button:hover{
+background:#e0b93f;
+transform:translateY(-1px);
+}
+
+/* ===== BACK LINK ===== */
+
+.back-link{
+display:inline-block;
+margin-top:40px;
+font-size:18px;
+text-decoration:none;
+color:var(--text);
+}
+
+.back-link:hover{
+color:var(--primary);
+}
+
+</style>
 </head>
 
 <body>
