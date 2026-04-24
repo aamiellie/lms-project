@@ -1,7 +1,9 @@
+import eventlet
+eventlet.monkey_patch()
 from werkzeug.security import check_password_hash
 from flask import Flask, render_template, request, redirect, url_for, session, make_response
 from werkzeug.security import generate_password_hash
-from db import users_collection
+from app.db import users_collection
 import re   # for pattern checking
 import os
 from werkzeug.utils import secure_filename
