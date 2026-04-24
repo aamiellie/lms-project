@@ -1,7 +1,14 @@
+
+import os
+from dotenv import load_dotenv
+# 🔧 Load .env properly
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(os.path.join(BASE_DIR, "..", ".env"))
+
 import eventlet
 eventlet.monkey_patch()
 
-import os
+
 import re
 import json
 import random
@@ -12,17 +19,15 @@ from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, send_from_directory
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
-
 from flask_socketio import SocketIO, emit, join_room, leave_room
 
 from bson.objectid import ObjectId
-from dotenv import load_dotenv
 from PyPDF2 import PdfReader
 from groq import Groq
 from gtts import gTTS
 from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips
 
-# ✅ FIXED ALL IMPORTS
+# ✅ DB imports
 from app.db import (
     users_collection,
     classrooms_collection,
@@ -35,29 +40,32 @@ from app.db import (
     assignment_submissions_collection,
     live_classes_collection
 )
-GROQ_CHAT_MODEL = "llama-3.3-70b-versatile"
 
-load_dotenv()
+
+
+print("DEBUG MONGO:", os.getenv("MONGO_URI"))
+
 groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
+# 🚀 App setup
 app = Flask(__name__)
+app.secret_key = os.getenv("SECRET_KEY")
+
 socketio = SocketIO(app)
-import os
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# 📁 Folders
 app.config["STUDY_MATERIAL_FOLDER"] = os.path.join(BASE_DIR, "study_materials")
 os.makedirs(app.config["STUDY_MATERIAL_FOLDER"], exist_ok=True)
-app.secret_key = "supersecretkey"
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "..", "uploads")
 ALLOWED_EXTENSIONS = {"pdf", "docx", "ppt", "pptx"}
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 AUDIO_FOLDER = os.path.join(BASE_DIR, "..", "audio")
-os.makedirs(AUDIO_FOLDER, exist_ok=True)
-
 VIDEO_FOLDER = os.path.join(BASE_DIR, "..", "videos")
 ASSETS_FOLDER = os.path.join(BASE_DIR, "..", "assets", "presenters")
 
+os.makedirs(AUDIO_FOLDER, exist_ok=True)
 os.makedirs(VIDEO_FOLDER, exist_ok=True)
 
 def allowed_file(filename):
@@ -1656,6 +1664,7 @@ def handle_ice_candidate(data):
 import os
 
 if __name__ == "__main__":
+    app.secret_key = os.getenv("SECRET_KEY")
     port = int(os.environ.get("PORT", 5000))
     print(f"Server starting on port {port}...")
     socketio.run(app, host="0.0.0.0", port=port)
