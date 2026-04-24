@@ -1,36 +1,40 @@
 import eventlet
 eventlet.monkey_patch()
-from werkzeug.security import check_password_hash
-from flask import Flask, render_template, request, redirect, url_for, session, make_response
-from werkzeug.security import generate_password_hash
-from app.db import users_collection
-import re   # for pattern checking
+
 import os
-from werkzeug.utils import secure_filename
-from flask import send_from_directory
+import re
+import json
 import random
 import string
-from db import classrooms_collection
-from bson.objectid import ObjectId
-from db import study_materials_collection
+import uuid
 from datetime import datetime
-from PyPDF2 import PdfReader
+
+from flask import Flask, render_template, request, redirect, url_for, session, make_response, send_from_directory
+from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
+
+from flask_socketio import SocketIO, emit, join_room, leave_room
+
+from bson.objectid import ObjectId
 from dotenv import load_dotenv
+from PyPDF2 import PdfReader
 from groq import Groq
 from gtts import gTTS
 from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips
-from db import videos_collection
-from datetime import datetime
-from db import questions_collection
-import json
-import re
-from db import student_results_collection
-from db import community_posts_collection
-import uuid
-from db import assignments_collection
-from db import assignment_submissions_collection
-from flask_socketio import SocketIO, emit, join_room, leave_room
-from db import live_classes_collection
+
+# ✅ FIXED ALL IMPORTS
+from app.db import (
+    users_collection,
+    classrooms_collection,
+    study_materials_collection,
+    videos_collection,
+    questions_collection,
+    student_results_collection,
+    community_posts_collection,
+    assignments_collection,
+    assignment_submissions_collection,
+    live_classes_collection
+)
 GROQ_CHAT_MODEL = "llama-3.3-70b-versatile"
 
 load_dotenv()
