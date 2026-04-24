@@ -3,133 +3,276 @@
 <head>
     <title>Upload Study Material</title>
 
-    <style>
-    :root {
-        --bg-dark: #21201E;
-        --bg-card: #2A2927;
-        --accent: #C200FB;
-        --text-light: #F9F8F6;
-        --text-muted: #bfbfbf;
-        --border-dark: #333330;
-    }
+<style>
 
-    body {
-        margin: 0;
-        padding: 60px 90px;
-        background: var(--bg-dark);
-        color: var(--text-light);
-        font-family: "Segoe UI", Arial, sans-serif;
-    }
+/* =========================
+COLOR THEME
+========================= */
 
-    h2 {
-        color: var(--accent);
-        margin-bottom: 25px;
-    }
+:root{
+--green:#64a959;
+--green-light:#60ca82;
+--purple:#7C3AED;
+--bg:#FFFFFF;
+--text:#111111;
+--card:#FFFFFF;
+--border:#E5E7EB;
+}
 
-    /* Upload Form */
-    form input[type="file"] {
-        background: var(--bg-card);
-        border: 1px solid var(--border-dark);
-        color: var(--text-light);
-        padding: 8px;
-        border-radius: 6px;
-        margin-bottom: 15px;
-    }
+/* =========================
+GLOBAL
+========================= */
 
-    form button {
-        background: var(--accent);
-        color: var(--bg-dark);
-        border: none;
-        padding: 8px 16px;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: 0.3s ease;
-    }
+body{
+margin:0;
+padding:60px 80px;
+background:var(--bg);
+color:var(--text);
+font-family:"Poppins", sans-serif;
+overflow-x:hidden;
+}
 
-    form button:hover {
-        box-shadow: 0 0 10px rgba(194,0,251,0.5);
-    }
+/* =========================
+FLOATING SHAPES (4s SPEED)
+========================= */
 
-    hr {
-        border: 1px solid var(--border-dark);
-        margin: 40px 0;
-    }
+.shape{
+position:fixed;
+border-radius:40px;
+opacity:0.12;
+z-index:-1;
+animation:floatShape 4s infinite ease-in-out alternate;
+}
 
-    h3 {
-        color: var(--accent);
-        margin-bottom: 20px;
-    }
+.shape1{
+width:220px;
+height:220px;
+background:var(--green);
+top:5%;
+left:-80px;
+}
 
-    ul {
-        list-style: none;
-        padding: 0;
-    }
+.shape2{
+width:260px;
+height:260px;
+background:var(--purple);
+bottom:-120px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:1s;
+}
 
-    .material-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-dark);
-        padding: 18px;
-        border-radius: 8px;
-        margin-bottom: 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: 0.3s ease;
-    }
+@keyframes floatShape{
+0%{transform:translateY(0);}
+50%{transform:translateY(-25px);}
+100%{transform:translateY(25px);}
+}
 
-    .material-card:hover {
-        border-color: var(--accent);
-        box-shadow: 0 0 12px rgba(194,0,251,0.3);
-    }
+/* =========================
+RINGS (4s SPEED)
+========================= */
 
-    .material-name {
-        font-weight: 500;
-    }
+.ring{
+position:fixed;
+border-radius:50px;
+z-index:-1;
+animation:floatRing 4s infinite ease-in-out alternate;
+}
 
-    .material-actions a {
-        color: var(--accent);
-        text-decoration: none;
-        margin-right: 15px;
-    }
+.ring1{
+width:240px;
+height:140px;
+border:2px solid rgba(100,169,89,0.25);
+top:20%;
+right:10%;
+}
 
-    .material-actions a:hover {
-        text-shadow: 0 0 6px rgba(194,0,251,0.6);
-    }
+.ring2{
+width:200px;
+height:120px;
+border:2px solid rgba(124,58,237,0.25);
+bottom:-60px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:1s;
+}
 
-    .material-actions button {
-        background: transparent;
-        border: 1px solid var(--accent);
-        color: var(--accent);
-        padding: 4px 10px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: 0.3s ease;
-    }
+@keyframes floatRing{
+0%{transform:translateX(-50%) translateY(0);}
+50%{transform:translateX(-50%) translateY(-20px);}
+100%{transform:translateX(-50%) translateY(20px);}
+}
 
-    .material-actions button:hover {
-        background: var(--accent);
-        color: var(--bg-dark);
-    }
+/* =========================
+TITLE
+========================= */
 
-    .empty-text {
-        color: var(--text-muted);
-    }
+h2{
+font-size:32px;
+margin-bottom:25px;
+}
 
-    .back-link {
-        display: inline-block;
-        margin-top: 40px;
-        color: var(--accent);
-        text-decoration: none;
-    }
+/* =========================
+UPLOAD FORM (CARD STYLE)
+========================= */
 
-    .back-link:hover {
-        text-shadow: 0 0 6px rgba(194,0,251,0.6);
-    }
-    </style>
+form{
+background:rgba(255,255,255,0.95);
+backdrop-filter:blur(10px);
+padding:25px;
+border-radius:16px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+display:inline-block;
+}
+
+/* FILE INPUT */
+
+form input[type="file"]{
+background:white;
+border:1px solid var(--border);
+padding:12px;
+border-radius:10px;
+margin-bottom:15px;
+font-size:14px;
+width:260px;
+}
+
+/* BUTTON */
+
+form button{
+background:var(--green);
+color:white;
+border:none;
+padding:12px 22px;
+border-radius:10px;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+}
+
+form button:hover{
+background:black;
+transform:translateY(-2px);
+}
+
+/* =========================
+DIVIDER
+========================= */
+
+hr{
+border:none;
+height:1px;
+background:var(--border);
+margin:35px 0;
+}
+
+/* =========================
+SECTION TITLE
+========================= */
+
+h3{
+font-size:22px;
+margin-bottom:15px;
+color:var(--purple);
+}
+
+/* =========================
+MATERIAL CARD
+========================= */
+
+.material-card{
+background:rgba(255,255,255,0.95);
+backdrop-filter:blur(10px);
+border-radius:16px;
+padding:18px;
+margin-bottom:12px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 10px 25px rgba(0,0,0,0.06);
+transition:0.3s;
+}
+
+.material-card:hover{
+transform:translateY(-5px) scale(1.02);
+}
+
+/* =========================
+TEXT
+========================= */
+
+.material-name{
+font-size:15px;
+font-weight:500;
+}
+
+/* =========================
+ACTIONS
+========================= */
+
+.material-actions a{
+text-decoration:none;
+margin-right:12px;
+font-weight:600;
+color:var(--green);
+transition:0.3s;
+}
+
+.material-actions a:hover{
+color:var(--purple);
+}
+
+/* DELETE BUTTON */
+
+.material-actions button{
+background:rgba(255,0,0,0.08);
+border:none;
+padding:6px 12px;
+border-radius:8px;
+cursor:pointer;
+font-size:13px;
+transition:0.3s;
+color:#dc2626;
+}
+
+.material-actions button:hover{
+background:#dc2626;
+color:white;
+}
+
+/* =========================
+EMPTY
+========================= */
+
+.empty-text{
+color:#777;
+}
+
+/* =========================
+BACK LINK
+========================= */
+
+.back-link{
+display:inline-block;
+margin-top:25px;
+font-size:14px;
+text-decoration:none;
+color:var(--purple);
+font-weight:600;
+}
+
+.back-link:hover{
+color:black;
+}
+</style>
 </head>
 
 <body>
+    <div class="shape shape1"></div>
+<div class="shape shape2"></div>
 
+<div class="ring ring1"></div>
+<div class="ring ring2"></div>
     <h2>Upload Study Material</h2>
 
     <form method="POST" enctype="multipart/form-data">

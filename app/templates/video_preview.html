@@ -3,95 +3,229 @@
 <head>
     <title>AI Video Creation</title>
 
-    <style>
-    :root {
-        --bg-dark: #21201E;
-        --bg-card: #2A2927;
-        --accent: #FA3002;
-        --text-light: #F9F8F6;
-        --text-muted: #bfbfbf;
-        --border-dark: #333330;
-    }
+<style>
 
-    body {
-        margin: 0;
-        padding: 60px 90px;
-        background: var(--bg-dark);
-        color: var(--text-light);
-        font-family: "Segoe UI", Arial, sans-serif;
-    }
+/* =========================
+COLOR THEME
+========================= */
 
-    h2, h3 {
-        color: var(--accent);
-        margin-bottom: 20px;
-    }
+:root{
+--green:#64a959;
+--green-light:#60ca82;
+--purple:#7C3AED;
+--bg:#FFFFFF;
+--text:#111111;
+--card:#FFFFFF;
+--border:#E5E7EB;
+}
 
-    .step-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-dark);
-        padding: 30px;
-        border-radius: 10px;
-        margin-bottom: 40px;
-        transition: 0.3s ease;
-    }
+/* =========================
+GLOBAL
+========================= */
 
-    .step-card:hover {
-        border-color: var(--accent);
-        box-shadow: 0 0 18px rgba(250,48,2,0.25);
-    }
+body{
+margin:0;
+padding:60px 80px;
+background:var(--bg);
+color:var(--text);
+font-family:"Poppins", sans-serif;
+overflow-x:hidden;
+}
 
-    textarea {
-        width: 100%;
-        background: #1c1b1a;
-        border: 1px solid var(--border-dark);
-        color: var(--text-light);
-        padding: 15px;
-        border-radius: 8px;
-        font-size: 14px;
-        resize: vertical;
-        margin-bottom: 20px;
-    }
+/* =========================
+FLOATING SHAPES
+========================= */
 
-    textarea:focus {
-        outline: none;
-        border-color: var(--accent);
-        box-shadow: 0 0 8px rgba(250,48,2,0.4);
-    }
+.shape{
+position:fixed;
+border-radius:40px;
+opacity:0.12;
+z-index:-1;
+animation:floatShape 14s infinite ease-in-out alternate;
+}
 
-    button {
-        background: var(--accent);
-        color: var(--bg-dark);
-        border: none;
-        padding: 10px 20px;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s ease;
-    }
+.shape1{
+width:220px;
+height:220px;
+background:var(--green);
+top:5%;
+left:-80px;
+}
 
-    button:hover {
-        box-shadow: 0 0 15px rgba(250,48,2,0.6);
-        transform: translateY(-2px);
-    }
+.shape2{
+width:260px;
+height:260px;
+background:var(--purple);
+bottom:-120px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:3s;
+}
 
-    audio, video {
-        margin-top: 20px;
-        border-radius: 8px;
-        width: 100%;
-        max-width: 600px;
-    }
+@keyframes floatShape{
+0%{transform:translateY(0);}
+50%{transform:translateY(-30px);}
+100%{transform:translateY(30px);}
+}
 
-    .back-link {
-        display: inline-block;
-        margin-top: 40px;
-        color: var(--accent);
-        text-decoration: none;
-    }
+/* =========================
+OUTLINE RINGS
+========================= */
 
-    .back-link:hover {
-        text-shadow: 0 0 6px rgba(250,48,2,0.6);
-    }
-    </style>
+.ring{
+position:fixed;
+border-radius:50px;
+z-index:-1;
+animation:floatRing 16s infinite ease-in-out alternate;
+}
+
+.ring1{
+width:240px;
+height:140px;
+border:2px solid rgba(100,169,89,0.25);
+top:20%;
+right:10%;
+}
+
+.ring2{
+width:200px;
+height:120px;
+border:2px solid rgba(124,58,237,0.25);
+bottom:-60px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:3s;
+}
+
+@keyframes floatRing{
+0%{transform:translateX(-50%) translateY(0);}
+50%{transform:translateX(-50%) translateY(-20px);}
+100%{transform:translateX(-50%) translateY(20px);}
+}
+
+/* =========================
+TITLES
+========================= */
+
+h2{
+font-size:32px;
+margin-bottom:25px;
+}
+
+h3{
+font-size:22px;
+margin:25px 0 15px;
+color:var(--purple);
+}
+
+/* =========================
+STEP CARD
+========================= */
+
+.step-card{
+background:rgba(255,255,255,0.95);
+backdrop-filter:blur(10px);
+padding:30px;
+border-radius:20px;
+margin-bottom:30px;
+box-shadow:0 20px 50px rgba(0,0,0,0.08);
+animation:fadeUp 0.6s ease;
+}
+
+/* =========================
+TEXTAREA
+========================= */
+
+textarea{
+width:100%;
+padding:14px;
+border-radius:12px;
+border:1px solid var(--border);
+font-size:15px;
+margin-bottom:18px;
+resize:vertical;
+background:#fafafa;
+transition:0.3s;
+}
+
+textarea:focus{
+outline:none;
+border-color:var(--purple);
+background:white;
+box-shadow:0 0 0 3px rgba(124,58,237,0.15);
+}
+
+/* =========================
+BUTTONS (IMPORTANT)
+========================= */
+
+button{
+padding:12px 22px;
+border:none;
+border-radius:12px;
+font-weight:600;
+font-size:14px;
+cursor:pointer;
+transition:0.3s;
+}
+
+/* Different actions */
+
+button[type="submit"]{
+background:var(--green);
+color:white;
+}
+
+button[type="submit"]:hover{
+background:black;
+transform:translateY(-2px);
+}
+
+/* =========================
+MEDIA (AUDIO + VIDEO)
+========================= */
+
+audio,
+video{
+margin-top:20px;
+border-radius:12px;
+width:100%;
+max-width:650px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* =========================
+BACK LINK
+========================= */
+
+.back-link{
+display:inline-block;
+margin-top:30px;
+font-size:14px;
+text-decoration:none;
+color:var(--purple);
+font-weight:600;
+}
+
+.back-link:hover{
+color:black;
+}
+
+/* =========================
+ANIMATION
+========================= */
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(30px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+} 
+</style>
 </head>
 
 <body>
@@ -101,6 +235,7 @@
 <!-- STEP 1 -->
 <div class="step-card">
     <form method="POST">
+        <input type="hidden" name="source_file" value="{{ source_file }}">
         <input type="hidden" name="presenter" value="{{ presenter }}">
         <input type="hidden" name="title" value="{{ title }}">
         <input type="hidden" name="description" value="{{ description }}">
@@ -120,6 +255,7 @@
 
 <div class="step-card">
     <form method="POST">
+        <input type="hidden" name="source_file" value="{{ source_file }}">
         <input type="hidden" name="presenter" value="{{ presenter }}">
         <input type="hidden" name="title" value="{{ title }}">
         <input type="hidden" name="description" value="{{ description }}">
@@ -144,6 +280,7 @@
     </audio>
 
     <form method="POST" style="margin-top:20px;">
+        <input type="hidden" name="source_file" value="{{ source_file }}">
         <input type="hidden" name="presenter" value="{{ presenter }}">
         <input type="hidden" name="title" value="{{ title }}">
         <input type="hidden" name="description" value="{{ description }}">

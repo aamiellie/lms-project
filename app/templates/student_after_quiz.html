@@ -3,98 +3,295 @@
 <head>
     <title>After Class Quiz</title>
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+
+/* =========================
+COLOR SYSTEM
+========================= */
+
+:root{
+--bg:#FFFFFF;
+--text:#190019;
+--primary:#2B124C;
+--secondary:#522B5B;
+--accent:#854F6C;
+--soft:#DFB6B2;
+--light:#FBE4D8;
+--border:#E5E7EB;
 }
 
-body {
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    background: #0f0f0f;
-    color: #e8e8e8;
-    padding: 60px 100px;
+/* =========================
+GLOBAL
+========================= */
+
+body{
+font-family:"Poppins", sans-serif;
+background:var(--bg);
+color:var(--text);
+padding:60px 100px;
+font-size:16px;
+overflow-x:hidden;
 }
 
-/* ===== TITLE ===== */
-h2 {
-    font-size: 30px;
-    font-weight: 700;
-    color: #D8CFBC;
-    margin-bottom: 10px;
+/* =========================
+TITLE
+========================= */
+
+h2{
+font-size:30px;
+margin-bottom:10px;
+color:var(--primary);
 }
 
-p strong {
-    color: #bfb6a3;
+p strong{
+color:#666;
+font-size:14px;
 }
 
-/* ===== FORM CARD ===== */
-form {
-    margin-top: 40px;
+/* =========================
+FORM
+========================= */
+
+form{
+margin-top:30px;
 }
 
-/* ===== QUESTION BLOCK ===== */
-.question-card {
-    background: #151515;
-    border: 1px solid #D8CFBC;
-    border-radius: 14px;
-    padding: 25px;
-    margin-bottom: 30px;
+/* =========================
+QUESTION CARD
+========================= */
+
+.question-card{
+background:white;
+border-radius:16px;
+padding:22px;
+margin-bottom:20px;
+box-shadow:0 10px 25px rgba(0,0,0,0.05);
+border:1px solid var(--light);
+transition:0.3s;
 }
 
-.question-card p {
-    margin-bottom: 15px;
+.question-card:hover{
+transform:translateY(-4px);
+border-color:var(--soft);
 }
 
-/* ===== OPTIONS ===== */
-label {
-    display: block;
-    margin-bottom: 10px;
-    cursor: pointer;
-    padding: 8px 12px;
-    border-radius: 8px;
-    transition: 0.2s ease;
+.question-card p{
+margin-bottom:12px;
+font-size:16px;
 }
 
-label:hover {
-    background: #1c1c1c;
+/* =========================
+OPTIONS
+========================= */
+
+label{
+display:block;
+margin-bottom:10px;
+cursor:pointer;
+padding:10px 12px;
+border-radius:10px;
+font-size:14px;
+transition:0.3s;
 }
 
-input[type="radio"] {
-    margin-right: 10px;
+label:hover{
+background:var(--light);
 }
 
-/* ===== BUTTON ===== */
-button {
-    margin-top: 20px;
-    padding: 12px 26px;
-    background: #D8CFBC;
-    color: black;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s ease;
+input[type="radio"]{
+margin-right:8px;
 }
 
-button:hover {
-    background: #c9bea9;
+/* =========================
+BUTTON
+========================= */
+
+button{
+margin-top:20px;
+padding:12px 22px;
+background:var(--primary);
+color:white;
+border:none;
+border-radius:10px;
+font-weight:600;
+cursor:pointer;
+font-size:14px;
+transition:0.3s;
 }
 
-/* ===== BACK LINK ===== */
-a {
-    color: #D8CFBC;
-    text-decoration: none;
-    font-weight: 500;
+button:hover{
+background:var(--secondary);
+transform:translateY(-2px);
 }
 
-a:hover {
-    text-decoration: underline;
+/* =========================
+BACK LINK
+========================= */
+
+a{
+color:var(--primary);
+text-decoration:none;
+font-size:14px;
+font-weight:500;
+}
+
+a:hover{
+color:var(--accent);
+}
+
+/* =========================
+FLOATING SHAPES (4s)
+========================= */
+
+.shape{
+position:fixed;
+border-radius:40px;
+opacity:0.12;
+z-index:-1;
+animation:floatShape 4s infinite ease-in-out alternate;
+}
+
+.shape1{
+width:240px;
+height:240px;
+background:#DFB6B2;
+top:5%;
+left:-80px;
+}
+
+.shape2{
+width:260px;
+height:260px;
+background:#522B5B;
+bottom:-120px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:1s;
+}
+
+/* =========================
+MORE DYNAMIC RINGS 🔥
+========================= */
+
+.ring{
+position:fixed;
+border-radius:50px;
+z-index:-1;
+animation:floatRing 4s infinite ease-in-out alternate;
+}
+
+/* BIG RINGS */
+
+.ring1{
+width:260px;
+height:150px;
+border:2px solid rgba(43,18,76,0.25);
+top:20%;
+right:10%;
+}
+
+.ring2{
+width:220px;
+height:120px;
+border:2px solid rgba(133,79,108,0.25);
+bottom:-60px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:1s;
+}
+
+/* EXTRA SMALL RINGS (NEW 🔥) */
+
+.ring3{
+width:120px;
+height:80px;
+border:2px solid rgba(43,18,76,0.2);
+top:40%;
+left:10%;
+animation-delay:2s;
+}
+
+.ring4{
+width:100px;
+height:60px;
+border:2px solid rgba(133,79,108,0.2);
+top:70%;
+right:20%;
+animation-delay:3s;
+}
+
+.ring5{
+width:140px;
+height:90px;
+border:2px solid rgba(82,43,91,0.2);
+top:10%;
+right:30%;
+animation-delay:1.5s;
+}
+
+/* =========================
+SMALL CIRCLES
+========================= */
+
+.circle{
+position:fixed;
+border-radius:50%;
+opacity:0.10;
+z-index:-1;
+animation:floatCircle 4s infinite ease-in-out alternate;
+}
+
+.circle1{
+width:40px;
+height:40px;
+background:#522B5B;
+top:40%;
+left:20%;
+}
+
+.circle2{
+width:30px;
+height:30px;
+background:#DFB6B2;
+top:70%;
+right:20%;
+animation-delay:1s;
+}
+
+/* =========================
+ANIMATIONS
+========================= */
+
+@keyframes floatShape{
+0%{transform:translateY(0);}
+50%{transform:translateY(-25px);}
+100%{transform:translateY(25px);}
+}
+
+@keyframes floatRing{
+0%{transform:translateY(0);}
+50%{transform:translateY(-20px);}
+100%{transform:translateY(20px);}
+}
+
+@keyframes floatCircle{
+0%{transform:translateY(0);}
+50%{transform:translateY(-15px);}
+100%{transform:translateY(15px);}
 }
 </style>
 </head>
 <body>
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
 
+<div class="ring ring1"></div>
+<div class="ring ring2"></div>
+<div class="ring ring3"></div>
+<div class="ring ring4"></div>
+<div class="ring ring5"></div>
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
 <h2>📝 After-Class Quiz</h2>
 <p><strong>{{ video.title }}</strong></p>
 

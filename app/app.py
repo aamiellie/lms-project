@@ -1,5 +1,5 @@
 from werkzeug.security import check_password_hash
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, make_response
 from werkzeug.security import generate_password_hash
 from db import users_collection
 import re   # for pattern checking
@@ -664,6 +664,8 @@ def create_video(classroom_id):
         if action is None:
             title = request.form.get("title")
             description = request.form.get("description")
+            print("TITLE STEP1:", title)
+            print("DESC STEP1:", description)
             presenter = request.form.get("presenter", "ai_girl.mp4")
 
             file = request.files.get("file")
@@ -681,8 +683,10 @@ def create_video(classroom_id):
             extracted_text = extract_text_from_file(file_path)
 
             session["temp_extracted_text"] = extracted_text
-            session["temp_title"] = title
-            session["temp_description"] = description
+        
+            session["temp_filename"] = filename
+            session.permanent = True
+            session.modified = True
 
             return render_template(
                 "video_preview.html",
@@ -690,7 +694,8 @@ def create_video(classroom_id):
                 extracted_text=extracted_text,
                 title=title,
                 description=description,
-                presenter=presenter
+                presenter=presenter,
+                source_file=filename 
             )
 
 
@@ -699,16 +704,17 @@ def create_video(classroom_id):
             title = request.form.get("title")
             description = request.form.get("description")
             presenter = request.form.get("presenter", "ai_girl.mp4")
+            source_file = request.form.get("source_file")
+            extracted_text = request.form.get("extracted_text") or session.get("temp_extracted_text", "")
 
-            extracted_text = session.get("temp_extracted_text", "").strip()
-            title = session.get("temp_title")
-            description = session.get("temp_description")
-
-
+            extracted_text = extracted_text.strip()
+            
             if not extracted_text:
-                return "Extracted text missing. Please upload file again."
+                 return redirect(url_for("create_video", classroom_id=classroom_id))
 
             narration = generate_narration(extracted_text)
+            session["temp_narration"] = narration
+            session.modified = True
 
             return render_template(
                 "video_preview.html",
@@ -717,7 +723,8 @@ def create_video(classroom_id):
                 narration=narration,
                 title=title,
                 description=description,
-                presenter=presenter
+                presenter=presenter,
+                source_file=source_file
             )
 
 
@@ -726,7 +733,7 @@ def create_video(classroom_id):
             title = request.form.get("title")
             description = request.form.get("description")
             presenter = request.form.get("presenter", "ai_girl.mp4")
-
+            source_file = request.form.get("source_file")
             narration = request.form.get("narration", "")
             extracted_text = session.get("temp_extracted_text", "")
 
@@ -745,15 +752,18 @@ def create_video(classroom_id):
                 audio_file=audio_filename,
                 title=title,
                 description=description,
-                presenter=presenter
+                presenter=presenter,
+                source_file=source_file
             )
 
         # STEP 4: Generate final lecture video
         if action == "generate_video":
             title = request.form.get("title")
             description = request.form.get("description")
+            print("FINAL TITLE:", title)
+            print("FINAL DESC:", description)
             presenter = request.form.get("presenter", "ai_girl.mp4")
-
+            source_file = request.form.get("source_file")
             audio_file = request.form.get("audio_file")
             narration = request.form.get("narration")
             extracted_text = session.get("temp_extracted_text", "")
@@ -769,6 +779,7 @@ def create_video(classroom_id):
             # ✅ SAVE VIDEO METADATA IN DB
             title = request.form.get("title")
             description = request.form.get("description")
+            filename = request.form.get("source_file")
 
             videos_collection.insert_one({
                 "classroom_id": classroom_id,
@@ -778,6 +789,7 @@ def create_video(classroom_id):
                 "video_filename": video_filename,
                 "audio_filename": audio_file,
                 "narration_text": narration,
+                "source_file": filename,   # ✅ NOW WORKS
                 "is_published": False,
                 "created_at": datetime.utcnow()
             })
@@ -789,7 +801,8 @@ def create_video(classroom_id):
                 extracted_text=extracted_text,
                 narration=narration,
                 audio_file=audio_file,
-                video_file=video_filename
+                video_file=video_filename,
+                source_file=source_file
             )
 
     # GET request
@@ -886,11 +899,20 @@ def watch_video(classroom_id, video_id):
             "ask_time": q["ask_time"]
         })
 
+    # Check if quiz already done
+    existing_result = student_results_collection.find_one({
+        "student_id": session["user_id"],
+        "video_id": video_id
+    })
+
+    quiz_done = True if existing_result else False
+
     return render_template(
         "student_watch_video.html",
         classroom=classroom,
         video=video,
-        questions=questions
+        questions=questions,
+        quiz_done=quiz_done
     )
 
 @app.route("/teacher/video/<video_id>/map-questions", methods=["GET", "POST"])
@@ -1024,6 +1046,15 @@ def after_class_quiz(classroom_id, video_id):
 
     if not video:
         return "Video not found!"
+        
+        # 🔒 If already submitted, redirect to video
+    existing = student_results_collection.find_one({
+        "student_id": session["user_id"],
+        "video_id": video_id
+    })
+
+    if existing:
+        return redirect(f"/student/classroom/{classroom_id}/video/{video_id}")
 
     raw_questions = list(
         questions_collection.find({
@@ -1053,6 +1084,15 @@ def submit_after_quiz(classroom_id, video_id):
 
     if "user_id" not in session or session.get("user_role") != "student":
         return redirect(url_for("login"))
+
+    # 🔒 Prevent duplicate submission
+    existing = student_results_collection.find_one({
+        "student_id": session["user_id"],
+        "video_id": video_id
+    })
+
+    if existing:
+        return redirect(f"/student/classroom/{classroom_id}/video/{video_id}")
 
     raw_questions = list(
         questions_collection.find({
@@ -1099,13 +1139,18 @@ def submit_after_quiz(classroom_id, video_id):
         "submitted_at": datetime.utcnow()
     })
 
-    return render_template(
+    response = make_response(render_template(
         "student_quiz_result.html",
+        classroom_id=classroom_id,
+        video_id=video_id,
         score=score,
         total=total,
         percentage=percentage,
         results=results
-    )
+    ))
+
+    response.headers["Cache-Control"] = "no-store"
+    return response
 @app.route("/teacher/classroom/<classroom_id>/results")
 def view_results(classroom_id):
 
@@ -1261,6 +1306,27 @@ def react_to_post(classroom_id, post_id):
 
 
     return redirect(url_for("student_classroom", classroom_id=classroom_id))
+
+@app.route("/teacher/community/<post_id>/delete", methods=["POST"])
+def delete_community_post(post_id):
+
+    if "user_id" not in session or session.get("user_role") != "teacher":
+        return redirect(url_for("login"))
+
+    post = community_posts_collection.find_one({
+        "_id": ObjectId(post_id),
+        "teacher_id": session["user_id"]
+    })
+
+    if not post:
+        return "Post not found or unauthorized!"
+
+    community_posts_collection.delete_one({
+        "_id": ObjectId(post_id)
+    })
+
+    return redirect(request.referrer)
+
 @app.route("/teacher/classroom/<classroom_id>/create-assignment", methods=["GET", "POST"])
 def create_assignment(classroom_id):
 
@@ -1353,6 +1419,38 @@ def submit_assignment(classroom_id, assignment_id):
         return redirect(url_for("student_classroom", classroom_id=classroom_id))
 
     return render_template("submit_assignment.html", assignment=assignment)
+@app.route("/teacher/assignment/<assignment_id>/delete", methods=["POST"])
+def delete_assignment(assignment_id):
+
+    if "user_id" not in session or session.get("user_role") != "teacher":
+        return redirect(url_for("login"))
+
+    assignment = assignments_collection.find_one({
+        "_id": ObjectId(assignment_id),
+        "teacher_id": session["user_id"]
+    })
+
+    if not assignment:
+        return "Assignment not found or unauthorized!"
+
+    # 🗑️ Delete question file if exists
+    if assignment.get("question_file"):
+        file_path = os.path.join(app.config["UPLOAD_FOLDER"], assignment["question_file"])
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+    # 🗑️ Delete submissions also (important!)
+    assignment_submissions_collection.delete_many({
+        "assignment_id": assignment_id
+    })
+
+    # 🗑️ Delete assignment
+    assignments_collection.delete_one({
+        "_id": ObjectId(assignment_id)
+    })
+
+    return redirect(request.referrer)
+    
 @app.route("/teacher/assignment/<assignment_id>/submissions")
 def view_submissions(assignment_id):
 
@@ -1430,6 +1528,33 @@ def end_live_class(room_id):
     )
 
     return "Class ended"
+@app.route("/change-password", methods=["GET", "POST"])
+def change_password():
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        current = request.form.get("current_password")
+        new = request.form.get("new_password")
+        confirm = request.form.get("confirm_password")
+
+        user = users_collection.find_one({"_id": ObjectId(session["user_id"])})
+
+        if not user or user["password"] != current:
+            return "Current password is incorrect"
+
+        if new != confirm:
+            return "New passwords do not match"
+
+        users_collection.update_one(
+            {"_id": ObjectId(session["user_id"])},
+            {"$set": {"password": new}}
+        )
+
+        return "Password updated successfully"
+
+    return render_template("change_password.html")
 @app.route("/logout")
 def logout():
     session.clear()

@@ -3,109 +3,246 @@
 <head>
     <title>Create Video</title>
 
-    <style>
-    :root {
-        --bg-dark: #21201E;
-        --bg-card: #2A2927;
-        --accent: #FA3002;
-        --text-light: #F9F8F6;
-        --text-muted: #bfbfbf;
-        --border-dark: #333330;
-    }
+<style>
 
-    body {
-        margin: 0;
-        padding: 60px 90px;
-        background: var(--bg-dark);
-        color: var(--text-light);
-        font-family: "Segoe UI", Arial, sans-serif;
-    }
+/* =========================
+COLOR THEME
+========================= */
 
-    h2 {
-        color: var(--accent);
-        margin-bottom: 35px;
-    }
+:root{
+--green:#64a959;
+--green-light:#60ca82;
+--purple:#7C3AED;
+--bg:#FFFFFF;
+--text:#111111;
+--card:#FFFFFF;
+--border:#E5E7EB;
+}
 
-    form {
-        background: var(--bg-card);
-        border: 1px solid var(--border-dark);
-        padding: 30px;
-        border-radius: 10px;
-        max-width: 600px;
-        transition: 0.3s ease;
-    }
+/* =========================
+GLOBAL
+========================= */
 
-    form:hover {
-        border-color: var(--accent);
-        box-shadow: 0 0 18px rgba(250,48,2,0.25);
-    }
+body{
+margin:0;
+padding:60px 80px;
+background:var(--bg);
+color:var(--text);
+font-family:"Poppins", sans-serif;
+overflow-x:hidden;
+}
 
-    label {
-        display: block;
-        margin-bottom: 6px;
-        color: var(--text-muted);
-        font-size: 14px;
-    }
+/* =========================
+FLOATING SHAPES
+========================= */
 
-    input[type="text"],
-    textarea,
-    select,
-    input[type="file"] {
-        width: 100%;
-        background: #1c1b1a;
-        border: 1px solid var(--border-dark);
-        color: var(--text-light);
-        padding: 10px;
-        border-radius: 6px;
-        margin-bottom: 20px;
-        font-size: 14px;
-    }
+.shape{
+position:fixed;
+border-radius:40px;
+opacity:0.12;
+z-index:-1;
+animation:floatShape 14s infinite ease-in-out alternate;
+}
 
-    textarea {
-        resize: none;
-    }
+.shape1{
+width:220px;
+height:220px;
+background:var(--green);
+top:5%;
+left:-80px;
+}
 
-    input:focus,
-    textarea:focus,
-    select:focus {
-        outline: none;
-        border-color: var(--accent);
-        box-shadow: 0 0 8px rgba(250,48,2,0.4);
-    }
+.shape2{
+width:260px;
+height:260px;
+background:var(--purple);
+bottom:-120px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:3s;
+}
 
-    button {
-        background: var(--accent);
-        color: var(--bg-dark);
-        border: none;
-        padding: 10px 20px;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s ease;
-    }
+@keyframes floatShape{
+0%{transform:translateY(0);}
+50%{transform:translateY(-30px);}
+100%{transform:translateY(30px);}
+}
 
-    button:hover {
-        box-shadow: 0 0 15px rgba(250,48,2,0.6);
-        transform: translateY(-2px);
-    }
+/* =========================
+OUTLINE RINGS
+========================= */
 
-    .back-link {
-        display: inline-block;
-        margin-top: 40px;
-        color: var(--accent);
-        text-decoration: none;
-    }
+.ring{
+position:fixed;
+border-radius:50px;
+z-index:-1;
+animation:floatRing 16s infinite ease-in-out alternate;
+}
 
-    .back-link:hover {
-        text-shadow: 0 0 6px rgba(250,48,2,0.6);
-    }
-    </style>
+.ring1{
+width:240px;
+height:140px;
+border:2px solid rgba(100,169,89,0.25);
+top:20%;
+right:10%;
+}
+
+.ring2{
+width:200px;
+height:120px;
+border:2px solid rgba(124,58,237,0.25);
+bottom:-60px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:3s;
+}
+
+@keyframes floatRing{
+0%{transform:translateX(-50%) translateY(0);}
+50%{transform:translateX(-50%) translateY(-20px);}
+100%{transform:translateX(-50%) translateY(20px);}
+}
+
+/* =========================
+TITLE
+========================= */
+
+h2{
+font-size:32px;
+margin-bottom:30px;
+}
+
+h2 span{
+color:var(--purple);
+}
+
+/* =========================
+FORM CARD
+========================= */
+
+form{
+background:rgba(255,255,255,0.95);
+backdrop-filter:blur(10px);
+padding:40px;
+border-radius:20px;
+max-width:600px;
+box-shadow:0 20px 50px rgba(0,0,0,0.08);
+animation:fadeUp 0.8s ease;
+}
+
+/* =========================
+LABEL
+========================= */
+
+label{
+display:block;
+margin-bottom:6px;
+font-size:14px;
+color:#666;
+}
+
+/* =========================
+INPUTS
+========================= */
+
+input[type="text"],
+textarea,
+select,
+input[type="file"]{
+width:100%;
+padding:14px;
+border-radius:12px;
+border:1px solid var(--border);
+margin-bottom:18px;
+font-size:15px;
+transition:0.3s;
+background:#fafafa;
+}
+
+/* FILE INPUT SPECIAL */
+input[type="file"]{
+padding:10px;
+background:white;
+cursor:pointer;
+}
+
+/* SELECT */
+select{
+cursor:pointer;
+}
+
+/* FOCUS EFFECT */
+input:focus,
+textarea:focus,
+select:focus{
+outline:none;
+border-color:var(--purple);
+background:white;
+box-shadow:0 0 0 3px rgba(124,58,237,0.15);
+}
+
+/* =========================
+BUTTON
+========================= */
+
+button{
+background:var(--green);
+color:white;
+border:none;
+padding:14px 24px;
+border-radius:12px;
+font-weight:600;
+font-size:15px;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+background:black;
+transform:translateY(-2px);
+}
+
+/* =========================
+BACK LINK
+========================= */
+
+.back-link{
+display:inline-block;
+margin-top:25px;
+font-size:14px;
+text-decoration:none;
+color:var(--purple);
+font-weight:600;
+}
+
+.back-link:hover{
+color:black;
+}
+
+/* =========================
+ANIMATION
+========================= */
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(30px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+</style>
 </head>
 
 <body>
+    <div class="shape shape1"></div>
+<div class="shape shape2"></div>
 
-    <h2>Create Video from Text / PDF</h2>
-
+<div class="ring ring1"></div>
+<div class="ring ring2"></div>
+<h2>Create <span>Video</span></h2>
     <form method="POST" enctype="multipart/form-data">
 
         <label>Video Title</label>

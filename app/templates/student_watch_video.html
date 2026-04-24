@@ -4,135 +4,316 @@
     <title>{{ video.title }}</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+
+/* =========================
+COLOR SYSTEM (YOUR PALETTE)
+========================= */
+
+:root{
+--bg:#FFFFFF;
+--text:#190019;
+--primary:#2B124C;
+--secondary:#522B5B;
+--accent:#854F6C;
+--soft:#DFB6B2;
+--light:#FBE4D8;
+--border:#E5E7EB;
 }
 
-body {
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    background: #050505;
-    color: #e5e5e5;
-    padding: 60px 100px;
+/* =========================
+GLOBAL
+========================= */
+
+body{
+font-family:"Poppins", sans-serif;
+background:var(--bg);
+color:var(--text);
+padding:60px 100px;
+font-size:16px;
+overflow-x:hidden;
 }
 
-/* ===== TITLE ===== */
-h2 {
-    font-size: 30px;
-    font-weight: 700;
-    color: #800020;
-    margin-bottom: 10px;
+/* =========================
+TITLE
+========================= */
+
+h2{
+font-size:30px;
+margin-bottom:8px;
+color:var(--primary);
 }
 
-p {
-    color: #bdbdbd;
-    margin-bottom: 30px;
+p{
+color:#666;
+margin-bottom:25px;
+font-size:14px;
 }
 
-/* ===== LAYOUT ===== */
-.container {
-    display: flex;
-    gap: 30px;
+/* =========================
+LAYOUT
+========================= */
+
+.container{
+display:flex;
+gap:25px;
+align-items:flex-start;
 }
 
-/* ===== LEFT VIDEO PANEL ===== */
-.left {
-    width: 60%;
-    background: #111111;
-    border: 1px solid #800020;
-    border-radius: 14px;
-    padding: 20px;
+/* =========================
+VIDEO PANEL
+========================= */
+
+.left{
+width:60%;
+background:white;
+border-radius:16px;
+padding:18px;
+border:1px solid var(--light);
+box-shadow:0 10px 25px rgba(0,0,0,0.05);
 }
 
-video {
-    width: 100%;
-    border-radius: 10px;
+video{
+width:100%;
+border-radius:12px;
 }
 
-/* ===== RIGHT SIDE ===== */
-.right {
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+/* =========================
+RIGHT SIDE
+========================= */
+
+.right{
+width:40%;
+display:flex;
+flex-direction:column;
+gap:18px;
 }
 
-/* ===== BOX STYLE ===== */
-.box {
-    background: #111111;
-    border: 1px solid #800020;
-    border-radius: 14px;
-    padding: 20px;
-    min-height: 180px;
+/* =========================
+BOX
+========================= */
+
+.box{
+background:white;
+border-radius:10px;
+padding:7px;
+border:1px solid var(--light);
+box-shadow:0 8px 20px rgba(0,0,0,0.05);
+transition:0.3s;
 }
 
-.box h4 {
-    color: #800020;
-    margin-bottom: 15px;
-    font-weight: 600;
+.box:hover{
+transform:translateY(-4px);
+border-color:var(--soft);
 }
 
-/* ===== QUESTIONS ===== */
-button {
-    margin-top: 10px;
-    padding: 8px 16px;
-    background: #800020;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+.box h4{
+color:var(--secondary);
+margin-bottom:10px;
+font-weight:600;
+font-size:16px;
 }
 
-button:hover {
-    background: #a00030;
+/* =========================
+BUTTONS
+========================= */
+
+button{
+margin-top:1px;
+padding:10px 16px;
+background:var(--primary);
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-size:14px;
+font-weight:600;
+transition:0.3s;
 }
 
-/* ===== FEEDBACK ===== */
-.correct {
-    color: #22c55e;
-    font-weight: 600;
+button:hover{
+background:var(--secondary);
+transform:translateY(-2px);
 }
 
-.wrong {
-    color: #ef4444;
-    font-weight: 600;
+/* =========================
+QUIZ BUTTON
+========================= */
+
+.quiz-btn{
+display:inline-block;
+margin-top:20px;
+padding:12px 20px;
+background:var(--primary);
+color:white;
+border-radius:10px;
+text-decoration:none;
+font-weight:600;
+font-size:14px;
 }
 
-.hidden {
-    display: none;
+/* =========================
+OPTIONS
+========================= */
+
+#optionsArea label{
+font-size:14px;
+margin-left:6px;
 }
 
-/* ===== LINKS ===== */
-a {
-    color: #800020;
-    font-weight: 600;
-    text-decoration: none;
+/* =========================
+FEEDBACK
+========================= */
+
+.correct{
+color:#2E7D32;
+font-weight:600;
 }
 
-a:hover {
-    text-decoration: underline;
-}
-.quiz-btn {
-    display: inline-block;
-    margin-top: 25px;
-    padding: 12px 22px;
-    background: #800020;
-    color: white;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.2s ease;
+.wrong{
+color:#C62828;
+font-weight:600;
 }
 
-.quiz-btn:hover {
-    background: #a00030;
+.hidden{
+display:none;
+}
+
+/* =========================
+BACK LINK
+========================= */
+
+a{
+color:var(--primary);
+font-size:14px;
+text-decoration:none;
+font-weight:500;
+}
+
+a:hover{
+color:var(--accent);
+}
+
+/* =========================
+FLOATING SHAPES (4s)
+========================= */
+
+.shape{
+position:fixed;
+border-radius:40px;
+opacity:0.12;
+z-index:-1;
+animation:floatShape 4s infinite ease-in-out alternate;
+}
+
+.shape1{
+width:240px;
+height:240px;
+background:#DFB6B2;
+top:5%;
+left:-80px;
+}
+
+.shape2{
+width:260px;
+height:260px;
+background:#522B5B;
+bottom:-120px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:1s;
+}
+
+/* =========================
+RINGS
+========================= */
+
+.ring{
+position:fixed;
+border-radius:50px;
+z-index:-1;
+animation:floatRing 4s infinite ease-in-out alternate;
+}
+
+.ring1{
+width:260px;
+height:150px;
+border:2px solid rgba(43,18,76,0.25);
+top:20%;
+right:10%;
+}
+
+.ring2{
+width:200px;
+height:120px;
+border:2px solid rgba(133,79,108,0.25);
+bottom:-60px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:1s;
+}
+
+/* =========================
+SMALL CIRCLES
+========================= */
+
+.circle{
+position:fixed;
+border-radius:50%;
+opacity:0.10;
+z-index:-1;
+animation:floatCircle 4s infinite ease-in-out alternate;
+}
+
+.circle1{
+width:40px;
+height:40px;
+background:#522B5B;
+top:40%;
+left:20%;
+}
+
+.circle2{
+width:30px;
+height:30px;
+background:#DFB6B2;
+top:70%;
+right:20%;
+animation-delay:1s;
+}
+
+/* =========================
+ANIMATIONS
+========================= */
+
+@keyframes floatShape{
+0%{transform:translateY(0);}
+50%{transform:translateY(-25px);}
+100%{transform:translateY(25px);}
+}
+
+@keyframes floatRing{
+0%{transform:translateX(-50%) translateY(0);}
+50%{transform:translateX(-50%) translateY(-20px);}
+100%{transform:translateX(-50%) translateY(20px);}
+}
+
+@keyframes floatCircle{
+0%{transform:translateY(0);}
+50%{transform:translateY(-15px);}
+100%{transform:translateY(15px);}
 }
 </style>
 </head>
 
 <body>
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
 
+<div class="ring ring1"></div>
+<div class="ring ring2"></div>
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
 <h2>{{ video.title }}</h2>
 <p>{{ video.description }}</p>
 
@@ -150,10 +331,6 @@ a:hover {
     <div class="right">
 
         <!-- Presentation -->
-        <div class="box">
-            <h4>📊 Presentation</h4>
-            <p>Slides will appear here (later).</p>
-        </div>
 
         <!-- Questions -->
         <div class="box">
@@ -169,15 +346,43 @@ a:hover {
             <p id="waitingText">Questions will appear during the class.</p>
         </div>
 
+                <div class="box">
+    <h4>📊 Presentation</h4>
+
+    {% if video.source_file %}
+        <iframe 
+            src="/uploads/{{ video.source_file }}" 
+            width="100%" 
+            height="350px"
+            style="border:none; border-radius:10px; overflow:hidden;">
+        </iframe>
+          <br>
+        <a href="/uploads/{{ video.source_file }}" target="_blank"
+           style="
+                display:inline-block;
+                padding:8px 12px;
+                background:#2B124C;
+                color:white;
+                border-radius:8px;
+                text-decoration:none;
+                font-size:13px;
+           ">
+            📥 Download PDF
+        </a>
+    {% else %}
+        <p>No presentation available.</p>
+    {% endif %}
+
+</div>
+
     </div>
 
 </div>
-<br>
 
-<a href="{{ url_for('after_class_quiz', classroom_id=classroom._id, video_id=video._id) }}" 
-   class="quiz-btn">
-    Take After-Class Quiz
-</a>
+
+<button onclick="handleQuizClick()">
+    Take After Class Quiz
+</button>
 
 <br><br>
 <a href="/student/classroom/{{ classroom._id }}">⬅ Back to Classroom</a>
@@ -278,6 +483,16 @@ a:hover {
         video.play();
     }
 </script>
+<script>
+const quizDone = {{ 'true' if quiz_done else 'false' }};
 
+function handleQuizClick(){
+    if(quizDone === true){
+        alert("⚠️ You have already attended this quiz!");
+    } else {
+        window.location.href = "/student/classroom/{{ classroom._id }}/video/{{ video._id }}/quiz";
+    }
+}
+</script>
 </body>
 </html>

@@ -1,33 +1,292 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Quiz Result</title>
-</head>
-<body>
+<title>Quiz Result</title>
 
+<style>
+
+/* =========================
+COLOR SYSTEM
+========================= */
+
+:root{
+--bg:#FFFFFF;
+--text:#190019;
+--primary:#2B124C;
+--secondary:#522B5B;
+--accent:#854F6C;
+--soft:#DFB6B2;
+--light:#FBE4D8;
+--border:#E5E7EB;
+}
+
+/* =========================
+GLOBAL
+========================= */
+
+body{
+font-family:"Poppins", sans-serif;
+background:var(--bg);
+color:var(--text);
+padding:60px 100px;
+font-size:16px;
+overflow-x:hidden;
+}
+
+/* =========================
+TITLE
+========================= */
+
+h2{
+font-size:30px;
+margin-bottom:20px;
+color:var(--primary);
+}
+
+/* =========================
+SCORE CARD
+========================= */
+
+.score-card{
+background:white;
+padding:22px;
+border-radius:16px;
+box-shadow:0 10px 25px rgba(0,0,0,0.05);
+margin-bottom:30px;
+font-size:18px;
+font-weight:600;
+border:1px solid var(--light);
+}
+
+/* =========================
+RESULT CARD
+========================= */
+
+.result-card{
+background:white;
+padding:20px;
+border-radius:16px;
+box-shadow:0 8px 20px rgba(0,0,0,0.05);
+margin-bottom:20px;
+transition:0.3s;
+}
+
+.result-card:hover{
+transform:translateY(-4px);
+border-left-color:var(--accent);
+}
+
+.result-card p{
+margin-bottom:8px;
+font-size:14px;
+}
+
+/* =========================
+STATUS
+========================= */
+
+.correct{
+color:#2E7D32;
+font-weight:600;
+}
+
+.wrong{
+color:#C62828;
+font-weight:600;
+}
+
+/* =========================
+BACK BUTTON
+========================= */
+
+a{
+display:inline-block;
+margin-top:25px;
+padding:10px 18px;
+background:var(--primary);
+color:white;
+border-radius:10px;
+text-decoration:none;
+font-weight:600;
+font-size:14px;
+transition:0.3s;
+}
+
+a:hover{
+background:var(--secondary);
+}
+
+/* =========================
+FLOATING SHAPES (4s)
+========================= */
+
+.shape{
+position:fixed;
+border-radius:40px;
+opacity:0.12;
+z-index:-1;
+animation:floatShape 4s infinite ease-in-out alternate;
+}
+
+.shape1{
+width:240px;
+height:240px;
+background:#DFB6B2;
+top:5%;
+left:-80px;
+}
+
+.shape2{
+width:260px;
+height:260px;
+background:#522B5B;
+bottom:-120px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:1s;
+}
+
+/* =========================
+MORE RINGS 🔥
+========================= */
+
+.ring{
+position:fixed;
+border-radius:50px;
+z-index:-1;
+animation:floatRing 4s infinite ease-in-out alternate;
+}
+
+.ring1{
+width:260px;
+height:150px;
+border:2px solid rgba(43,18,76,0.25);
+top:20%;
+right:10%;
+}
+
+.ring2{
+width:200px;
+height:120px;
+border:2px solid rgba(133,79,108,0.25);
+bottom:-60px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:1s;
+}
+
+.ring3{
+width:120px;
+height:80px;
+border:2px solid rgba(43,18,76,0.2);
+top:40%;
+left:10%;
+animation-delay:2s;
+}
+
+.ring4{
+width:100px;
+height:60px;
+border:2px solid rgba(133,79,108,0.2);
+top:70%;
+right:20%;
+animation-delay:3s;
+}
+
+/* =========================
+CIRCLES
+========================= */
+
+.circle{
+position:fixed;
+border-radius:50%;
+opacity:0.10;
+z-index:-1;
+animation:floatCircle 4s infinite ease-in-out alternate;
+}
+
+.circle1{
+width:40px;
+height:40px;
+background:#522B5B;
+top:40%;
+left:20%;
+}
+
+.circle2{
+width:30px;
+height:30px;
+background:#DFB6B2;
+top:70%;
+right:20%;
+animation-delay:1s;
+}
+
+/* =========================
+ANIMATIONS
+========================= */
+
+@keyframes floatShape{
+0%{transform:translateY(0);}
+50%{transform:translateY(-25px);}
+100%{transform:translateY(25px);}
+}
+
+@keyframes floatRing{
+0%{transform:translateY(0);}
+50%{transform:translateY(-20px);}
+100%{transform:translateY(20px);}
+}
+
+@keyframes floatCircle{
+0%{transform:translateY(0);}
+50%{transform:translateY(-15px);}
+100%{transform:translateY(15px);}
+}
+</style>
+
+</head>
+
+<body>
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
+
+<div class="ring ring1"></div>
+<div class="ring ring2"></div>
+<div class="ring ring3"></div>
+<div class="ring ring4"></div>
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
 <h2>📊 Quiz Result</h2>
 
-<p><strong>Your Score:</strong> {{ score }} / {{ total }}</p>
-
-<hr>
+<div class="score-card">
+Your Score: {{ score }} / {{ total }}
+</div>
 
 {% for r in results %}
-    <div style="margin-bottom:15px;">
-        <p><strong>{{ r.question }}</strong></p>
-        <p>Status: 
-            {% if r.status == "Correct" %}
-                <span style="color:green;">Correct ✅</span>
-            {% else %}
-                <span style="color:red;">Wrong ❌</span>
-            {% endif %}
-        </p>
-        <p>Correct Answer: {{ r.correct }}</p>
-        <p>{{ r.explanation }}</p>
-    </div>
-    <hr>
+<div class="result-card">
+
+<p><strong>{{ r.question }}</strong></p>
+
+<p>
+Status:
+{% if r.status == "Correct" %}
+<span class="correct">Correct ✅</span>
+{% else %}
+<span class="wrong">Wrong ❌</span>
+{% endif %}
+</p>
+
+<p><strong>Correct Answer:</strong> {{ r.correct }}</p>
+
+<p>{{ r.explanation }}</p>
+
+</div>
 {% endfor %}
-
-<a href="javascript:history.back()">⬅ Back</a>
-
+<br><br>
+<a href="/student/classroom/{{ classroom_id }}/video/{{ video_id }}">
+    ⬅ Back to Video
+</a>
 </body>
 </html>

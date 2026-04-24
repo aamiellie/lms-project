@@ -1,15 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Submit Assignment</title>
+
+<style>
+
+/* =========================
+COLOR SYSTEM (YOUR PALETTE)
+========================= */
+
+:root{
+--bg:#FFFFFF;
+--text:#190019;
+--primary:#2B124C;
+--secondary:#522B5B;
+--accent:#854F6C;
+--soft:#DFB6B2;
+--light:#FBE4D8;
+--border:#E5E7EB;
+}
+
+/* =========================
+GLOBAL
+========================= */
+
+body{
+display:flex;
+justify-content:center;
+margin:0;
+padding:60px 80px;
+background:var(--bg);
+color:var(--text);
+font-family:"Poppins", sans-serif;
+font-size:16px;
+overflow-x:hidden;
+}
+
+/* =========================
+CARD
+========================= */
+
+.container{
+max-width:600px;
+background:white;
+padding:30px;
+border-radius:16px;
+box-shadow:0 10px 25px rgba(0,0,0,0.05);
+border:1px solid var(--light);
+}
+
+/* =========================
+TITLE
+========================= */
+
+h2{
+font-size:26px;
+margin-bottom:10px;
+color:var(--primary);
+}
+
+/* =========================
+DESCRIPTION
+========================= */
+
+p{
+color:#555;
+margin-bottom:20px;
+line-height:1.5;
+font-size:14px;
+}
+
+/* =========================
+LINK
+========================= */
+
+a{
+display:inline-block;
+margin-bottom:20px;
+text-decoration:none;
+color:var(--primary);
+font-weight:600;
+font-size:14px;
+}
+
+a:hover{
+color:var(--accent);
+}
+
+/* =========================
+INPUT
+========================= */
+
+input[type="file"]{
+width:95%;
+padding:7px;
+border-radius:12px;
+border:1px solid var(--border);
+background:#fafafa;
+margin-top:8px;
+margin-bottom:20px;
+font-size:14px;
+transition:0.3s;
+}
+
+input[type="file"]:focus{
+outline:none;
+border-color:var(--primary);
+}
+
+/* =========================
+BUTTON
+========================= */
+
+button{
+background:var(--primary);
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:10px;
+font-weight:600;
+font-size:14px;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+background:var(--secondary);
+transform:translateY(-2px);
+}
+
+/* =========================
+FLOATING SHAPES (4s)
+========================= */
+
+.shape{
+position:fixed;
+border-radius:40px;
+opacity:0.10;
+z-index:-1;
+animation:floatShape 4s infinite ease-in-out alternate;
+}
+
+.shape1{
+width:220px;
+height:220px;
+background:#DFB6B2;
+top:5%;
+left:-80px;
+}
+
+.shape2{
+width:240px;
+height:240px;
+background:#522B5B;
+bottom:-120px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:1s;
+}
+
+/* =========================
+RINGS (MORE 🔥)
+========================= */
+
+.ring{
+position:fixed;
+border-radius:50px;
+z-index:-1;
+animation:floatRing 4s infinite ease-in-out alternate;
+}
+
+.ring1{
+width:240px;
+height:140px;
+border:2px solid rgba(43,18,76,0.25);
+top:20%;
+right:10%;
+}
+
+.ring2{
+width:180px;
+height:110px;
+border:2px solid rgba(133,79,108,0.25);
+bottom:-60px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:1s;
+}
+
+.ring3{
+width:100px;
+height:70px;
+border:2px solid rgba(82,43,91,0.2);
+top:40%;
+left:10%;
+animation-delay:2s;
+}
+
+.ring4{
+width:90px;
+height:60px;
+border:2px solid rgba(133,79,108,0.2);
+top:70%;
+right:20%;
+animation-delay:3s;
+}
+
+/* =========================
+CIRCLES
+========================= */
+
+.circle{
+position:fixed;
+border-radius:50%;
+opacity:0.08;
+z-index:-1;
+animation:floatCircle 4s infinite ease-in-out alternate;
+}
+
+.circle1{
+width:30px;
+height:30px;
+background:#522B5B;
+top:40%;
+left:25%;
+}
+
+.circle2{
+width:25px;
+height:25px;
+background:#DFB6B2;
+top:75%;
+right:25%;
+animation-delay:1s;
+}
+
+/* =========================
+ANIMATIONS
+========================= */
+
+@keyframes floatShape{
+0%{transform:translateY(0);}
+50%{transform:translateY(-20px);}
+100%{transform:translateY(20px);}
+}
+
+@keyframes floatRing{
+0%{transform:translateY(0);}
+50%{transform:translateY(-15px);}
+100%{transform:translateY(15px);}
+}
+
+@keyframes floatCircle{
+0%{transform:translateY(0);}
+50%{transform:translateY(-10px);}
+100%{transform:translateY(10px);}
+}
+</style>
+</head>
+
+<body>
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
+
+<div class="ring ring1"></div>
+<div class="ring ring2"></div>
+<div class="ring ring3"></div>
+<div class="ring ring4"></div>
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
+<div class="container">
+
 <h2>{{ assignment.title }}</h2>
 <p>{{ assignment.description }}</p>
 
 {% if assignment.question_file %}
 <a href="/uploads/{{ assignment.question_file }}" target="_blank">
-    View Question File
+    📄 View Question File
 </a>
-<br><br>
 {% endif %}
 
 <form method="POST" enctype="multipart/form-data">
-    <label>Upload Your Answer (PDF/DOC)</label><br>
-    <input type="file" name="file" required><br><br>
+
+    <label><strong>Upload Your Answer (PDF/DOC)</strong></label>
+
+    <input type="file" name="file" required>
+
     <button type="submit">Submit Assignment</button>
+
 </form>
+
+</div>
+
+</body>
+</html>

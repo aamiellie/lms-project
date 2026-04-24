@@ -1,4 +1,90 @@
-<h2>No Live Class Running</h2>
+<!DOCTYPE html>
+<html>
+<head>
+<title>No Live Class</title>
+
+<style>
+
+:root{
+--primary:#F2C94C;
+--bg:#F5F5F5;
+--card:#FFFFFF;
+--text:#1E1E1E;
+--grey:#BDBDBD;
+--dark:#2F2F2F;
+}
+
+/* ===== GLOBAL ===== */
+
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:var(--bg);
+font-family:"Segoe UI", Arial, sans-serif;
+color:var(--text);
+}
+
+/* ===== CARD ===== */
+
+.container{
+background:var(--card);
+padding:50px;
+border-radius:16px;
+text-align:center;
+box-shadow:0 6px 18px rgba(0,0,0,0.05);
+max-width:400px;
+}
+
+/* ===== TITLE ===== */
+
+h2{
+font-size:28px;
+margin-bottom:15px;
+color:var(--dark);
+}
+
+/* ===== TEXT ===== */
+
+p{
+color:#666;
+margin-bottom:30px;
+font-size:18px;
+}
+
+/* ===== BUTTON ===== */
+
+a{
+display:inline-block;
+padding:12px 22px;
+background:var(--primary);
+color:black;
+border-radius:10px;
+text-decoration:none;
+font-weight:600;
+transition:0.2s ease;
+}
+
+a:hover{
+background:#e0b93f;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>🚫 No Live Class Running</h2>
+
 <p>Please wait until the teacher starts the class.</p>
 
 <a href="/dashboard">Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>

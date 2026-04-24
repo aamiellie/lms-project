@@ -3,109 +3,279 @@
 <head>
     <title>Student Dashboard | LUMA</title>
 
-    <style>
-    :root {
-        --bg-dark: #21201E;
-        --bg-card: #2A2927;
-        --accent: #F3377E;
-        --text-light: #F9F8F6;
-        --text-muted: #bfbfbf;
-        --border-dark: #333330;
-    }
+<style>
 
-    body {
-        margin: 0;
-        padding: 60px 90px;
-        background: var(--bg-dark);
-        color: var(--text-light);
-        font-family: "Segoe UI", Arial, sans-serif;
-    }
+/* =========================
+COLOR SYSTEM (YOUR PALETTE)
+========================= */
 
-    h2 {
-        color: var(--accent);
-        margin-bottom: 10px;
-    }
+:root{
+--bg:#FBE4D8;
+--card:#FFFFFF;
+--text:#190019;
+--primary:#2B124C;
+--secondary:#522B5B;
+--accent:#854F6C;
+--soft:#DFB6B2;
+}
 
-    .welcome-text {
-        color: var(--text-muted);
-        margin-bottom: 40px;
-    }
+/* =========================
+GLOBAL
+========================= */
 
-    .action-section {
-        margin-bottom: 40px;
-    }
+body{
+margin:0;
+padding:60px 80px;
+background:#FFFFFF;   /* pure white */
+color:var(--text);
+font-family:"Poppins", sans-serif;
+}
 
-    .action-btn {
-        display: inline-block;
-        background: var(--accent);
-        color: var(--bg-dark);
-        padding: 10px 18px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: 600;
-        transition: 0.3s ease;
-    }
+/* =========================
+HEADINGS
+========================= */
 
-    .action-btn:hover {
-        box-shadow: 0 0 15px rgba(243,55,126,0.6);
-        transform: translateY(-2px);
-    }
+h2{
+font-size:34px;
+margin-bottom:10px;
+color:var(--primary);
+}
 
-    h3 {
-        color: var(--accent);
-        margin-bottom: 20px;
-    }
+.welcome-text{
+font-size:16px;
+color:#555;
+margin-bottom:35px;
+}
 
-    .classroom-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 20px;
-    }
+/* =========================
+JOIN BUTTON
+========================= */
 
-    .classroom-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-dark);
-        padding: 20px;
-        border-radius: 8px;
-        transition: 0.3s ease;
-    }
+.action-section{
+margin-bottom:40px;
+}
 
-    .classroom-card:hover {
-        border-color: var(--accent);
-        box-shadow: 0 0 18px rgba(243,55,126,0.3);
-        transform: translateY(-4px);
-    }
+.action-btn{
+display:inline-block;
+background:#2B124C;
+color:white;
+padding:14px 26px;
+border-radius:12px;
+text-decoration:none;
+font-weight:600;
+font-size:16px;
+transition:0.3s;
+box-shadow:0 8px 20px rgba(43,18,76,0.3);
+}
 
-    .classroom-link {
-        text-decoration: none;
-        color: var(--text-light);
-        font-weight: 500;
-    }
+.action-btn:hover{
+background:#522B5B;
+transform:translateY(-2px);
+}
 
-    .classroom-link:hover {
-        color: var(--accent);
-    }
+/* =========================
+SECTION TITLE
+========================= */
 
-    .empty-text {
-        color: var(--text-muted);
-        font-style: italic;
-    }
+h3{
+font-size:22px;
+margin-bottom:20px;
+color:var(--secondary);
+}
 
-    .logout-link {
-        display: inline-block;
-        margin-top: 40px;
-        color: var(--accent);
-        text-decoration: none;
-    }
+/* =========================
+CLASSROOM GRID
+========================= */
 
-    .logout-link:hover {
-        text-shadow: 0 0 8px rgba(243,55,126,0.7);
-    }
-    </style>
+.classroom-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill, minmax(250px,1fr));
+gap:20px;
+}
+
+/* =========================
+CLASSROOM CARD
+========================= */
+
+.classroom-card{
+background:linear-gradient(135deg, #DFB6B2, #FBE4D8);
+padding:22px;
+border-radius:16px;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+transition:0.3s;
+border:1px solid rgba(0,0,0,0.05);
+}
+
+.classroom-card:hover{
+transform:translateY(-6px) scale(1.02);
+box-shadow:0 15px 30px rgba(0,0,0,0.1);
+}
+
+/* =========================
+CLASSROOM LINK
+========================= */
+
+.classroom-link{
+text-decoration:none;
+color:var(--primary);
+font-weight:600;
+font-size:18px;
+}
+
+.classroom-link:hover{
+color:var(--accent);
+}
+
+/* =========================
+EMPTY TEXT
+========================= */
+
+.empty-text{
+color:#777;
+font-style:italic;
+}
+
+/* =========================
+LOGOUT
+========================= */
+
+.logout-link{
+display:inline-block;
+margin-top:40px;
+font-size:16px;
+color:var(--primary);
+text-decoration:none;
+font-weight:600;
+}
+
+.logout-link:hover{
+color:black;
+}
+/* =========================
+FLOATING ROUNDED SHAPES (4s)
+========================= */
+
+.shape{
+position:fixed;
+border-radius:40px;
+opacity:0.15;
+z-index:-1;
+animation:floatShape 4s infinite ease-in-out alternate;
+}
+
+/* big soft blocks */
+
+.shape1{
+width:240px;
+height:240px;
+background:#DFB6B2;
+top:5%;
+left:-80px;
+}
+
+.shape2{
+width:260px;
+height:260px;
+background:#854F6C;
+bottom:-120px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:1s;
+}
+
+/* =========================
+RINGS (OUTLINE ONLY)
+========================= */
+
+.ring{
+position:fixed;
+border-radius:50px;
+z-index:-1;
+animation:floatRing 4s infinite ease-in-out alternate;
+}
+
+/* rings using palette */
+
+.ring1{
+width:260px;
+height:150px;
+border:2px solid rgba(43,18,76,0.25); /* deep purple */
+top:20%;
+right:10%;
+}
+
+.ring2{
+width:200px;
+height:120px;
+border:2px solid rgba(133,79,108,0.25); /* muted purple */
+bottom:-60px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:1s;
+}
+
+/* =========================
+SMALL CIRCLES
+========================= */
+
+.circle{
+position:fixed;
+border-radius:50%;
+opacity:0.12;
+z-index:-1;
+animation:floatCircle 4s infinite ease-in-out alternate;
+}
+
+.circle1{
+width:40px;
+height:40px;
+background:#522B5B;
+top:40%;
+left:20%;
+}
+
+.circle2{
+width:30px;
+height:30px;
+background:#DFB6B2;
+top:70%;
+right:20%;
+animation-delay:1s;
+}
+
+/* =========================
+ANIMATIONS
+========================= */
+
+@keyframes floatShape{
+0%{transform:translateY(0);}
+50%{transform:translateY(-25px);}
+100%{transform:translateY(25px);}
+}
+
+@keyframes floatRing{
+0%{transform:translateX(-50%) translateY(0);}
+50%{transform:translateX(-50%) translateY(-20px);}
+100%{transform:translateX(-50%) translateY(20px);}
+}
+
+@keyframes floatCircle{
+0%{transform:translateY(0);}
+50%{transform:translateY(-15px);}
+100%{transform:translateY(15px);}
+}
+</style>
 </head>
 
 <body>
+    <div class="shape shape1"></div>
+<div class="shape shape2"></div>
 
+<div class="ring ring1"></div>
+<div class="ring ring2"></div>
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
     <h2>Student Dashboard</h2>
 
     <p class="welcome-text">Welcome, {{ name }} 👋</p>

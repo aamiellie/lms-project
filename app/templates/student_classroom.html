@@ -3,109 +3,342 @@
 <head>
     <title>{{ classroom.class_name }}</title>
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+
+/* =========================
+COLOR SYSTEM (YOUR PALETTE)
+========================= */
+
+:root{
+--bg:#FFFFFF;
+--text:#190019;
+--primary:#2B124C;
+--secondary:#522B5B;
+--accent:#854F6C;
+--soft:#DFB6B2;
+--light:#FBE4D8;
+--border:#E5E7EB;
 }
 
-body {
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    background: #0f0f0f;
-    color: #e5e5e5;
-    padding: 80px 120px;
+/* =========================
+GLOBAL
+========================= */
+
+body{
+font-family:"Poppins", sans-serif;
+background:var(--bg);
+color:var(--text);
+padding:60px 100px;
+font-size:16px;
 }
 
-h2 {
-    font-size: 34px;
-    font-weight: 700;
-    color: #EC4899;
-    margin-bottom: 50px;
+/* =========================
+TITLE
+========================= */
+
+h2{
+font-size:34px;
+margin-bottom:40px;
+color:var(--primary);
 }
 
-/* ===== ACCORDION ===== */
+/* =========================
+ACCORDION
+========================= */
 
-.accordion-item {
-    border-bottom: 1px solid #262626;
-    padding: 20px 0;
+.accordion-item{
+border-bottom:1px solid var(--border);
+padding:20px 0;
 }
 
-.accordion-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
+.accordion-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
 }
 
-.accordion-header h3 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #ffffff;
+.accordion-header h3{
+font-size:20px;
+font-weight:600;
+color:var(--secondary);
 }
 
-.plus {
-    font-size: 22px;
-    color: #EC4899;
-    transition: 0.2s ease;
+/* PLUS ICON */
+
+.plus{
+font-size:22px;
+color:var(--accent);
+font-weight:700;
 }
 
-/* ===== CONTENT ===== */
+/* =========================
+CONTENT
+========================= */
 
-.accordion-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-    padding-top: 0;
+.accordion-content{
+max-height:0;
+overflow:hidden;
+transition:max-height 0.3s ease;
+padding-top:0;
 }
 
-.accordion-content.active {
-    padding-top: 20px;
-    max-height: 1000px; /* large enough */
+.accordion-content.active{
+padding-top:15px;
+max-height:1000px;
 }
 
-/* ===== LINKS ===== */
+/* =========================
+LINKS
+========================= */
 
-a {
-    color: #ffffff;
-    text-decoration: none;
+a{
+color:var(--primary);
+text-decoration:none;
+font-size:15px;
+font-weight:500;
 }
 
-a:hover {
-    color: #EC4899;
+a:hover{
+color:var(--accent);
 }
 
-/* ===== ASSIGNMENT CARD ===== */
+/* =========================
+LIST
+========================= */
 
-.assignment-card {
-    background: #1a1a1a;
-    padding: 18px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #2a2a2a;
+ul{
+list-style:none;
 }
 
-.status-success {
-    color: #22c55e;
-    font-weight: 600;
+ul li{
+font-size:15px;
+margin-bottom:10px;
 }
 
-.status-fail {
-    color: #ef4444;
-    font-weight: 600;
+/* =========================
+ASSIGNMENT CARD
+========================= */
+
+.assignment-card{
+background:#FFFFFF;
+padding:18px;
+border-radius:14px;
+margin-bottom:15px;
+border:1px solid var(--light);
+font-size:14px;
+box-shadow:0 6px 18px rgba(0,0,0,0.05);
+transition:0.3s;
 }
 
-.back-link {
-    display: inline-block;
-    margin-top: 60px;
-    padding: 12px 20px;
-    background: #EC4899;
-    color: white;
-    border-radius: 10px;
-    font-weight: 600;
+.assignment-card:hover{
+transform:translateY(-4px);
+border-color:var(--soft);
+}
+
+.assignment-card strong{
+font-size:16px;
+color:var(--primary);
+}
+
+.assignment-card small{
+font-size:13px;
+color:#666;
+}
+
+/* =========================
+STATUS
+========================= */
+
+.status-success{
+color:#2E7D32;
+font-weight:600;
+}
+
+.status-fail{
+color:#C62828;
+font-weight:600;
+}
+
+/* =========================
+BACK BUTTON
+========================= */
+
+.back-link{
+display:inline-block;
+margin-top:40px;
+padding:12px 22px;
+background:var(--primary);
+color:white;
+border-radius:10px;
+font-weight:600;
+font-size:14px;
+transition:0.3s;
+}
+
+.back-link:hover{
+background:var(--secondary);
+}
+
+/* =========================
+COMMUNITY BUTTON
+========================= */
+
+div[onclick="toggleCommunity()"]{
+background:var(--primary) !important;
+}
+
+/* =========================
+COMMUNITY POPUP
+========================= */
+
+#communityPopup{
+border:2px solid black;
+border-radius:16px;
+}
+
+/* HEADER */
+#communityPopup > div:first-child{
+background:var(--primary);
+}
+
+/* MESSAGE BOX */
+#communityPopup .messages{
+background:#fafafa;
+}
+
+/* POSTS */
+#communityPopup div[style*="background:white"]{
+border-radius:10px;
+}
+
+/* REACTION BUTTON */
+button{
+transition:0.3s;
+}
+/* =========================
+FLOATING SHAPES (4s)
+========================= */
+
+.shape{
+position:fixed;
+border-radius:40px;
+opacity:0.12;
+z-index:-1;
+animation:floatShape 4s infinite ease-in-out alternate;
+}
+
+/* soft blocks from palette */
+
+.shape1{
+width:240px;
+height:240px;
+background:#DFB6B2;
+top:5%;
+left:-80px;
+}
+
+.shape2{
+width:260px;
+height:260px;
+background:#522B5B;
+bottom:-120px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:1s;
+}
+
+/* =========================
+RINGS (OUTLINE ONLY)
+========================= */
+
+.ring{
+position:fixed;
+border-radius:50px;
+z-index:-1;
+animation:floatRing 4s infinite ease-in-out alternate;
+}
+
+/* palette rings */
+
+.ring1{
+width:260px;
+height:150px;
+border:2px solid rgba(43,18,76,0.25);
+top:20%;
+right:10%;
+}
+
+.ring2{
+width:200px;
+height:120px;
+border:2px solid rgba(133,79,108,0.25);
+bottom:-60px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:1s;
+}
+
+/* =========================
+SMALL CIRCLES
+========================= */
+
+.circle{
+position:fixed;
+border-radius:50%;
+opacity:0.10;
+z-index:-1;
+animation:floatCircle 4s infinite ease-in-out alternate;
+}
+
+.circle1{
+width:40px;
+height:40px;
+background:#522B5B;
+top:40%;
+left:20%;
+}
+
+.circle2{
+width:30px;
+height:30px;
+background:#DFB6B2;
+top:70%;
+right:20%;
+animation-delay:1s;
+}
+
+/* =========================
+ANIMATIONS
+========================= */
+
+@keyframes floatShape{
+0%{transform:translateY(0);}
+50%{transform:translateY(-25px);}
+100%{transform:translateY(25px);}
+}
+
+@keyframes floatRing{
+0%{transform:translateX(-50%) translateY(0);}
+50%{transform:translateX(-50%) translateY(-20px);}
+100%{transform:translateX(-50%) translateY(20px);}
+}
+
+@keyframes floatCircle{
+0%{transform:translateY(0);}
+50%{transform:translateY(-15px);}
+100%{transform:translateY(15px);}
 }
 </style>
 </head>
 <body>
+    <div class="shape shape1"></div>
+<div class="shape shape2"></div>
+
+<div class="ring ring1"></div>
+<div class="ring ring2"></div>
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
     <h2>{{ classroom.class_name }}</h2>
     
 
@@ -244,7 +477,13 @@ a:hover {
 </div>
 </div>
 <br><br>
-
+{% if live_class %}
+<a href="/live/{{ live_class.room_id }}">
+    🔴 Join Live Class
+</a>
+{% else %}
+<p>No live class currently running</p>
+{% endif %}
     <br>
     <a href="/student/dashboard" class="back-link">⬅ Back to Dashboard</a>
    
@@ -401,12 +640,6 @@ function toggleAccordion(header) {
     }
 }
 </script>
-{% if live_class %}
-<a href="/live/{{ live_class.room_id }}">
-    🔴 Join Live Class
-</a>
-{% else %}
-<p>No live class currently running</p>
-{% endif %}
+
 </body>
 </html>

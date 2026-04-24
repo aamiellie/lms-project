@@ -3,48 +3,323 @@
 <head>
     <title>Map Questions to Video</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
+<style>
 
-        .container {
-            display: flex;
-            gap: 20px;
-        }
+/* =========================
+COLOR SYSTEM (GREEN + BLUE)
+========================= */
 
-        .left {
-            width: 60%;
-        }
+:root{
+--primary:#4CAF50;      /* green */
+--secondary:#2196F3;    /* blue */
+--accent:#E3F2FD;       /* light blue */
+--bg:#FFFFFF;
+--text:#111111;
+--card:#FFFFFF;
+--border:#E5E7EB;
+}
 
-        .right {
-            width: 40%;
-            border-left: 2px solid #ccc;
-            padding-left: 15px;
-        }
+/* =========================
+GLOBAL
+========================= */
 
-        video {
-            width: 100%;
-            border: 2px solid black;
-        }
+body{
+font-family:"Poppins", sans-serif;
+background:var(--bg);
+color:var(--text);
+padding:60px 100px;
+margin:0;
+font-size:16px;
+overflow-x:hidden;
+}
 
-        .question {
-            border: 1px solid #999;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
+/* =========================
+TITLE
+========================= */
 
-        .question label {
-            font-weight: bold;
-        }
+h2{
+font-size:28px;
+margin-bottom:10px;
+color:var(--primary);
+}
 
-        .timestamp {
-            width: 80px;
-        }
-    </style>
+p{
+color:#666;
+margin-bottom:25px;
+}
+
+/* =========================
+LAYOUT
+========================= */
+
+.container{
+display:flex;
+gap:25px;
+align-items:flex-start;
+}
+
+/* =========================
+LEFT (VIDEO)
+========================= */
+
+.left{
+width:60%;
+background:white;
+padding:18px;
+border-radius:16px;
+box-shadow:0 10px 25px rgba(0,0,0,0.05);
+border:1px solid var(--border);
+}
+
+video{
+width:100%;
+height:340px;
+border-radius:12px;
+background:black;
+object-fit:cover;
+}
+
+/* =========================
+RIGHT (QUESTIONS)
+========================= */
+
+.right{
+width:40%;
+background:white;
+padding:20px;
+border-radius:16px;
+box-shadow:0 10px 25px rgba(0,0,0,0.05);
+border:1px solid var(--border);
+}
+
+.right h3{
+margin-bottom:15px;
+color:var(--secondary);
+}
+
+/* =========================
+QUESTION CARD
+========================= */
+
+.question{
+border:1px solid var(--border);
+border-radius:14px;
+padding:16px;
+margin-bottom:14px;
+transition:0.3s;
+}
+
+.question:hover{
+border-color:var(--primary);
+transform:translateY(-3px);
+}
+
+/* =========================
+TEXT
+========================= */
+
+.question label{
+font-weight:600;
+display:block;
+margin-bottom:8px;
+font-size:14px;
+}
+
+/* =========================
+INPUT
+========================= */
+
+.timestamp{
+width:100px;
+padding:8px;
+border-radius:8px;
+border:1px solid var(--border);
+margin-top:6px;
+font-size:14px;
+}
+
+.timestamp:focus{
+outline:none;
+border-color:var(--primary);
+}
+
+/* =========================
+BUTTONS
+========================= */
+
+button{
+margin-top:10px;
+padding:10px 14px;
+border:none;
+border-radius:10px;
+background:var(--primary);
+color:white;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+font-size:14px;
+}
+
+button:hover{
+background:var(--secondary);
+transform:translateY(-2px);
+}
+
+/* =========================
+SAVE BUTTON
+========================= */
+
+form > button{
+margin-top:20px;
+padding:12px 20px;
+}
+
+/* =========================
+BACK LINK
+========================= */
+
+a{
+display:inline-block;
+margin-top:30px;
+text-decoration:none;
+color:var(--primary);
+font-weight:500;
+}
+
+a:hover{
+color:var(--secondary);
+}
+
+/* =========================
+FLOATING SHAPES (4s)
+========================= */
+
+.shape{
+position:fixed;
+border-radius:40px;
+opacity:0.10;
+z-index:-1;
+animation:floatShape 4s infinite ease-in-out alternate;
+}
+
+.shape1{
+width:220px;
+height:220px;
+background:var(--primary);
+top:5%;
+left:-80px;
+}
+
+.shape2{
+width:240px;
+height:240px;
+background:var(--secondary);
+bottom:-120px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:1s;
+}
+
+/* =========================
+RINGS
+========================= */
+
+.ring{
+position:fixed;
+border-radius:50px;
+z-index:-1;
+animation:floatRing 4s infinite ease-in-out alternate;
+}
+
+.ring1{
+width:240px;
+height:140px;
+border:2px solid rgba(76,175,80,0.25);
+top:20%;
+right:10%;
+}
+
+.ring2{
+width:180px;
+height:110px;
+border:2px solid rgba(33,150,243,0.25);
+bottom:-60px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:1s;
+}
+
+.ring3{
+width:100px;
+height:70px;
+border:2px solid rgba(76,175,80,0.2);
+top:45%;
+left:10%;
+animation-delay:2s;
+}
+
+/* =========================
+CIRCLES
+========================= */
+
+.circle{
+position:fixed;
+border-radius:50%;
+opacity:0.08;
+z-index:-1;
+animation:floatCircle 4s infinite ease-in-out alternate;
+}
+
+.circle1{
+width:30px;
+height:30px;
+background:var(--secondary);
+top:40%;
+left:25%;
+}
+
+.circle2{
+width:25px;
+height:25px;
+background:var(--primary);
+top:75%;
+right:25%;
+animation-delay:1s;
+}
+
+/* =========================
+ANIMATIONS
+========================= */
+
+@keyframes floatShape{
+0%{transform:translateY(0);}
+50%{transform:translateY(-20px);}
+100%{transform:translateY(20px);}
+}
+
+@keyframes floatRing{
+0%{transform:translateY(0);}
+50%{transform:translateY(-15px);}
+100%{transform:translateY(15px);}
+}
+
+@keyframes floatCircle{
+0%{transform:translateY(0);}
+50%{transform:translateY(-10px);}
+100%{transform:translateY(10px);}
+}
+</style>
 </head>
 <body>
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
 
+<div class="ring ring1"></div>
+<div class="ring ring2"></div>
+<div class="ring ring3"></div>
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
 <h2>🧠 Map Questions to Lecture</h2>
 <p><strong>Video:</strong> {{ video.title }}</p>
 

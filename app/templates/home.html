@@ -2,225 +2,354 @@
 <html>
 <head>
     <title>LMS | Welcome</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
 <style>
-/* =========================
-   AI DARK SYSTEM
-========================= */
-
-:root {
-    --bg-dark: #21201E;
-    --bg-card: #2A2927;
-    --neon-green: #63D72A;
-    --text-light: #F9F8F6;
-    --text-muted: #bfbfbf;
-    --border-dark: #333330;
-}
 
 /* =========================
-   GLOBAL
+COLOR THEME (WHITE + CORAL + BLACK)
 ========================= */
 
-body {
-    margin: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background-color: var(--bg-dark);
-    color: var(--text-light);
-}
-
-a {
-    text-decoration: none;
+:root{
+--primary:#FF6F61;        /* Coral Pink */
+--secondary:#FF9A8B;      /* Light Coral */
+--accent:#111111;         /* Black */
+--bg:#FFFFFF;
+--text:#111111;
+--card:#FFFFFF;
 }
 
 /* =========================
-   NAVBAR
+GLOBAL
 ========================= */
 
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 70px;
-    background-color: var(--bg-dark);
-    border-bottom: 1px solid var(--border-dark);
-}
-
-.logo {
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--neon-green);
-    letter-spacing: 1px;
-}
-
-.nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-}
-
-.nav-link {
-    color: var(--text-muted);
-    font-weight: 500;
-    transition: 0.3s ease;
-}
-
-.nav-link:hover {
-    color: var(--neon-green);
-}
-
-.nav-btn {
-    padding: 8px 20px;
-    background: var(--neon-green);
-    color: var(--bg-dark);
-    border-radius: 6px;
-    font-weight: 600;
-    transition: 0.3s ease;
-}
-
-.nav-btn:hover {
-    box-shadow: 0 0 12px rgba(99, 215, 42, 0.6);
+body{
+margin:0;
+font-family:"Poppins", sans-serif;
+background:var(--bg);
+color:var(--text);
+overflow-x:hidden;
 }
 
 /* =========================
-   HERO SECTION
+DYNAMIC FLOATING SHAPES
 ========================= */
 
-.hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 120px 100px;
-    gap: 80px;
-    align-items: center;
+.shape{
+position:fixed;
+border-radius:40px;
+opacity:0.15;
+z-index:-1;
+animation:floatShape 12s infinite ease-in-out alternate;
 }
 
-.hero-left h1 {
-    font-size: 44px;
-    margin-bottom: 20px;
-    color: var(--neon-green);
+.shape1{
+width:250px;
+height:250px;
+background:var(--primary);
+top:10%;
+left:-80px;
 }
 
-.hero-left p {
-    font-size: 17px;
-    color: var(--text-muted);
-    margin-bottom: 35px;
-    line-height: 1.6;
+.shape2{
+width:300px;
+height:300px;
+background:var(--secondary);
+bottom:-120px;
+left:50%;
+transform:translateX(-50%);
+animation-delay:3s;
+}
+
+.shape3{
+width:200px;
+height:200px;
+background:black;
+top:60%;
+left:20%;
+opacity:0.08;
+animation-delay:5s;
+}
+
+@keyframes floatShape{
+0%{transform:translateY(0) rotate(0deg);}
+50%{transform:translateY(-40px) rotate(10deg);}
+100%{transform:translateY(40px) rotate(-10deg);}
 }
 
 /* =========================
-   BUTTONS
+NAVBAR
 ========================= */
 
-.hero-buttons {
-    display: flex;
-    gap: 20px;
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:25px 80px;
+background:white;
+border-bottom:1px solid #eee;
+position:sticky;
+top:0;
+z-index:10;
 }
 
-.btn-primary {
-    padding: 14px 32px;
-    background: var(--neon-green);
-    color: var(--bg-dark);
-    border-radius: 6px;
-    font-weight: 600;
-    transition: 0.3s ease;
+.logo{
+font-size:30px;
+font-weight:700;
+color:var(--primary);
+letter-spacing:1px;
 }
 
-.btn-primary:hover {
-    box-shadow: 0 0 18px rgba(99, 215, 42, 0.6);
-    transform: translateY(-2px);
+.nav-actions{
+display:flex;
+gap:25px;
+align-items:center;
 }
 
-.btn-outline {
-    padding: 14px 32px;
-    border: 1px solid var(--border-dark);
-    border-radius: 6px;
-    color: var(--text-light);
-    font-weight: 500;
-    transition: 0.3s ease;
+.nav-actions a{
+color:#333;
+font-weight:500;
 }
 
-.btn-outline:hover {
-    border-color: var(--neon-green);
-    color: var(--neon-green);
+.nav-btn{
+padding:12px 26px;
+border-radius:30px;
+background:var(--primary);
+color:white !important;
+font-weight:600;
+transition:0.3s;
+}
+
+.nav-btn:hover{
+background:black;
+transform:translateY(-2px);
 }
 
 /* =========================
-   INFO CARD
+HERO SECTION
 ========================= */
 
-.info-card {
-    background-color: var(--bg-card);
-    padding: 45px;
-    border-radius: 8px;
-    border: 1px solid var(--border-dark);
+.hero{
+display:grid;
+grid-template-columns:1fr 1fr;
+padding:120px 100px;
+gap:60px;
+align-items:center;
 }
 
-.info-card h3 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    color: var(--neon-green);
+/* LEFT */
+
+.hero-left h1{
+font-size:58px;
+margin-bottom:20px;
+line-height:1.2;
 }
 
-.info-card ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.hero-left h1 span{
+color:var(--primary);
 }
 
-.info-card li {
-    margin-bottom: 16px;
-    color: var(--text-muted);
-    position: relative;
-    padding-left: 18px;
-}
-
-.info-card li::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    background: var(--neon-green);
-    border-radius: 50%;
-    position: absolute;
-    left: 0;
-    top: 8px;
+.hero-left p{
+font-size:20px;
+color:#555;
+margin-bottom:40px;
 }
 
 /* =========================
-   RESPONSIVE
+BUTTONS
 ========================= */
 
-@media (max-width: 900px) {
+.hero-buttons{
+display:flex;
+gap:20px;
+}
 
-    .hero {
-        grid-template-columns: 1fr;
-        padding: 60px 30px;
-    }
+.btn-primary{
+padding:16px 36px;
+border-radius:30px;
+background:var(--primary);
+color:white;
+font-weight:600;
+transition:0.3s;
+box-shadow:0 10px 25px rgba(255,111,97,0.3);
+}
 
-    .navbar {
-        padding: 20px 30px;
-    }
+.btn-primary:hover{
+background:black;
+transform:translateY(-3px);
+}
 
+.btn-outline{
+padding:16px 36px;
+border:2px solid var(--primary);
+border-radius:30px;
+color:var(--primary);
+font-weight:600;
+transition:0.3s;
+}
+
+.btn-outline:hover{
+background:var(--primary);
+color:white;
+}
+
+/* =========================
+CARD (MODERN GLASS EFFECT)
+========================= */
+
+.info-card{
+background:rgba(255,255,255,0.9);
+backdrop-filter:blur(10px);
+padding:50px;
+border-radius:25px;
+box-shadow:0 20px 50px rgba(0,0,0,0.08);
+transition:0.3s;
+}
+
+.info-card:hover{
+transform:translateY(-10px) scale(1.02);
+}
+
+.info-card h3{
+font-size:28px;
+margin-bottom:25px;
+color:var(--primary);
+}
+
+.info-card li{
+margin-bottom:15px;
+font-size:16px;
+}
+
+/* =========================
+SMOOTH FADE-IN ANIMATION
+========================= */
+
+.hero-left,
+.hero-right{
+animation:fadeUp 1s ease forwards;
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(40px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* =========================
+RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+.hero{
+grid-template-columns:1fr;
+padding:80px 30px;
+}
+
+.hero-left h1{
+font-size:38px;
+}
+
+.navbar{
+padding:20px;
+}
+
+}
+/* =========================
+MINIMAL OUTLINE RINGS (NO GLOW)
+========================= */
+
+.ring{
+position:fixed;
+border-radius:50px;
+z-index:-1;
+pointer-events:none;
+animation:floatRing 16s infinite ease-in-out alternate;
+}
+
+/* BIG RING */
+.ring1{
+width:320px;
+height:180px;
+border:3px solid rgba(255,111,97,0.35); /* darker than shapes */
+top:18%;
+right:8%;
+}
+
+/* MEDIUM RING */
+.ring2{
+width:240px;
+height:140px;
+border:2px solid rgba(255,111,97,0.28);
+
+bottom:-60px;
+left:50%;
+transform:translateX(-50%);
+
+animation-delay:3s;
+}
+
+/* SMALL RING */
+.ring3{
+width:180px;
+height:100px;
+border:2px solid rgba(0,0,0,0.18); /* subtle dark */
+top:65%;
+right:25%;
+animation-delay:6s;
+}
+
+/* SMOOTH FLOATING */
+@keyframes floatRing{
+0%{
+transform:translateY(0) rotate(0deg);
+}
+50%{
+transform:translateY(-25px) rotate(6deg);
+}
+100%{
+transform:translateY(25px) rotate(-6deg);
+}
+}
+/* REMOVE UNDERLINES FROM ALL LINKS */
+a{
+text-decoration:none;
 }
 </style>
 </head>
-<body class="light">
+
+<body>
+
+<!-- BACKGROUND BLOBS -->
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
+<div class="shape shape3"></div>
+<div class="ring ring1"></div>
+<div class="ring ring2"></div>
+<div class="ring ring3"></div>
 
 <!-- NAVBAR -->
 <nav class="navbar">
-    <div class="logo">LUMA</div>
+    <div class="logo">LMS</div>
     <div class="nav-actions">
-        <a href="/login" class="nav-link">Login</a>
+        <a href="/login">Login</a>
         <a href="/register" class="nav-btn">Register</a>
     </div>
 </nav>
 
-<!-- HERO SECTION -->
+<!-- HERO -->
 <section class="hero">
 
     <div class="hero-left">
-        <h1>Smart Learning Starts Here</h1>
+        <h1>Smart Learning Starts Here 🚀</h1>
         <p>
-            A modern Learning Management System built for structured
-            classrooms, assignment tracking, and performance analytics.
+            A powerful and modern platform for managing classrooms,
+            tracking progress, and enhancing student learning.
         </p>
 
         <div class="hero-buttons">
@@ -242,18 +371,6 @@ a {
     </div>
 
 </section>
-
-<script>
-const toggle = document.getElementById("themeToggle");
-const body = document.body;
-
-toggle.addEventListener("click", () => {
-    body.classList.toggle("dark");
-    body.classList.toggle("light");
-
-    toggle.textContent = body.classList.contains("dark") ? "☀️" : "🌙";
-});
-</script>
 
 </body>
 </html>
