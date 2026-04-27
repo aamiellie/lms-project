@@ -418,6 +418,39 @@ document.getElementById("message").value=""
 }
 
 
+async function startStreaming(){
+
+if(role !== "teacher" || !localStream) return;
+
+console.log("🚀 START STREAMING (TEACHER)");
+
+peerConnection = new RTCPeerConnection(config);
+
+localStream.getTracks().forEach(track => {
+    peerConnection.addTrack(track, localStream);
+});
+
+peerConnection.onicecandidate = event => {
+    if(event.candidate){
+        socket.emit("ice_candidate",{
+            room:room,
+            candidate:event.candidate
+        });
+    }
+};
+
+const offer = await peerConnection.createOffer();
+await peerConnection.setLocalDescription(offer);
+
+console.log("📡 SENDING OFFER");
+
+socket.emit("video_offer",{
+    room:room,
+    offer:offer
+});
+
+}
+
 // TEACHER CAMERA
 
 if(role === "teacher"){
@@ -428,17 +461,17 @@ audio:true
 })
 .then(stream=>{
 
-localStream = stream
+localStream = stream;
 
-const video = document.getElementById("teacherVideo")
+const video = document.getElementById("teacherVideo");
 
-video.srcObject = stream
+video.srcObject = stream;
+video.muted = true;
 
-video.muted = true   // ← ADD THIS LINE HERE
+// 🔥 ADD THIS LINE
+startStreaming();
 
 })
-
-}
 
 
 // SCREEN SHARE
@@ -521,7 +554,15 @@ peerConnection = new RTCPeerConnection(config);
 
 peerConnection.ontrack = event => {
 
-document.getElementById("teacherVideo").srcObject = event.streams[0]
+    console.log("🔥 TRACK RECEIVED");   // 👈 ADD THIS
+
+    const video = document.getElementById("teacherVideo");
+
+    if(video){
+        video.srcObject = event.streams[0];
+    } else {
+        console.log("❌ video element not found");
+    }
 
 }
 
