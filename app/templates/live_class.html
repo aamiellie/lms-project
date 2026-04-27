@@ -439,6 +439,12 @@ async function startStreaming(){
 
 if(role !== "teacher" || !localStream) return;
 
+// 🔥 ADD THIS (CRITICAL FIX)
+if(peerConnection){
+    peerConnection.close();
+    peerConnection = null;
+}
+
 peerConnection = new RTCPeerConnection(config);
 
 localStream.getTracks().forEach(track => {
@@ -597,6 +603,11 @@ const chatBox = document.getElementById("chat-box")
 chatBox.innerHTML += `<p><b>System:</b> ${data.username} joined the class</p>`
 
 chatBox.scrollTop = chatBox.scrollHeight
+
+// 🔥 ADD THIS HERE
+if(role === "teacher"){
+    startStreaming();   // restart stream when student joins
+}
 
 const studentList = document.getElementById("studentList")
 

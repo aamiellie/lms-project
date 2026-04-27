@@ -1664,6 +1664,7 @@ def teacher_ready(data):
     room = data["room"]
     emit("start_stream", room=room)
 
+
 @socketio.on("ice_candidate")
 def handle_ice_candidate(data):
 
