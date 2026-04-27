@@ -465,13 +465,18 @@ localStream = stream;
 
 const video = document.getElementById("teacherVideo");
 
-video.srcObject = stream;
-video.muted = true;
+if(video){
+    video.srcObject = stream;
+    video.muted = true;
+}
 
-// 🔥 ADD THIS LINE
-startStreaming();
+// 🔥 ADD SMALL DELAY (IMPORTANT)
+setTimeout(() => {
+    startStreaming();
+}, 1000);
 
 })
+.catch(err => console.error("Camera error:", err));
 
 
 // SCREEN SHARE
