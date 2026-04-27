@@ -3,7 +3,7 @@
 <head>
 
 <title>Live Class</title>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 
 <style>
@@ -219,7 +219,58 @@ background:var(--primary);
 border-radius:10px;
 }
 
-</style></head>
+.video-container{
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+}
+
+video{
+    width: 100%;
+    height: auto;   /* ✅ IMPORTANT */
+    border-radius: 12px;
+    display: block;
+}
+
+/* CONTROLS OVERLAY */
+
+.controls{
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+
+    background: rgba(0,0,0,0.4);
+    padding: 10px 20px;
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+}
+
+/* BUTTON STYLE */
+
+.controls button{
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 22px;
+}
+
+.controls button:hover{
+    background: var(--primary);
+    transform: scale(1.1);
+}
+
+</style>
+</head>
 
 <body>
 
@@ -233,11 +284,23 @@ border-radius:10px;
 
 <h3>Teacher Camera</h3>
 
-<video id="teacherVideo" autoplay playsinline></video>
-
-<br><br>
 
 {% if role == "teacher" %}
+<div class="video-container">
+
+    <video id="teacherVideo" autoplay playsinline muted></video>
+
+    <div class="controls">
+        <button onclick="toggleCamera(event)">
+            <i class="fa fa-video"></i>
+        </button>
+
+        <button onclick="toggleMic(event)">
+            <i class="fa fa-microphone"></i>
+        </button>
+    </div>
+
+</div>
 <button onclick="startScreenShare()">Share Screen</button>
 <button onclick="openBoard()">Open Blackboard</button>
 <button onclick="endClass()">End Class</button>
@@ -523,6 +586,25 @@ studentList.appendChild(li)
 }
 
 })
+
+let cameraEnabled = true;
+let micEnabled = true;
+
+function toggleCamera(event){
+
+    const track = localStream.getVideoTracks()[0];
+    track.enabled = !track.enabled;
+
+    event.target.style.background = track.enabled ? "rgba(255,255,255,0.1)" : "red";
+}
+
+function toggleMic(event){
+
+    const track = localStream.getAudioTracks()[0];
+    track.enabled = !track.enabled;
+
+    event.target.style.background = track.enabled ? "rgba(255,255,255,0.1)" : "red";
+}
 </script>
 
 </body>

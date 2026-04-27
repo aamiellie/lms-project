@@ -1549,24 +1549,28 @@ def change_password():
         return redirect(url_for("login"))
 
     if request.method == "POST":
-        current = request.form.get("current_password")
-        new = request.form.get("new_password")
-        confirm = request.form.get("confirm_password")
+        current = request.form.get("current_password", "").strip()
+        new = request.form.get("new_password", "").strip()
+        confirm = request.form.get("confirm_password", "").strip()
 
         user = users_collection.find_one({"_id": ObjectId(session["user_id"])})
 
-        if not user or user["password"] != current:
-            return "Current password is incorrect"
+        # ✅ FIX: use hash check
+        if not user or not check_password_hash(user["password"], current):
+            return render_template("change_password.html", error="Current password is incorrect")
 
         if new != confirm:
-            return "New passwords do not match"
+            return render_template("change_password.html", error="New passwords do not match")
+
+        # ✅ FIX: store hashed password
+        hashed_password = generate_password_hash(new)
 
         users_collection.update_one(
             {"_id": ObjectId(session["user_id"])},
-            {"$set": {"password": new}}
+            {"$set": {"password": hashed_password}}
         )
 
-        return "Password updated successfully"
+        return redirect(url_for("student_dashboard"))
 
     return render_template("change_password.html")
 @app.route("/logout")
