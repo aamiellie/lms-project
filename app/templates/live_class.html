@@ -44,7 +44,9 @@
 
 {% if role == "teacher" %}
 <button onclick="startCamera()">Start Camera</button>
-<button class="end" onclick="endClass()">End Class</button>
+<form method="POST" action="/teacher/end-live/{{ room_id }}">
+    <button class="end">End Class</button>
+</form>
 {% endif %}
 
 <script>
@@ -61,10 +63,7 @@ function startCamera(){
     .catch(err => alert("Camera error"));
 }
 
-function endClass(){
-    alert("Class ended");
-    window.location.href = "/dashboard";
-}
+
 
 </script>
 

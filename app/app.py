@@ -1521,11 +1521,10 @@ def start_live_class(classroom_id):
 def live_room(room_id):
 
     live_class = live_classes_collection.find_one({
-        "room_id": room_id,
-        "status": "live"
+        "room_id": room_id
     })
 
-    if not live_class:
+    if not live_class or live_class.get("status") == "ended":
         return "No live class active right now."
 
     return render_template(
@@ -1542,7 +1541,7 @@ def end_live_class(room_id):
         {"$set": {"status": "ended"}}
     )
 
-    return "Class ended"
+    return redirect(url_for("dashboard"))
 @app.route("/change-password", methods=["GET", "POST"])
 def change_password():
 
