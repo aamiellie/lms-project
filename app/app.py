@@ -1529,8 +1529,12 @@ def live_room(room_id):
     if live_class.get("status") == "ended":
         return "No live class active right now."
 
+    if session["user_role"] == "student":
+
     attendance_collection.insert_one({
         "user_id": session["user_id"],
+        "name": session["user_name"],
+        "role": session["user_role"],
         "room_id": room_id,
         "join_time": datetime.utcnow(),
         "leave_time": None,
