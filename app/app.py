@@ -1524,7 +1524,10 @@ def live_room(room_id):
         "room_id": room_id
     })
 
-    if not live_class or live_class.get("status") == "ended":
+    if not live_class:
+        return "No live class active right now."
+
+    if live_class.get("status") == "ended":
         return "No live class active right now."
 
     return render_template(
@@ -1535,6 +1538,8 @@ def live_room(room_id):
     )
 @app.route("/teacher/end-live/<room_id>", methods=["POST"])
 def end_live_class(room_id):
+
+    print("END CLASS CALLED", room_id)
 
     live_classes_collection.update_one(
         {"room_id": room_id},

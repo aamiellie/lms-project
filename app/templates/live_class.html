@@ -45,7 +45,7 @@
 {% if role == "teacher" %}
 <button onclick="startCamera()">Start Camera</button>
 <form method="POST" action="/teacher/end-live/{{ room_id }}">
-    <button class="end">End Class</button>
+    <button type="submit" class="end">End Class</button>
 </form>
 {% endif %}
 
