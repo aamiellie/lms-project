@@ -1653,6 +1653,17 @@ def leave_class(room_id):
         )
 
     return "", 204
+@app.route("/check_class/<room_id>")
+def check_class(room_id):
+
+    live_class = live_classes_collection.find_one({
+        "room_id": room_id
+    })
+
+    if not live_class:
+        return {"status": "ended"}
+
+    return {"status": live_class.get("status", "ended")}
 @socketio.on("send_message")
 def handle_message(data):
 

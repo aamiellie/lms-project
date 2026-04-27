@@ -76,6 +76,22 @@ function leaveClass(){
 
 }
 
+// 🔥 CHECK IF CLASS ENDED EVERY 3 SECONDS
+setInterval(() => {
+
+    fetch("/check_class/{{ room_id }}")
+    .then(res => res.json())
+    .then(data => {
+
+        if(data.status === "ended"){
+            alert("Class Ended");
+            window.location.href = "/dashboard";
+        }
+
+    });
+
+}, 3000);
+
 </script>
 
 </body>
