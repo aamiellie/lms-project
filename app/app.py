@@ -1622,17 +1622,18 @@ def handle_end_class(data):
 
     room = data["room"]
 
+    # update DB (optional but good)
     live_classes_collection.update_one(
         {"room_id": room},
-        {
-            "$set": {
-                "status": "ended",
-                "ended_at": datetime.utcnow()
-            }
-        }
+        {"$set": {"status": "ended"}}
     )
 
-    emit("class_ended", {"message": "Live class ended"}, room=data["room"])
+    # 🔥 SEND TO ALL USERS IN ROOM
+    emit(
+        "class_ended",
+        {"message": "Live class has ended"},
+        room=room
+    )
 
 @socketio.on("leave_room")
 def handle_leave(data):
