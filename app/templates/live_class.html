@@ -284,11 +284,11 @@ video{
 
 <h3>Teacher Camera</h3>
 
-
-{% if role == "teacher" %}
 <div class="video-container">
 
     <video id="teacherVideo" autoplay playsinline muted></video>
+{% if role == "teacher" %}
+
 
     <div class="controls">
         <button onclick="toggleCamera(event)">
@@ -536,65 +536,41 @@ window.location.href="/dashboard"
 
 })
 
-
-
 socket.on("video_offer", async data => {
 
 if(role !== "student") return;
 
 peerConnection = new RTCPeerConnection(config);
 
+// 🔥 1. ADD ontrack FIRST (VERY IMPORTANT)
 peerConnection.ontrack = event => {
+    console.log("Track received");   // debug
+    document.getElementById("teacherVideo").srcObject = event.streams[0];
+};
 
-document.getElementById("teacherVideo").srcObject = event.streams[0]
-
-}
-
+// 🔥 2. THEN ice candidate
 peerConnection.onicecandidate = event => {
+    if(event.candidate){
+        socket.emit("ice_candidate",{
+            room:room,
+            candidate:event.candidate
+        })
+    }
+};
 
-if(event.candidate){
-socket.emit("ice_candidate",{
-room:room,
-candidate:event.candidate
-})
-}
-
-}
-
+// 🔥 3. THEN set remote description
 await peerConnection.setRemoteDescription(data.offer);
 
+// 🔥 4. THEN create answer
 const answer = await peerConnection.createAnswer();
 await peerConnection.setLocalDescription(answer);
 
 socket.emit("video_answer",{
-room:room,
-answer:answer
+    room:room,
+    answer:answer
 });
 
 });
-
-socket.on("video_answer", async data => {
-
-if(role !== "teacher") return;
-
-await peerConnection.setRemoteDescription(data.answer);
-
-});
-
-socket.on("ice_candidate", async data => {
-
-if(peerConnection){
-
-try {
-await peerConnection.addIceCandidate(data.candidate)
-} catch(e){
-console.error("ICE error:", e)
-}
-
-}
-
-});
-
 
 socket.on("user_joined", function(data){
 
