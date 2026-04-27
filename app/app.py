@@ -15,7 +15,6 @@ import random
 import string
 import uuid
 from datetime import datetime
-from datetime import datetime
 
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, send_from_directory
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -1530,6 +1529,13 @@ def live_room(room_id):
     if live_class.get("status") == "ended":
         return "No live class active right now."
 
+    attendance_collection.insert_one({
+        "user_id": session["user_id"],
+        "room_id": room_id,
+        "join_time": datetime.utcnow(),
+        "leave_time": None,
+        "duration": 0
+    })
     return render_template(
         "live_class.html",
         room_id=room_id,
@@ -1541,10 +1547,12 @@ def end_live_class(room_id):
 
     print("END CLASS CALLED", room_id)
 
-    live_classes_collection.update_one(
+    result = live_classes_collection.update_one(
         {"room_id": room_id},
         {"$set": {"status": "ended"}}
     )
+
+    print("UPDATED COUNT:", result.modified_count)
 
     return redirect(url_for("dashboard"))
 @app.route("/change-password", methods=["GET", "POST"])
@@ -1583,7 +1591,32 @@ def logout():
     session.clear()
     return redirect(url_for("login"))
 
+@app.route("/leave/<room_id>")
+def leave_class(room_id):
 
+    record = attendance_collection.find_one({
+        "user_id": session["user_id"],
+        "room_id": room_id,
+        "leave_time": None
+    })
+
+    if record:
+        from datetime import datetime
+
+        leave_time = datetime.utcnow()
+        duration = (leave_time - record["join_time"]).total_seconds()
+
+        attendance_collection.update_one(
+            {"_id": record["_id"]},
+            {
+                "$set": {
+                    "leave_time": leave_time,
+                    "duration": duration
+                }
+            }
+        )
+
+    return "", 204
 @socketio.on("send_message")
 def handle_message(data):
 

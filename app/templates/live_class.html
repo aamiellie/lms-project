@@ -63,7 +63,9 @@ function startCamera(){
     .catch(err => alert("Camera error"));
 }
 
-
+window.addEventListener("beforeunload", () => {
+    navigator.sendBeacon("/leave/{{ room_id }}");
+});
 
 </script>
 
