@@ -1632,11 +1632,7 @@ def handle_end_class(data):
         }
     )
 
-    emit(
-        "class_ended",
-        {"message": "Live class has ended"},
-        room=room
-    )
+    emit("class_ended", {"message": "Live class ended"}, room=data["room"])
 
 @socketio.on("leave_room")
 def handle_leave(data):
@@ -1662,7 +1658,7 @@ def handle_leave(data):
                 }
             }
         )
-        
+
 import os
 
 if __name__ == "__main__":
