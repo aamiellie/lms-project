@@ -1545,14 +1545,34 @@ def live_room(room_id):
 @app.route("/teacher/end-live/<room_id>", methods=["POST"])
 def end_live_class(room_id):
 
-    print("END CLASS CALLED", room_id)
+    from datetime import datetime
 
-    result = live_classes_collection.update_one(
+    # 1️⃣ Update class status
+    live_classes_collection.update_one(
         {"room_id": room_id},
         {"$set": {"status": "ended"}}
     )
 
-    print("UPDATED COUNT:", result.modified_count)
+    # 2️⃣ Find all students who haven't left yet
+    active_students = attendance_collection.find({
+        "room_id": room_id,
+        "leave_time": None
+    })
+
+    # 3️⃣ Update each one
+    for student in active_students:
+        leave_time = datetime.utcnow()
+        duration = (leave_time - student["join_time"]).total_seconds()
+
+        attendance_collection.update_one(
+            {"_id": student["_id"]},
+            {
+                "$set": {
+                    "leave_time": leave_time,
+                    "duration": duration
+                }
+            }
+        )
 
     return redirect(url_for("dashboard"))
 @app.route("/change-password", methods=["GET", "POST"])
