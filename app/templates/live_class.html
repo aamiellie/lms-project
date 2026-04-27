@@ -226,12 +226,6 @@ border-radius:10px;
     margin: auto;
 }
 
-video{
-    width: 100%;
-    height: auto;   /* ✅ IMPORTANT */
-    border-radius: 12px;
-    display: block;
-}
 
 /* CONTROLS OVERLAY */
 
@@ -286,10 +280,9 @@ video{
 
 <div class="video-container">
 
-    <video id="teacherVideo" autoplay playsinline muted></video>
-{% if role == "teacher" %}
+    <video id="teacherVideo" autoplay playsinline></video>
 
-
+    {% if role == "teacher" %}
     <div class="controls">
         <button onclick="toggleCamera(event)">
             <i class="fa fa-video"></i>
@@ -299,12 +292,7 @@ video{
             <i class="fa fa-microphone"></i>
         </button>
     </div>
-
-</div>
-<button onclick="startScreenShare()">Share Screen</button>
-<button onclick="openBoard()">Open Blackboard</button>
-<button onclick="endClass()">End Class</button>
-{% endif %}
+    {% endif %}
 
 </div>
 
@@ -469,6 +457,29 @@ socket.emit("video_offer",{
 });
 
 }
+
+
+socket.on("video_answer", async data => {
+
+if(role !== "teacher") return;
+
+await peerConnection.setRemoteDescription(data.answer);
+
+});
+
+socket.on("ice_candidate", async data => {
+
+if(peerConnection){
+
+try {
+await peerConnection.addIceCandidate(data.candidate)
+} catch(e){
+console.error("ICE error:", e)
+}
+
+}
+
+});
 // TEACHER CAMERA
 
 if(role === "teacher"){
@@ -604,18 +615,20 @@ let micEnabled = true;
 
 function toggleCamera(event){
 
+    const btn = event.currentTarget;
     const track = localStream.getVideoTracks()[0];
     track.enabled = !track.enabled;
 
-    event.target.style.background = track.enabled ? "rgba(255,255,255,0.1)" : "red";
+    btn.style.background = track.enabled ? "rgba(255,255,255,0.1)" : "red";
 }
 
 function toggleMic(event){
 
+    const btn = event.currentTarget;
     const track = localStream.getAudioTracks()[0];
     track.enabled = !track.enabled;
 
-    event.target.style.background = track.enabled ? "rgba(255,255,255,0.1)" : "red";
+    btn.style.background = track.enabled ? "rgba(255,255,255,0.1)" : "red";
 }
 </script>
 
