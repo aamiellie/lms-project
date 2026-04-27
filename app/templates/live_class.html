@@ -226,6 +226,12 @@ border-radius:10px;
     margin: auto;
 }
 
+video{
+    width: 100%;
+    height: auto;   /* ✅ IMPORTANT */
+    border-radius: 12px;
+    display: block;
+}
 
 /* CONTROLS OVERLAY */
 
@@ -278,11 +284,12 @@ border-radius:10px;
 
 <h3>Teacher Camera</h3>
 
+
+{% if role == "teacher" %}
 <div class="video-container">
 
-    <video id="teacherVideo" autoplay playsinline></video>
+    <video id="teacherVideo" autoplay playsinline muted></video>
 
-    {% if role == "teacher" %}
     <div class="controls">
         <button onclick="toggleCamera(event)">
             <i class="fa fa-video"></i>
@@ -292,7 +299,12 @@ border-radius:10px;
             <i class="fa fa-microphone"></i>
         </button>
     </div>
-    {% endif %}
+
+</div>
+<button onclick="startScreenShare()">Share Screen</button>
+<button onclick="openBoard()">Open Blackboard</button>
+<button onclick="endClass()">End Class</button>
+{% endif %}
 
 </div>
 
@@ -364,33 +376,10 @@ username:username
 })
 
 if(role === "student"){
-
-// first attempt
 socket.emit("request_stream",{room:room})
-
-// 🔥 retry after 2 seconds
-setTimeout(() => {
-    socket.emit("request_stream",{room:room})
-}, 2000)
-
-// 🔥 retry again after 4 seconds
-setTimeout(() => {
-    socket.emit("request_stream",{room:room})
-}, 4000)
-
 }
 
 })
-
-// 🔥 ADD THIS HERE (RIGHT AFTER CONNECT BLOCK)
-
-socket.on("start_stream", () => {
-    if(role === "teacher"){
-        startStreaming();
-    }
-});
-
-
 // RECEIVE CHAT MESSAGE
 
 socket.on("receive_message",function(data){
@@ -422,64 +411,7 @@ document.getElementById("message").value=""
 
 }
 
-// 🔥 ADD THIS FUNCTION HERE
-async function startStreaming(){
 
-if(role !== "teacher" || !localStream) return;
-
-// 🔥 ADD THIS (CRITICAL FIX)
-if(peerConnection){
-    peerConnection.close();
-    peerConnection = null;
-}
-
-peerConnection = new RTCPeerConnection(config);
-
-localStream.getTracks().forEach(track => {
-    peerConnection.addTrack(track, localStream);
-});
-
-peerConnection.onicecandidate = event => {
-    if(event.candidate){
-        socket.emit("ice_candidate",{
-            room:room,
-            candidate:event.candidate
-        })
-    }
-}
-
-const offer = await peerConnection.createOffer();
-await peerConnection.setLocalDescription(offer);
-
-socket.emit("video_offer",{
-    room:room,
-    offer:offer
-});
-
-}
-
-
-socket.on("video_answer", async data => {
-
-if(role !== "teacher") return;
-
-await peerConnection.setRemoteDescription(data.answer);
-
-});
-
-socket.on("ice_candidate", async data => {
-
-if(peerConnection){
-
-try {
-await peerConnection.addIceCandidate(data.candidate)
-} catch(e){
-console.error("ICE error:", e)
-}
-
-}
-
-});
 // TEACHER CAMERA
 
 if(role === "teacher"){
@@ -495,13 +427,10 @@ localStream = stream
 const video = document.getElementById("teacherVideo")
 
 video.srcObject = stream
-video.muted = true
 
-// 🔥 ADD THIS LINE
-startStreaming();
+video.muted = true   // ← ADD THIS LINE HERE
 
 })
-.catch(err => console.error("Camera error:", err));
 
 }
 
@@ -547,41 +476,94 @@ window.location.href="/dashboard"
 
 })
 
+
+socket.on("start_stream", async () => {
+
+if(role !== "teacher" || !localStream) return;
+
+peerConnection = new RTCPeerConnection(config);
+
+localStream.getTracks().forEach(track => {
+peerConnection.addTrack(track, localStream);
+});
+
+peerConnection.onicecandidate = event => {
+if(event.candidate){
+socket.emit("ice_candidate",{
+room:room,
+candidate:event.candidate
+})
+}
+}
+
+const offer = await peerConnection.createOffer();
+await peerConnection.setLocalDescription(offer);
+
+socket.emit("video_offer",{
+room:room,
+offer:offer
+});
+
+});
+
+
 socket.on("video_offer", async data => {
 
 if(role !== "student") return;
 
 peerConnection = new RTCPeerConnection(config);
 
-// 🔥 1. ADD ontrack FIRST (VERY IMPORTANT)
 peerConnection.ontrack = event => {
-    console.log("Track received");   // debug
-    document.getElementById("teacherVideo").srcObject = event.streams[0];
-};
 
-// 🔥 2. THEN ice candidate
+document.getElementById("teacherVideo").srcObject = event.streams[0]
+
+}
+
 peerConnection.onicecandidate = event => {
-    if(event.candidate){
-        socket.emit("ice_candidate",{
-            room:room,
-            candidate:event.candidate
-        })
-    }
-};
 
-// 🔥 3. THEN set remote description
+if(event.candidate){
+socket.emit("ice_candidate",{
+room:room,
+candidate:event.candidate
+})
+}
+
+}
+
 await peerConnection.setRemoteDescription(data.offer);
 
-// 🔥 4. THEN create answer
 const answer = await peerConnection.createAnswer();
 await peerConnection.setLocalDescription(answer);
 
 socket.emit("video_answer",{
-    room:room,
-    answer:answer
+room:room,
+answer:answer
 });
 
 });
+
+socket.on("video_answer", async data => {
+
+if(role !== "teacher") return;
+
+await peerConnection.setRemoteDescription(data.answer);
+
+});
+
+socket.on("ice_candidate", async data => {
+
+if(peerConnection){
+
+try {
+await peerConnection.addIceCandidate(data.candidate)
+} catch(e){
+console.error("ICE error:", e)
+}
+
+}
+
+});
+
 
 socket.on("user_joined", function(data){
 
@@ -590,11 +572,6 @@ const chatBox = document.getElementById("chat-box")
 chatBox.innerHTML += `<p><b>System:</b> ${data.username} joined the class</p>`
 
 chatBox.scrollTop = chatBox.scrollHeight
-
-// 🔥 ADD THIS HERE
-if(role === "teacher"){
-    startStreaming();   // restart stream when student joins
-}
 
 const studentList = document.getElementById("studentList")
 
@@ -615,20 +592,18 @@ let micEnabled = true;
 
 function toggleCamera(event){
 
-    const btn = event.currentTarget;
     const track = localStream.getVideoTracks()[0];
     track.enabled = !track.enabled;
 
-    btn.style.background = track.enabled ? "rgba(255,255,255,0.1)" : "red";
+    event.target.style.background = track.enabled ? "rgba(255,255,255,0.1)" : "red";
 }
 
 function toggleMic(event){
 
-    const btn = event.currentTarget;
     const track = localStream.getAudioTracks()[0];
     track.enabled = !track.enabled;
 
-    btn.style.background = track.enabled ? "rgba(255,255,255,0.1)" : "red";
+    event.target.style.background = track.enabled ? "rgba(255,255,255,0.1)" : "red";
 }
 </script>
 
