@@ -1519,6 +1519,8 @@ def start_live_class(classroom_id):
 @app.route("/live/<room_id>")
 def live_room(room_id):
 
+    from datetime import datetime
+
     live_class = live_classes_collection.find_one({
         "room_id": room_id
     })
@@ -1529,17 +1531,27 @@ def live_room(room_id):
     if live_class.get("status") == "ended":
         return "No live class active right now."
 
+    # ✅ ONLY FOR STUDENTS
     if session["user_role"] == "student":
 
-    attendance_collection.insert_one({
-        "user_id": session["user_id"],
-        "name": session["user_name"],
-        "role": session["user_role"],
-        "room_id": room_id,
-        "join_time": datetime.utcnow(),
-        "leave_time": None,
-        "duration": 0
-    })
+        # 🔥 CHECK IF ALREADY JOINED (avoid duplicates)
+        existing = attendance_collection.find_one({
+            "user_id": session["user_id"],
+            "room_id": room_id,
+            "leave_time": None
+        })
+
+        if not existing:
+            attendance_collection.insert_one({
+                "user_id": session["user_id"],
+                "name": session["user_name"],
+                "role": session["user_role"],
+                "room_id": room_id,
+                "join_time": datetime.utcnow(),
+                "leave_time": None,
+                "duration": 0
+            })
+
     return render_template(
         "live_class.html",
         room_id=room_id,
