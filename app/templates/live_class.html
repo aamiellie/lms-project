@@ -268,6 +268,25 @@ video{
     background: var(--primary);
     transform: scale(1.1);
 }
+.video-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+}
+
+video {
+    width: 100%;
+    border-radius: 12px;
+}
+.controls {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
 
 </style>
 </head>
@@ -286,13 +305,8 @@ video{
 
 <div class="video-container">
 
-    <video id="teacherVideo" autoplay playsinline muted></video>
-<div class="video-container">
-
-    <!-- VIDEO for BOTH teacher & student -->
     <video id="teacherVideo" autoplay playsinline></video>
 
-    <!-- Controls ONLY for teacher -->
     {% if role == "teacher" %}
     <div class="controls">
         <button onclick="toggleCamera(event)">
@@ -307,7 +321,6 @@ video{
 
 </div>
 
-<!-- Buttons ONLY for teacher -->
 {% if role == "teacher" %}
 <button onclick="startScreenShare()">Share Screen</button>
 <button onclick="openBoard()">Open Blackboard</button>
@@ -478,6 +491,7 @@ setTimeout(() => {
 })
 .catch(err => console.error("Camera error:", err));
 
+}
 
 // SCREEN SHARE
 
