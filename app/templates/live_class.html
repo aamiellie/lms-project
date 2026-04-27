@@ -393,6 +393,16 @@ setTimeout(() => {
 }
 
 })
+
+// 🔥 ADD THIS HERE (RIGHT AFTER CONNECT BLOCK)
+
+socket.on("start_stream", () => {
+    if(role === "teacher"){
+        startStreaming();
+    }
+});
+
+
 // RECEIVE CHAT MESSAGE
 
 socket.on("receive_message",function(data){
@@ -424,7 +434,35 @@ document.getElementById("message").value=""
 
 }
 
+// 🔥 ADD THIS FUNCTION HERE
+async function startStreaming(){
 
+if(role !== "teacher" || !localStream) return;
+
+peerConnection = new RTCPeerConnection(config);
+
+localStream.getTracks().forEach(track => {
+    peerConnection.addTrack(track, localStream);
+});
+
+peerConnection.onicecandidate = event => {
+    if(event.candidate){
+        socket.emit("ice_candidate",{
+            room:room,
+            candidate:event.candidate
+        })
+    }
+}
+
+const offer = await peerConnection.createOffer();
+await peerConnection.setLocalDescription(offer);
+
+socket.emit("video_offer",{
+    room:room,
+    offer:offer
+});
+
+}
 // TEACHER CAMERA
 
 if(role === "teacher"){
@@ -443,7 +481,7 @@ video.srcObject = stream
 video.muted = true
 
 // 🔥 ADD THIS LINE
-socket.emit("teacher_ready", { room: room });
+startStreaming();
 
 })
 .catch(err => console.error("Camera error:", err));
@@ -492,35 +530,6 @@ window.location.href="/dashboard"
 
 })
 
-
-socket.on("start_stream", async () => {
-
-if(role !== "teacher" || !localStream) return;
-
-peerConnection = new RTCPeerConnection(config);
-
-localStream.getTracks().forEach(track => {
-peerConnection.addTrack(track, localStream);
-});
-
-peerConnection.onicecandidate = event => {
-if(event.candidate){
-socket.emit("ice_candidate",{
-room:room,
-candidate:event.candidate
-})
-}
-}
-
-const offer = await peerConnection.createOffer();
-await peerConnection.setLocalDescription(offer);
-
-socket.emit("video_offer",{
-room:room,
-offer:offer
-});
-
-});
 
 
 socket.on("video_offer", async data => {

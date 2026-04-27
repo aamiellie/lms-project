@@ -1584,9 +1584,13 @@ def handle_join(data):
     room = data["room"]
     username = data["username"]
 
+    # ✅ FIRST join the room
     join_room(room)
 
-    # notify everyone in the room
+    # ✅ THEN notify teacher to start stream
+    emit("start_stream", room=room)
+
+    # notify everyone
     emit(
         "user_joined",
         {"username": username},
@@ -1659,7 +1663,7 @@ def handle_video_answer(data):
 def teacher_ready(data):
     room = data["room"]
     emit("start_stream", room=room)
-    
+
 @socketio.on("ice_candidate")
 def handle_ice_candidate(data):
 
