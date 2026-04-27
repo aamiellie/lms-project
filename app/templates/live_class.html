@@ -284,12 +284,16 @@ video{
 
 <h3>Teacher Camera</h3>
 
-
-{% if role == "teacher" %}
 <div class="video-container">
 
     <video id="teacherVideo" autoplay playsinline muted></video>
+<div class="video-container">
 
+    <!-- VIDEO for BOTH teacher & student -->
+    <video id="teacherVideo" autoplay playsinline></video>
+
+    <!-- Controls ONLY for teacher -->
+    {% if role == "teacher" %}
     <div class="controls">
         <button onclick="toggleCamera(event)">
             <i class="fa fa-video"></i>
@@ -299,14 +303,16 @@ video{
             <i class="fa fa-microphone"></i>
         </button>
     </div>
+    {% endif %}
 
 </div>
+
+<!-- Buttons ONLY for teacher -->
+{% if role == "teacher" %}
 <button onclick="startScreenShare()">Share Screen</button>
 <button onclick="openBoard()">Open Blackboard</button>
 <button onclick="endClass()">End Class</button>
 {% endif %}
-
-</div>
 
 
 <!-- CHAT -->
