@@ -376,7 +376,20 @@ username:username
 })
 
 if(role === "student"){
+
+// first attempt
 socket.emit("request_stream",{room:room})
+
+// 🔥 retry after 2 seconds
+setTimeout(() => {
+    socket.emit("request_stream",{room:room})
+}, 2000)
+
+// 🔥 retry again after 4 seconds
+setTimeout(() => {
+    socket.emit("request_stream",{room:room})
+}, 4000)
+
 }
 
 })
@@ -427,10 +440,13 @@ localStream = stream
 const video = document.getElementById("teacherVideo")
 
 video.srcObject = stream
+video.muted = true
 
-video.muted = true   // ← ADD THIS LINE HERE
+// 🔥 ADD THIS LINE
+socket.emit("teacher_ready", { room: room });
 
 })
+.catch(err => console.error("Camera error:", err));
 
 }
 
