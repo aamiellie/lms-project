@@ -26,7 +26,7 @@ from PyPDF2 import PdfReader
 from groq import Groq
 from gtts import gTTS
 from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips
-
+from app.db import attendance_collection
 # ✅ DB imports
 from app.db import (
     users_collection,
