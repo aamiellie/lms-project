@@ -3,38 +3,25 @@
 <head>
     <title>Live Class</title>
 
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-
     <style>
         body {
             margin: 0;
             font-family: Arial;
             background: #121212;
             color: white;
-        }
-
-        .video-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 80vh;
+            text-align: center;
         }
 
         video {
             width: 70%;
+            margin-top: 30px;
             border-radius: 12px;
             background: black;
         }
 
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 20px;
-        }
-
         button {
             padding: 12px 20px;
+            margin: 10px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -49,70 +36,36 @@
 
 <body>
 
-<h2 style="text-align:center;">Live Class</h2>
+<h2>Live Class</h2>
 
-<div class="video-container">
-    <video id="teacherVideo" autoplay playsinline></video>
-</div>
+<video id="camera" autoplay playsinline></video>
 
-<div class="controls">
-    {% if role == "teacher" %}
-        <button onclick="startCamera()">Start Camera</button>
-        <button class="end" onclick="endClass()">End Class</button>
-    {% endif %}
-</div>
+<br>
+
+{% if role == "teacher" %}
+<button onclick="startCamera()">Start Camera</button>
+<button class="end" onclick="endClass()">End Class</button>
+{% endif %}
 
 <script>
-const socket = io();
 
-const room = "{{ room_id }}";
-const username = "{{ user_name }}";
-const role = "{{ role }}";
-
-let localStream;
-
-// JOIN ROOM
-socket.on("connect", () => {
-    socket.emit("join_room", {
-        room: room,
-        username: username
-    });
-});
-
-// START CAMERA (TEACHER)
-function startCamera() {
+function startCamera(){
 
     navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true
     })
     .then(stream => {
-
-        localStream = stream;
-
-        const video = document.getElementById("teacherVideo");
-        video.srcObject = stream;
-        video.muted = true;
-
+        document.getElementById("camera").srcObject = stream;
     })
-    .catch(err => console.error(err));
+    .catch(err => alert("Camera error"));
 }
 
-// END CLASS
-function endClass() {
-    socket.emit("end_class", { room: room });
-}
-
-// RECEIVE END CLASS
-socket.on("class_ended", function(data) {
-    alert(data.message);
+function endClass(){
+    alert("Class ended");
     window.location.href = "/dashboard";
-});
+}
 
-// 🔥 ATTENDANCE TRACK (IMPORTANT)
-window.addEventListener("beforeunload", () => {
-    socket.emit("leave_room", { room: room });
-});
 </script>
 
 </body>

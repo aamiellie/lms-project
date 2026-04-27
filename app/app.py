@@ -1579,33 +1579,6 @@ def logout():
     session.clear()
     return redirect(url_for("login"))
 
-@socketio.on("join_room")
-def handle_join(data):
-
-    room = data["room"]
-    username = data["username"]
-
-    # ✅ FIRST join the room
-    join_room(room)
-
-    attendance_collection.insert_one({
-        "user_id": session["user_id"],
-        "room_id": room,
-        "join_time": datetime.utcnow(),
-        "leave_time": None,
-        "duration": 0
-    })
-
-    # ✅ THEN notify teacher to start stream
-    emit("start_stream", room=room)
-
-    # notify everyone
-    emit(
-        "user_joined",
-        {"username": username},
-        room=room
-    )
-
 
 @socketio.on("send_message")
 def handle_message(data):
@@ -1617,48 +1590,7 @@ def handle_message(data):
         data,
         room=room
     )
-@socketio.on("end_class")
-def handle_end_class(data):
 
-    room = data["room"]
-
-    # update DB (optional but good)
-    live_classes_collection.update_one(
-        {"room_id": room},
-        {"$set": {"status": "ended"}}
-    )
-
-    # 🔥 SEND TO ALL USERS IN ROOM
-    emit(
-        "class_ended",
-        {"message": "Live class has ended"},
-        room=room
-    )
-
-@socketio.on("leave_room")
-def handle_leave(data):
-
-    room = data["room"]
-
-    record = attendance_collection.find_one({
-        "user_id": session["user_id"],
-        "room_id": room,
-        "leave_time": None
-    })
-
-    if record:
-        leave_time = datetime.utcnow()
-        duration = (leave_time - record["join_time"]).total_seconds()
-
-        attendance_collection.update_one(
-            {"_id": record["_id"]},
-            {
-                "$set": {
-                    "leave_time": leave_time,
-                    "duration": duration
-                }
-            }
-        )
 
 import os
 
