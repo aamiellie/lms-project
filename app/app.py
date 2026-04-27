@@ -15,6 +15,7 @@ import random
 import string
 import uuid
 from datetime import datetime
+from datetime import datetime
 
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, send_from_directory
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -1587,6 +1588,14 @@ def handle_join(data):
     # ✅ FIRST join the room
     join_room(room)
 
+    attendance_collection.insert_one({
+        "user_id": session["user_id"],
+        "room_id": room,
+        "join_time": datetime.utcnow(),
+        "leave_time": None,
+        "duration": 0
+    })
+
     # ✅ THEN notify teacher to start stream
     emit("start_stream", room=room)
 
@@ -1628,52 +1637,32 @@ def handle_end_class(data):
         {"message": "Live class has ended"},
         room=room
     )
-@socketio.on("request_stream")
-def handle_stream_request(data):
+
+@socketio.on("leave_room")
+def handle_leave(data):
 
     room = data["room"]
 
-    emit(
-        "start_stream",
-        {},
-        room=room
-    )
-@socketio.on("video_offer")
-def handle_video_offer(data):
+    record = attendance_collection.find_one({
+        "user_id": session["user_id"],
+        "room_id": room,
+        "leave_time": None
+    })
 
-    emit(
-        "video_offer",
-        data,
-        room=data["room"],
-        include_self=False
-    )
+    if record:
+        leave_time = datetime.utcnow()
+        duration = (leave_time - record["join_time"]).total_seconds()
 
-
-@socketio.on("video_answer")
-def handle_video_answer(data):
-
-    emit(
-        "video_answer",
-        data,
-        room=data["room"],
-        include_self=False
-    )
-
-@socketio.on("teacher_ready")
-def teacher_ready(data):
-    room = data["room"]
-    emit("start_stream", room=room)
-
-
-@socketio.on("ice_candidate")
-def handle_ice_candidate(data):
-
-    emit(
-        "ice_candidate",
-        data,
-        room=data["room"],
-        include_self=False
-    )
+        attendance_collection.update_one(
+            {"_id": record["_id"]},
+            {
+                "$set": {
+                    "leave_time": leave_time,
+                    "duration": duration
+                }
+            }
+        )
+        
 import os
 
 if __name__ == "__main__":
