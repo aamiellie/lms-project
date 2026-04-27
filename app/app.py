@@ -1555,6 +1555,7 @@ def live_room(room_id):
     return render_template(
         "live_class.html",
         room_id=room_id,
+        classroom_id=live_class["classroom_id"],  # 👈 ADD THIS
         user_name=session["user_name"],
         role=session["user_role"]
     )
@@ -1674,6 +1675,25 @@ def handle_message(data):
         data,
         room=room
     )
+
+@socketio.on("join_room")
+def handle_join(data):
+    join_room(data["room"])
+
+
+@socketio.on("video_offer")
+def handle_offer(data):
+    emit("video_offer", data, room=data["room"], include_self=False)
+
+
+@socketio.on("video_answer")
+def handle_answer(data):
+    emit("video_answer", data, room=data["room"], include_self=False)
+
+
+@socketio.on("ice_candidate")
+def handle_ice(data):
+    emit("ice_candidate", data, room=data["room"], include_self=False)
 
 
 import os

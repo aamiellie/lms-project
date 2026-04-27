@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Live Class</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
     <style>
         body {
@@ -49,22 +50,125 @@
 </form>
 {% endif %}
 <button onclick="leaveClass()">Leave Class</button>
+
 <script>
+const socket = io();
+const room = "{{ room_id }}";
+const role = "{{ role }}";
+socket.on("connect", () => {
+    socket.emit("join_room", {
+        room: room
+    });
+});
 
-function startCamera(){
+let localStream;
+let peerConnection;
 
-    navigator.mediaDevices.getUserMedia({
+const config = {
+    iceServers: [
+        { urls: "stun:stun.l.google.com:19302" }
+    ]
+};
+
+
+async function startCamera(){
+
+    localStream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true
-    })
-    .then(stream => {
-        document.getElementById("camera").srcObject = stream;
-    })
-    .catch(err => alert("Camera error"));
+    });
+
+    const video = document.getElementById("camera");
+    video.srcObject = localStream;
+    video.muted = true;
+
+    // 🔥 ONLY TEACHER STARTS STREAMING
+    if(role === "teacher"){
+        startStreaming();
+    }
 }
 
-window.addEventListener("beforeunload", () => {
-    navigator.sendBeacon("/leave/{{ room_id }}");
+async function startStreaming(){
+
+    peerConnection = new RTCPeerConnection(config);
+
+    // send teacher video tracks
+    localStream.getTracks().forEach(track => {
+        peerConnection.addTrack(track, localStream);
+    });
+
+    // ICE candidates
+    peerConnection.onicecandidate = event => {
+        if(event.candidate){
+            socket.emit("ice_candidate", {
+                room: room,
+                candidate: event.candidate
+            });
+        }
+    };
+
+    // create offer
+    const offer = await peerConnection.createOffer();
+    await peerConnection.setLocalDescription(offer);
+
+    // send offer to students
+    socket.emit("video_offer", {
+        room: room,
+        offer: offer
+    });
+}
+
+socket.on("video_offer", async (data) => {
+
+    // only students handle this
+    if(role !== "student") return;
+
+    peerConnection = new RTCPeerConnection(config);
+
+    // 🔥 THIS SHOWS VIDEO ON STUDENT SIDE
+    peerConnection.ontrack = (event) => {
+        const video = document.getElementById("camera");
+        video.srcObject = event.streams[0];
+    };
+
+    // ICE handling
+    peerConnection.onicecandidate = event => {
+        if(event.candidate){
+            socket.emit("ice_candidate", {
+                room: room,
+                candidate: event.candidate
+            });
+        }
+    };
+
+    await peerConnection.setRemoteDescription(data.offer);
+
+    const answer = await peerConnection.createAnswer();
+    await peerConnection.setLocalDescription(answer);
+
+    socket.emit("video_answer", {
+        room: room,
+        answer: answer
+    });
+});
+
+// teacher receives answer
+socket.on("video_answer", async (data) => {
+    if(role !== "teacher") return;
+
+    await peerConnection.setRemoteDescription(data.answer);
+});
+
+
+// both sides handle ICE
+socket.on("ice_candidate", async (data) => {
+    if(peerConnection){
+        try{
+            await peerConnection.addIceCandidate(data.candidate);
+        } catch(e){
+            console.error("ICE error:", e);
+        }
+    }
 });
 
 function leaveClass(){
@@ -85,12 +189,14 @@ setInterval(() => {
 
         if(data.status === "ended"){
             alert("Class Ended");
-            window.location.href = "/dashboard";
+            window.location.href = "/classroom/{{ classroom_id }}";
         }
 
     });
 
 }, 3000);
+
+
 
 </script>
 
