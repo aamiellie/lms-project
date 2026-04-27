@@ -48,7 +48,7 @@
     <button type="submit" class="end">End Class</button>
 </form>
 {% endif %}
-
+<button onclick="leaveClass()">Leave Class</button>
 <script>
 
 function startCamera(){
@@ -66,6 +66,15 @@ function startCamera(){
 window.addEventListener("beforeunload", () => {
     navigator.sendBeacon("/leave/{{ room_id }}");
 });
+
+function leaveClass(){
+
+    fetch("/leave/{{ room_id }}")
+    .then(() => {
+        window.location.href = "/dashboard";
+    });
+
+}
 
 </script>
 
