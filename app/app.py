@@ -1682,16 +1682,34 @@ def check_class(room_id):
         return {"status": "ended"}
 
     return {"status": live_class.get("status", "ended")}
-@app.route("/attendance/<classroom_id>")
+@app.route("/attendance/<classroom_id>", methods=["GET", "POST"])
 def view_attendance(classroom_id):
 
+    from datetime import datetime
+
+    query = {"classroom_id": classroom_id}
+
+    if request.method == "POST":
+        selected_date = request.form.get("date")
+
+        if selected_date:
+            start = datetime.strptime(selected_date, "%Y-%m-%d")
+            end = start.replace(hour=23, minute=59, second=59)
+
+            query["join_time"] = {
+                "$gte": start,
+                "$lte": end
+            }
+
     records = list(
-        attendance_collection.find({
-            "classroom_id": classroom_id
-        })
+        attendance_collection.find(query).sort("join_time", -1)
     )
 
-    return render_template("attendance.html", records=records)
+    return render_template(
+        "attendance.html",
+        records=records,
+        classroom_id=classroom_id
+    )
 @socketio.on("send_message")
 def handle_message(data):
 

@@ -2,12 +2,133 @@
 <html>
 <head>
     <title>Attendance</title>
+
+<style>
+
+/* ===== BODY ===== */
+body{
+    margin:0;
+    font-family:"Poppins", sans-serif;
+    background:linear-gradient(135deg,#e8f5e9,#f5f5f5);
+    padding:60px 80px;
+    overflow-x:hidden;
+}
+
+/* ===== FLOATING SHAPES ===== */
+.shape{
+    position:fixed;
+    border-radius:40px;
+    opacity:0.15;
+    z-index:-1;
+    animation:floatShape 4s infinite ease-in-out alternate;
+}
+
+.shape1{
+    width:220px;
+    height:220px;
+    background:#4CAF50;
+    top:5%;
+    left:-80px;
+}
+
+.shape2{
+    width:260px;
+    height:260px;
+    background:#2196F3;
+    bottom:-120px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+@keyframes floatShape{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-20px);}
+    100%{transform:translateY(20px);}
+}
+
+/* ===== TITLE ===== */
+h2{
+    font-size:32px;
+    margin-bottom:25px;
+}
+
+/* ===== CARD ===== */
+.card{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* ===== TABLE ===== */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#4CAF50;
+    color:white;
+    padding:12px;
+    text-align:left;
+    border-radius:8px 8px 0 0;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #eee;
+}
+
+/* row hover */
+tr:hover{
+    background:#f1f8e9;
+}
+
+/* ===== BACK BUTTON ===== */
+.back{
+    display:inline-block;
+    margin-bottom:20px;
+    text-decoration:none;
+    color:#2196F3;
+    font-weight:600;
+}
+
+.back:hover{
+    color:black;
+}
+
+</style>
+
 </head>
+
 <body>
+
+<!-- Floating shapes -->
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
+
+<a href="{{ url_for('teacher_classroom', classroom_id=classroom_id) }}" class="back">
+    ⬅ Back
+</a>
 
 <h2>Attendance</h2>
 
-<table border="1" cellpadding="10">
+<div class="card">
+<form method="POST" style="margin-bottom:20px; display:flex; gap:10px; align-items:center;">
+    
+    <input type="date" name="date" required
+        style="padding:10px; border-radius:8px; border:1px solid #ccc;">
+    
+    <button type="submit" class="btn primary">
+        Sort
+    </button>
+
+</form>
+<a href="/attendance/{{ classroom_id }}" class="btn secondary">
+    Show All
+</a>
+<br>
+<table>
 <tr>
     <th>Date</th>
     <th>Name</th>
@@ -25,5 +146,8 @@
 {% endfor %}
 
 </table>
+
+</div>
+
 </body>
 </html>
