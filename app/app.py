@@ -1531,6 +1531,7 @@ def live_room(room_id):
 
     from datetime import datetime
 
+    # 🔍 get live class
     live_class = live_classes_collection.find_one({
         "room_id": room_id
     })
@@ -1541,10 +1542,12 @@ def live_room(room_id):
     if live_class.get("status") == "ended":
         return "No live class active right now."
 
-    # ✅ ONLY FOR STUDENTS
-    if session["user_role"] == "student":
+    classroom_id = live_class["classroom_id"]   # ✅ GET ONCE
 
-        # 🔥 CHECK IF ALREADY JOINED (avoid duplicates)
+    # ✅ ONLY FOR STUDENTS
+    if session.get("user_role") == "student":
+
+        # check existing active session
         existing = attendance_collection.find_one({
             "user_id": session["user_id"],
             "room_id": room_id,
@@ -1555,22 +1558,24 @@ def live_room(room_id):
             attendance_collection.insert_one({
                 "user_id": session["user_id"],
                 "name": session["user_name"],
-                "email": session["user_email"],
+                "email": session.get("user_email", "N/A"),  # ✅ SAFE
                 "role": session["user_role"],
                 "room_id": room_id,
-                "classroom_id": classroom_id,   # 👈 ADD THIS
+                "classroom_id": classroom_id,
                 "join_time": datetime.utcnow(),
                 "leave_time": None,
                 "duration": 0
             })
 
+    # ✅ IMPORTANT: always return page
     return render_template(
         "live_class.html",
         room_id=room_id,
-        classroom_id=live_class["classroom_id"],  # 👈 ADD THIS
-        user_name=session["user_name"],
-        role=session["user_role"]
+        classroom_id=classroom_id,
+        user_name=session.get("user_name"),
+        role=session.get("user_role")
     )
+    
 @app.route("/teacher/end-live/<room_id>", methods=["POST"])
 def end_live_class(room_id):
 
