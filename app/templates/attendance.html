@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance</title>
+</head>
+<body>
+
+<h2>Attendance</h2>
+
+<table border="1" cellpadding="10">
+    <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Total Time (seconds)</th>
+</tr>
+    
+
+    {% for user in data.values() %}
+   <tr>
+    <td>{{ user.name }}</td>
+    <td>{{ user.email }}</td>
+    <td>{{ user.total_time }}</td>
+</tr>
+    {% endfor %}
+
+</table>
+
+</body>
+</html>

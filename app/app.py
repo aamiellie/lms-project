@@ -320,6 +320,7 @@ def login():
         session["user_id"] = str(user["_id"])
         session["user_name"] = user["name"]
         session["user_role"] = user["role"]
+        session["user_email"] = user["email"]
 
         return redirect(url_for("dashboard"))
 
@@ -546,7 +547,8 @@ def student_classroom(classroom_id):
         posts=posts,
         videos=videos,
         assignments=assignments,
-        live_class=live_class
+        live_class=live_class,
+        room_id=live_class["room_id"] if live_class else None
     )
 
 @app.route("/teacher/classroom/<classroom_id>")
@@ -1545,6 +1547,7 @@ def live_room(room_id):
             attendance_collection.insert_one({
                 "user_id": session["user_id"],
                 "name": session["user_name"],
+                "email": session["user_email"],
                 "role": session["user_role"],
                 "room_id": room_id,
                 "join_time": datetime.utcnow(),
@@ -1665,6 +1668,31 @@ def check_class(room_id):
         return {"status": "ended"}
 
     return {"status": live_class.get("status", "ended")}
+@app.route("/attendance/<room_id>")
+def view_attendance(room_id):
+
+    records = attendance_collection.find({
+        "room_id": room_id
+    })
+
+    summary = {}
+
+    for r in records:
+        user_id = r["user_id"]
+
+        if user_id not in summary:
+            summary[user_id] = {
+                "name": r["name"],
+                "total_time": 0
+            }
+
+        summary[user_id] = {
+            "name": r["name"],
+            "email": r.get("email", "N/A"),
+            "total_time": 0
+        }
+
+    return render_template("attendance.html", data=summary)
 @socketio.on("send_message")
 def handle_message(data):
 
