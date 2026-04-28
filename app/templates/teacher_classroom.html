@@ -527,9 +527,13 @@ ANIMATIONS
         </a>
     </li>
     <li>
-    <a href="/teacher/classroom/{{ classroom._id }}/results">
-    📊 View Student Results
+    {% if room_id %}
+<a href="/attendance/sessions/{{ classroom._id }}">
+    View Attendance
 </a>
+{% else %}
+<p style="color:gray;">No attendance available yet</p>
+{% endif %}
 </li>
 <li>
     <a href="/attendance/{{ room_id }}" class="btn primary">

@@ -1,0 +1,20 @@
+<h2>Live Class Sessions</h2>
+
+<table border="1" cellpadding="10">
+<tr>
+    <th>Date</th>
+    <th>Action</th>
+</tr>
+
+{% for s in sessions %}
+<tr>
+    <td>{{ s.created_at }}</td>
+    <td>
+        <a href="/attendance/{{ s.room_id }}">
+            View Attendance
+        </a>
+    </td>
+</tr>
+{% endfor %}
+
+</table>

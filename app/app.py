@@ -598,6 +598,13 @@ def teacher_classroom(classroom_id):
     assignments = list(
         assignments_collection.find({"classroom_id": classroom_id})
     )
+
+    live_class = live_classes_collection.find_one(
+        {"classroom_id": classroom_id},
+        sort=[("created_at", -1)]
+    )
+
+    room_id = live_class["room_id"] if live_class else None
     return render_template(
         "teacher_classroom.html",
         classroom=classroom,
@@ -605,6 +612,7 @@ def teacher_classroom(classroom_id):
         posts=posts,
         assignments=assignments,
         students=students,
+        room_id=room_id,
         open_community=True   
     )
 
@@ -1693,6 +1701,16 @@ def view_attendance(room_id):
         }
 
     return render_template("attendance.html", data=summary)
+@app.route("/attendance/sessions/<classroom_id>")
+def attendance_sessions(classroom_id):
+
+    sessions = list(
+        live_classes_collection.find(
+            {"classroom_id": classroom_id}
+        ).sort("created_at", -1)
+    )
+
+    return render_template("attendance_sessions.html", sessions=sessions)
 @socketio.on("send_message")
 def handle_message(data):
 
