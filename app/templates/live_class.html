@@ -291,21 +291,29 @@ function leaveClass(){
 }
 
 // 🔥 CHECK IF CLASS ENDED EVERY 3 SECONDS
-setInterval(() => {
+let classEnded = false;
+
+const interval = setInterval(() => {
+
+    if(classEnded) return;
 
     fetch("/check_class/{{ room_id }}")
     .then(res => res.json())
     .then(data => {
 
         if(data.status === "ended"){
+
+            classEnded = true;       // ✅ stop future alerts
+            clearInterval(interval); // ✅ stop loop
+
             alert("Class Ended");
-            window.location.href = "/dashboard";
+
+            window.location.href = "{{ url_for('dashboard') }}";
         }
 
     });
 
 }, 3000);
-
 
 
 </script>
