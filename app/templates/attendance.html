@@ -8,22 +8,22 @@
 <h2>Attendance</h2>
 
 <table border="1" cellpadding="10">
-    <tr>
+<tr>
+    <th>Date</th>
     <th>Name</th>
     <th>Email</th>
-    <th>Total Time (seconds)</th>
+    <th>Time (sec)</th>
 </tr>
-    
 
-    {% for user in data.values() %}
-   <tr>
-    <td>{{ user.name }}</td>
-    <td>{{ user.email }}</td>
-    <td>{{ user.total_time }}</td>
+{% for r in records %}
+<tr>
+    <td>{{ r.join_time.strftime("%d %b %Y") }}</td>
+    <td>{{ r.name }}</td>
+    <td>{{ r.email }}</td>
+    <td>{{ r.duration }}</td>
 </tr>
-    {% endfor %}
+{% endfor %}
 
 </table>
-
 </body>
 </html>

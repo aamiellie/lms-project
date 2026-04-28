@@ -1558,6 +1558,7 @@ def live_room(room_id):
                 "email": session["user_email"],
                 "role": session["user_role"],
                 "room_id": room_id,
+                "classroom_id": classroom_id,   # 👈 ADD THIS
                 "join_time": datetime.utcnow(),
                 "leave_time": None,
                 "duration": 0
@@ -1676,41 +1677,16 @@ def check_class(room_id):
         return {"status": "ended"}
 
     return {"status": live_class.get("status", "ended")}
-@app.route("/attendance/<room_id>")
-def view_attendance(room_id):
+@app.route("/attendance/<classroom_id>")
+def view_attendance(classroom_id):
 
-    records = attendance_collection.find({
-        "room_id": room_id
-    })
-
-    summary = {}
-
-    for r in records:
-        user_id = r["user_id"]
-
-        if user_id not in summary:
-            summary[user_id] = {
-                "name": r["name"],
-                "total_time": 0
-            }
-
-        summary[user_id] = {
-            "name": r["name"],
-            "email": r.get("email", "N/A"),
-            "total_time": 0
-        }
-
-    return render_template("attendance.html", data=summary)
-@app.route("/attendance/sessions/<classroom_id>")
-def attendance_sessions(classroom_id):
-
-    sessions = list(
-        live_classes_collection.find(
-            {"classroom_id": classroom_id}
-        ).sort("created_at", -1)
+    records = list(
+        attendance_collection.find({
+            "classroom_id": classroom_id
+        })
     )
 
-    return render_template("attendance_sessions.html", sessions=sessions)
+    return render_template("attendance.html", records=records)
 @socketio.on("send_message")
 def handle_message(data):
 
